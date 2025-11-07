@@ -166,7 +166,7 @@ tasks.register<JavaExec>("runKtlint") {
     outputs.dir(outputDir)
     mainClass.set("com.pinterest.ktlint.Main")
     classpath = configurations.getByName("ktlint")
-    args = listOf("src/**/*.kt")
+    args = listOf("--editorconfig=../.editorconfig", "src/**/*.kt")
     jvmArgs = listOf("--add-opens", "java.base/java.lang=ALL-UNNAMED")
 }
 
@@ -175,7 +175,7 @@ tasks.register<JavaExec>("formatKtlint") {
     outputs.dir(outputDir)
     mainClass.set("com.pinterest.ktlint.Main")
     classpath = configurations.getByName("ktlint")
-    args = listOf("-F", "src/**/*.kt")
+    args = listOf("--editorconfig=../.editorconfig", "-F", "src/**/*.kt")
     jvmArgs = listOf("--add-opens", "java.base/java.lang=ALL-UNNAMED")
 }
 
