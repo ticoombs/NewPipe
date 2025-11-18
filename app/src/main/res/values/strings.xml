@@ -734,6 +734,15 @@
 \nYouTube is an example of a service that offers this fast method with its RSS feed.
 \n
 \nSo the choice boils down to what you prefer: speed or precise information.</string>
+    <!-- Smart feed scheduling -->
+    <string name="feed_smart_update_scheduling_title">Smart update scheduling</string>
+    <string name="feed_smart_update_scheduling_summary">Only check subscriptions when new videos are predicted to be available. Reduces API calls and improves performance.</string>
+    
+    <!-- Feed refresh options -->
+    <string name="feed_refresh_options">Refresh options</string>
+    <string name="feed_smart_refresh">Smart refresh</string>
+    <string name="feed_full_refresh">Full refresh</string>
+    <string name="feed_smart_scheduling_summary">Checked %1$d of %2$d subscriptions (%3$d skipped)</string>
     <string name="feed_hide_streams_title">Show the following streams</string>
     <string name="feed_show_hide_streams">Show/Hide streams</string>
     <string name="feed_fetch_channel_tabs">Fetch channel tabs</string>

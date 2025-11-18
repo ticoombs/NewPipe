@@ -56,6 +56,8 @@ class FeedLoadService : Service() {
         private const val NOTIFICATION_SAMPLING_PERIOD = 1500
 
         const val EXTRA_GROUP_ID: String = "FeedLoadService.EXTRA_GROUP_ID"
+        const val EXTRA_IGNORE_OUTDATED_THRESHOLD: String = "FeedLoadService.EXTRA_IGNORE_OUTDATED_THRESHOLD"
+        const val EXTRA_USE_SMART_SCHEDULING: String = "FeedLoadService.EXTRA_USE_SMART_SCHEDULING"
     }
 
     private var loadingDisposable: Disposable? = null
@@ -89,7 +91,14 @@ class FeedLoadService : Service() {
         setupBroadcastReceiver()
 
         val groupId = intent.getLongExtra(EXTRA_GROUP_ID, FeedGroupEntity.GROUP_ALL_ID)
-        loadingDisposable = feedLoadManager.startLoading(groupId)
+        val ignoreThreshold = intent.getBooleanExtra(EXTRA_IGNORE_OUTDATED_THRESHOLD, false)
+        val useSmartScheduling = intent.getBooleanExtra(EXTRA_USE_SMART_SCHEDULING, false)
+
+        loadingDisposable = feedLoadManager.startLoading(
+            groupId = groupId,
+            ignoreOutdatedThreshold = ignoreThreshold,
+            useSmartScheduling = useSmartScheduling
+        )
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe {
                 startForeground(NOTIFICATION_ID, notificationBuilder.build())
@@ -174,7 +183,12 @@ class FeedLoadService : Service() {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                 if (state.updateDescription.isNotEmpty()) {
-                    notificationBuilder.setContentText("${state.updateDescription}  ($progressText)")
+                    val contentText = if (state.skippedCount > 0) {
+                        "${state.updateDescription}  ($progressText, ${state.skippedCount} skipped)"
+                    } else {
+                        "${state.updateDescription}  ($progressText)"
+                    }
+                    notificationBuilder.setContentText(contentText)
                 }
             } else {
                 notificationBuilder.setContentInfo(progressText)

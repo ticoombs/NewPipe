@@ -167,5 +167,13 @@
             app:iconSpaceReserved="false"
             app:singleLineTitle="false" />
 
+        <!-- Smart feed scheduling -->
+        <SwitchPreferenceCompat
+            app:key="@string/feed_smart_update_scheduling_key"
+            app:title="@string/feed_smart_update_scheduling_title"
+            app:summary="@string/feed_smart_update_scheduling_summary"
+            app:defaultValue="false"
+            app:iconSpaceReserved="false" />
+
     </PreferenceCategory>
 </PreferenceScreen>

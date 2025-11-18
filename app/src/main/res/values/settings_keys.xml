@@ -388,6 +388,9 @@
     </string-array>
     <string name="feed_use_dedicated_fetch_method_key">feed_use_dedicated_fetch_method</string>
 
+    <!-- Smart Feed Scheduling -->
+    <string name="feed_smart_update_scheduling_key">feed_smart_update_scheduling</string>
+
     <string name="feed_fetch_channel_tabs_key">feed_fetch_channel_tabs</string>
     <string name="fetch_channel_tabs_videos">fetch_channel_tabs_videos</string>
     <string name="fetch_channel_tabs_tracks">fetch_channel_tabs_tracks</string>

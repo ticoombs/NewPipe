@@ -42,6 +42,8 @@ class FeedLoadManager(private val context: Context) {
     private val maxProgress = AtomicInteger(-1)
     private val cancelSignal = AtomicBoolean()
     private val feedResultsHolder = FeedResultsHolder()
+    private val totalSubscriptionsCount = AtomicInteger(0)
+    private val skippedSubscriptionsCount = AtomicInteger(0)
 
     val notification: Flowable<FeedLoadState> = notificationUpdater.map { description ->
         FeedLoadState(description, maxProgress.get(), currentProgress.get())
@@ -57,10 +59,14 @@ class FeedLoadManager(private val context: Context) {
      * @param ignoreOutdatedThreshold When `false`, only subscriptions which have not been updated
      * within the `feed_update_threshold` are checked for updates. This threshold can be set by
      * the user in the app settings. When `true`, all subscriptions are checked for new streams.
+     * @param useSmartScheduling When `true`, uses smart scheduling to determine which subscriptions
+     * to update based on predicted next update times. When `false`, uses the traditional threshold-based
+     * approach.
      */
     fun startLoading(
         groupId: Long = FeedGroupEntity.GROUP_ALL_ID,
         ignoreOutdatedThreshold: Boolean = false,
+        useSmartScheduling: Boolean = false
     ): Single<List<Notification<FeedUpdateInfo>>> {
         val defaultSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val useFeedExtractor = defaultSharedPreferences.getBoolean(
@@ -79,27 +85,61 @@ class FeedLoadManager(private val context: Context) {
         }
 
         /**
+         * Get all subscriptions to calculate statistics
+         */
+        val allSubscriptionsFlowable = when (groupId) {
+            FeedGroupEntity.GROUP_ALL_ID -> subscriptionManager.subscriptions()
+            GROUP_NOTIFICATION_ENABLED -> subscriptionManager.subscriptions()
+                .map { list -> list.filter { it.notificationMode == NotificationMode.ENABLED } }
+            else -> feedDatabaseManager.subscriptionIdsForGroup(groupId)
+                .flatMap { ids ->
+                    if (ids.isEmpty()) {
+                        Flowable.just(emptyList())
+                    } else {
+                        subscriptionManager.subscriptions()
+                            .map { list -> list.filter { it.uid in ids } }
+                    }
+                }
+        }
+
+        /**
          * subscriptions which have not been updated within the feed updated threshold
          */
-        val outdatedSubscriptions = when (groupId) {
-            FeedGroupEntity.GROUP_ALL_ID -> feedDatabaseManager.outdatedSubscriptions(
-                outdatedThreshold
-            )
-            GROUP_NOTIFICATION_ENABLED -> feedDatabaseManager.outdatedSubscriptionsWithNotificationMode(
-                outdatedThreshold, NotificationMode.ENABLED
-            )
-            else -> feedDatabaseManager.outdatedSubscriptionsForGroup(groupId, outdatedThreshold)
+        val outdatedSubscriptions = if (useSmartScheduling) {
+            val (_, windowUpper) = FetchInterval.getWindow()
+            when (groupId) {
+                FeedGroupEntity.GROUP_ALL_ID -> feedDatabaseManager.database().feedDAO().getAllDueForUpdate(windowUpper, outdatedThreshold)
+                GROUP_NOTIFICATION_ENABLED -> feedDatabaseManager.database().feedDAO().getAllDueForUpdate(windowUpper, outdatedThreshold)
+                    .map { list -> list.filter { it.notificationMode == NotificationMode.ENABLED } }
+                else -> feedDatabaseManager.database().feedDAO().getAllDueForUpdateByGroup(groupId, windowUpper, outdatedThreshold)
+            }
+        } else {
+            when (groupId) {
+                FeedGroupEntity.GROUP_ALL_ID -> feedDatabaseManager.outdatedSubscriptions(
+                    outdatedThreshold
+                )
+                GROUP_NOTIFICATION_ENABLED -> feedDatabaseManager.outdatedSubscriptionsWithNotificationMode(
+                    outdatedThreshold, NotificationMode.ENABLED
+                )
+                else -> feedDatabaseManager.outdatedSubscriptionsForGroup(groupId, outdatedThreshold)
+            }
         }
 
         // like `currentProgress`, but counts the number of YouTube extractions that have begun, so
         // they can be properly throttled every once in a while (see doOnNext below)
         val youtubeExtractionCount = AtomicInteger()
 
-        return outdatedSubscriptions
+        return allSubscriptionsFlowable
             .take(1)
-            .doOnNext {
-                currentProgress.set(0)
-                maxProgress.set(it.size)
+            .flatMap { allSubs ->
+                totalSubscriptionsCount.set(allSubs.size)
+                outdatedSubscriptions
+                    .take(1)
+                    .doOnNext { outdatedSubs ->
+                        currentProgress.set(0)
+                        maxProgress.set(outdatedSubs.size)
+                        skippedSubscriptionsCount.set(allSubs.size - outdatedSubs.size)
+                    }
             }
             .filter { it.isNotEmpty() }
             .observeOn(AndroidSchedulers.mainThread())
@@ -140,11 +180,35 @@ class FeedLoadManager(private val context: Context) {
         cancelSignal.set(true)
     }
 
+    private fun calculateAndStoreInterval(subscriptionId: Long) {
+        try {
+            val streams = feedDatabaseManager.database().feedDAO()
+                .getStreamsForSubscription(subscriptionId, 10)
+                .blockingFirst()
+
+            val interval = FetchInterval.calculateInterval(streams)
+            val updateInfo = feedDatabaseManager.database().feedDAO().getUpdateInfo(subscriptionId)
+            val lastUpdated = updateInfo?.lastUpdated ?: OffsetDateTime.now(ZoneOffset.UTC)
+            val nextUpdate = FetchInterval.calculateNextUpdate(lastUpdated, interval)
+
+            feedDatabaseManager.database().feedDAO().setFetchIntervalForSubscription(
+                subscriptionId,
+                interval,
+                nextUpdate
+            )
+        } catch (e: Exception) {
+            android.util.Log.e(TAG, "Failed to calculate interval for subscription $subscriptionId", e)
+        }
+    }
+
     private fun broadcastProgress() {
         FeedEventManager.postEvent(
             FeedEventManager.Event.ProgressEvent(
                 currentProgress.get(),
-                maxProgress.get()
+                maxProgress.get(),
+                0,
+                skippedSubscriptionsCount.get(),
+                totalSubscriptionsCount.get()
             )
         )
     }
@@ -281,6 +345,9 @@ class FeedLoadManager(private val context: Context) {
     private inner class DatabaseConsumer : Consumer<List<Notification<FeedUpdateInfo>>> {
 
         override fun accept(list: List<Notification<FeedUpdateInfo>>) {
+            // Collect subscription IDs that need interval calculation (outside transaction)
+            val subscriptionsToCalculate = mutableListOf<Long>()
+
             feedDatabaseManager.database().runInTransaction {
                 for (notification in list) {
                     when {
@@ -291,6 +358,11 @@ class FeedLoadManager(private val context: Context) {
 
                             feedDatabaseManager.upsertAll(info.uid, info.streams)
                             subscriptionManager.updateFromInfo(info)
+
+                            // Mark for interval calculation (will do it outside transaction)
+                            if (info.errors.isEmpty() && info.streams.isNotEmpty()) {
+                                subscriptionsToCalculate.add(info.uid)
+                            }
 
                             if (info.errors.isNotEmpty()) {
                                 feedResultsHolder.addErrors(
@@ -316,6 +388,11 @@ class FeedLoadManager(private val context: Context) {
                     }
                 }
             }
+
+            // Calculate intervals AFTER transaction completes (prevents deadlock)
+            for (subscriptionId in subscriptionsToCalculate) {
+                calculateAndStoreInterval(subscriptionId)
+            }
         }
 
         private fun filterNewStreams(list: List<StreamInfoItem>): List<StreamInfoItem> {
@@ -333,6 +410,7 @@ class FeedLoadManager(private val context: Context) {
     }
 
     companion object {
+        private const val TAG = "FeedLoadManager"
 
         /**
          * Constant used to check for updates of subscriptions with [NotificationMode.ENABLED].

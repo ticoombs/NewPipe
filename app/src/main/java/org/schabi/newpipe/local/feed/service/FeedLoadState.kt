@@ -4,4 +4,5 @@ data class FeedLoadState(
     val updateDescription: String,
     val maxProgress: Int,
     val currentProgress: Int,
+    val skippedCount: Int = 0,
 )

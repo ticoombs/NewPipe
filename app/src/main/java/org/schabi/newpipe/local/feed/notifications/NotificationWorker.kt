@@ -5,6 +5,7 @@ import android.content.pm.ServiceInfo
 import android.os.Build
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import androidx.preference.PreferenceManager
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.ForegroundInfo
@@ -40,9 +41,16 @@ class NotificationWorker(
     private val feedLoadManager = FeedLoadManager(appContext)
 
     override fun createWork(): Single<Result> = if (areNotificationsEnabled(applicationContext)) {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
+        val useSmartScheduling = sharedPreferences.getBoolean(
+            applicationContext.getString(R.string.feed_smart_update_scheduling_key),
+            false
+        )
+
         feedLoadManager.startLoading(
-            ignoreOutdatedThreshold = true,
-            groupId = FeedLoadManager.GROUP_NOTIFICATION_ENABLED
+            groupId = FeedLoadManager.GROUP_NOTIFICATION_ENABLED,
+            ignoreOutdatedThreshold = false,
+            useSmartScheduling = useSmartScheduling
         )
             .doOnSubscribe { showLoadingFeedForegroundNotification() }
             .map { feed ->

@@ -4,14 +4,13 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Transaction
-import androidx.room.Update
 import io.reactivex.rxjava3.core.Flowable
 import io.reactivex.rxjava3.core.Maybe
 import org.schabi.newpipe.database.feed.model.FeedEntity
 import org.schabi.newpipe.database.feed.model.FeedGroupEntity
-import org.schabi.newpipe.database.feed.model.FeedLastUpdatedEntity
+import org.schabi.newpipe.database.feed.model.SubscriptionUpdateInfoEntity
 import org.schabi.newpipe.database.stream.StreamWithState
+import org.schabi.newpipe.database.stream.model.StreamEntity
 import org.schabi.newpipe.database.stream.model.StreamStateEntity
 import org.schabi.newpipe.database.subscription.NotificationMode
 import org.schabi.newpipe.database.subscription.SubscriptionEntity
@@ -145,35 +144,20 @@ abstract class FeedDAO {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     abstract fun insertAll(entities: List<FeedEntity>): List<Long>
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
-    internal abstract fun insertLastUpdated(lastUpdatedEntity: FeedLastUpdatedEntity): Long
-
-    @Update(onConflict = OnConflictStrategy.IGNORE)
-    internal abstract fun updateLastUpdated(lastUpdatedEntity: FeedLastUpdatedEntity)
-
-    @Transaction
-    open fun setLastUpdatedForSubscription(lastUpdatedEntity: FeedLastUpdatedEntity) {
-        val id = insertLastUpdated(lastUpdatedEntity)
-
-        if (id == -1L) {
-            updateLastUpdated(lastUpdatedEntity)
-        }
-    }
-
     @Query(
         """
-        SELECT MIN(lu.last_updated) FROM feed_last_updated lu
+        SELECT MIN(sui.last_updated) FROM subscription_update_info sui
 
         INNER JOIN feed_group_subscription_join fgs
-        ON fgs.subscription_id = lu.subscription_id AND fgs.group_id = :groupId
+        ON fgs.subscription_id = sui.subscription_id AND fgs.group_id = :groupId
         """
     )
     abstract fun oldestSubscriptionUpdate(groupId: Long): Flowable<List<OffsetDateTime?>>
 
-    @Query("SELECT MIN(last_updated) FROM feed_last_updated")
-    abstract fun oldestSubscriptionUpdateFromAll(): Flowable<List<OffsetDateTime?>>
+    @Query("SELECT MIN(last_updated) FROM subscription_update_info")
+    abstract fun oldestSubscriptionUpdateFromAll(): Flowable<List<OffsetDateTime>>
 
-    @Query("SELECT COUNT(*) FROM feed_last_updated WHERE last_updated IS NULL")
+    @Query("SELECT COUNT(*) FROM subscription_update_info WHERE last_updated IS NULL")
     abstract fun notLoadedCount(): Flowable<Long>
 
     @Query(
@@ -183,10 +167,10 @@ abstract class FeedDAO {
         INNER JOIN feed_group_subscription_join fgs
         ON s.uid = fgs.subscription_id AND fgs.group_id = :groupId
 
-        LEFT JOIN feed_last_updated lu
-        ON s.uid = lu.subscription_id 
+        LEFT JOIN subscription_update_info sui
+        ON s.uid = sui.subscription_id 
 
-        WHERE lu.last_updated IS NULL
+        WHERE sui.last_updated IS NULL
         """
     )
     abstract fun notLoadedCountForGroup(groupId: Long): Flowable<Long>
@@ -195,10 +179,10 @@ abstract class FeedDAO {
         """
         SELECT s.* FROM subscriptions s
 
-        LEFT JOIN feed_last_updated lu
-        ON s.uid = lu.subscription_id 
+        LEFT JOIN subscription_update_info sui
+        ON s.uid = sui.subscription_id 
 
-        WHERE lu.last_updated IS NULL OR lu.last_updated < :outdatedThreshold
+        WHERE sui.last_updated IS NULL OR sui.last_updated < :outdatedThreshold
         """
     )
     abstract fun getAllOutdated(outdatedThreshold: OffsetDateTime): Flowable<List<SubscriptionEntity>>
@@ -210,10 +194,10 @@ abstract class FeedDAO {
         INNER JOIN feed_group_subscription_join fgs
         ON s.uid = fgs.subscription_id AND fgs.group_id = :groupId
 
-        LEFT JOIN feed_last_updated lu
-        ON s.uid = lu.subscription_id
+        LEFT JOIN subscription_update_info sui
+        ON s.uid = sui.subscription_id
 
-        WHERE lu.last_updated IS NULL OR lu.last_updated < :outdatedThreshold
+        WHERE sui.last_updated IS NULL OR sui.last_updated < :outdatedThreshold
         """
     )
     abstract fun getAllOutdatedForGroup(groupId: Long, outdatedThreshold: OffsetDateTime): Flowable<List<SubscriptionEntity>>
@@ -222,11 +206,11 @@ abstract class FeedDAO {
         """
         SELECT s.* FROM subscriptions s
 
-        LEFT JOIN feed_last_updated lu
-        ON s.uid = lu.subscription_id
+        LEFT JOIN subscription_update_info sui
+        ON s.uid = sui.subscription_id
 
         WHERE 
-            (lu.last_updated IS NULL OR lu.last_updated < :outdatedThreshold)
+            (sui.last_updated IS NULL OR sui.last_updated < :outdatedThreshold)
             AND s.notification_mode = :notificationMode
         """
     )
@@ -234,4 +218,54 @@ abstract class FeedDAO {
         outdatedThreshold: OffsetDateTime,
         @NotificationMode notificationMode: Int
     ): Flowable<List<SubscriptionEntity>>
+
+    @Query(
+        """
+        SELECT s.* FROM subscriptions s
+        LEFT JOIN subscription_update_info sui ON s.uid = sui.subscription_id
+        WHERE (sui.next_update IS NULL OR sui.next_update <= :windowUpper)
+        AND (sui.last_updated IS NULL OR sui.last_updated < :outdatedThreshold)
+        ORDER BY s.name COLLATE NOCASE ASC
+    """
+    )
+    abstract fun getAllDueForUpdate(windowUpper: OffsetDateTime, outdatedThreshold: OffsetDateTime): Flowable<List<SubscriptionEntity>>
+
+    @Query(
+        """
+        SELECT s.* FROM subscriptions s
+        INNER JOIN feed_group_subscription_join fgs ON s.uid = fgs.subscription_id
+        LEFT JOIN subscription_update_info sui ON s.uid = sui.subscription_id
+        WHERE fgs.group_id = :groupId 
+        AND (sui.next_update IS NULL OR sui.next_update <= :windowUpper)
+        AND (sui.last_updated IS NULL OR sui.last_updated < :outdatedThreshold)
+        ORDER BY s.name COLLATE NOCASE ASC
+    """
+    )
+    abstract fun getAllDueForUpdateByGroup(groupId: Long, windowUpper: OffsetDateTime, outdatedThreshold: OffsetDateTime): Flowable<List<SubscriptionEntity>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract fun upsertUpdateInfo(updateInfo: SubscriptionUpdateInfoEntity): Long
+
+    @Query(
+        """
+        UPDATE subscription_update_info 
+        SET fetch_interval = :interval, next_update = :nextUpdate
+        WHERE subscription_id = :subscriptionId
+    """
+    )
+    abstract fun setFetchIntervalForSubscription(subscriptionId: Long, interval: Int, nextUpdate: OffsetDateTime)
+
+    @Query("SELECT * FROM subscription_update_info WHERE subscription_id = :subscriptionId")
+    abstract fun getUpdateInfo(subscriptionId: Long): SubscriptionUpdateInfoEntity?
+
+    @Query(
+        """
+        SELECT s.* FROM streams s
+        INNER JOIN feed f ON s.uid = f.stream_id
+        WHERE f.subscription_id = :subscriptionId
+        ORDER BY s.upload_date DESC
+        LIMIT :limit
+        """
+    )
+    abstract fun getStreamsForSubscription(subscriptionId: Long, limit: Int): Flowable<List<StreamEntity>>
 }

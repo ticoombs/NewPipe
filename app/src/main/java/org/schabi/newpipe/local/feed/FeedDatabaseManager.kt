@@ -11,7 +11,7 @@ import org.schabi.newpipe.MainActivity.DEBUG
 import org.schabi.newpipe.NewPipeDatabase
 import org.schabi.newpipe.database.feed.model.FeedEntity
 import org.schabi.newpipe.database.feed.model.FeedGroupEntity
-import org.schabi.newpipe.database.feed.model.FeedLastUpdatedEntity
+import org.schabi.newpipe.database.feed.model.SubscriptionUpdateInfoEntity
 import org.schabi.newpipe.database.stream.StreamWithState
 import org.schabi.newpipe.database.stream.model.StreamEntity
 import org.schabi.newpipe.database.subscription.NotificationMode
@@ -74,7 +74,7 @@ class FeedDatabaseManager(context: Context) {
     ) = feedTable.getAllOutdatedForGroup(groupId, outdatedThreshold)
 
     fun markAsOutdated(subscriptionId: Long) = feedTable
-        .setLastUpdatedForSubscription(FeedLastUpdatedEntity(subscriptionId, null))
+        .upsertUpdateInfo(SubscriptionUpdateInfoEntity(subscriptionId, null, null, 7, 0))
 
     fun doesStreamExist(stream: StreamInfoItem): Boolean {
         return streamTable.exists(stream.serviceId, stream.url)
@@ -106,8 +106,14 @@ class FeedDatabaseManager(context: Context) {
             feedTable.insertAll(feedEntities)
         }
 
-        feedTable.setLastUpdatedForSubscription(
-            FeedLastUpdatedEntity(subscriptionId, OffsetDateTime.now(ZoneOffset.UTC))
+        feedTable.upsertUpdateInfo(
+            SubscriptionUpdateInfoEntity(
+                subscriptionId,
+                OffsetDateTime.now(ZoneOffset.UTC),
+                null, // next_update will be calculated on next smart scheduling check
+                7, // default fetch interval
+                0 // default update strategy
+            )
         )
     }
 
