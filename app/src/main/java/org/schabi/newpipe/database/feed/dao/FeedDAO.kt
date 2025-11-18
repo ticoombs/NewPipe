@@ -155,7 +155,7 @@ abstract class FeedDAO {
     abstract fun oldestSubscriptionUpdate(groupId: Long): Flowable<List<OffsetDateTime?>>
 
     @Query("SELECT MIN(last_updated) FROM subscription_update_info")
-    abstract fun oldestSubscriptionUpdateFromAll(): Flowable<List<OffsetDateTime>>
+    abstract fun oldestSubscriptionUpdateFromAll(): Flowable<List<OffsetDateTime?>>
 
     @Query("SELECT COUNT(*) FROM subscription_update_info WHERE last_updated IS NULL")
     abstract fun notLoadedCount(): Flowable<Long>
