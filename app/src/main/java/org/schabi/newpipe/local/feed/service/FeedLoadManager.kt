@@ -107,7 +107,6 @@ class FeedLoadManager(private val context: Context) {
          */
         val outdatedSubscriptions = if (useSmartScheduling) {
             val (windowLower, windowUpper) = FetchInterval.getWindow()
-            android.util.Log.d(TAG, "Smart scheduling window: lower=$windowLower, upper=$windowUpper, outdatedThreshold=$outdatedThreshold")
             when (groupId) {
                 FeedGroupEntity.GROUP_ALL_ID -> feedDatabaseManager.database().feedDAO().getAllDueForUpdate(windowUpper, outdatedThreshold)
                 GROUP_NOTIFICATION_ENABLED -> feedDatabaseManager.database().feedDAO().getAllDueForUpdate(windowUpper, outdatedThreshold)
@@ -134,14 +133,12 @@ class FeedLoadManager(private val context: Context) {
             .take(1)
             .flatMap { allSubs ->
                 totalSubscriptionsCount.set(allSubs.size)
-                android.util.Log.d(TAG, "Smart scheduling: total subscriptions = ${allSubs.size}, useSmartScheduling = $useSmartScheduling")
                 outdatedSubscriptions
                     .take(1)
                     .doOnNext { outdatedSubs ->
                         currentProgress.set(0)
                         maxProgress.set(outdatedSubs.size)
                         skippedSubscriptionsCount.set(allSubs.size - outdatedSubs.size)
-                        android.util.Log.d(TAG, "Smart scheduling: outdated = ${outdatedSubs.size}, skipped = ${allSubs.size - outdatedSubs.size}")
                     }
             }
             .filter { it.isNotEmpty() }
