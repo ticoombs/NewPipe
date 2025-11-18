@@ -14,7 +14,6 @@ import org.schabi.newpipe.database.feed.dao.FeedGroupDAO
 import org.schabi.newpipe.database.feed.model.FeedEntity
 import org.schabi.newpipe.database.feed.model.FeedGroupEntity
 import org.schabi.newpipe.database.feed.model.FeedGroupSubscriptionEntity
-import org.schabi.newpipe.database.feed.model.FeedLastUpdatedEntity
 import org.schabi.newpipe.database.feed.model.SubscriptionUpdateInfoEntity
 import org.schabi.newpipe.database.history.dao.SearchHistoryDAO
 import org.schabi.newpipe.database.history.dao.StreamHistoryDAO
@@ -48,7 +47,6 @@ import org.schabi.newpipe.database.subscription.SubscriptionEntity
         FeedEntity::class,
         FeedGroupEntity::class,
         FeedGroupSubscriptionEntity::class,
-        FeedLastUpdatedEntity::class,
         SubscriptionUpdateInfoEntity::class
     ]
 )
