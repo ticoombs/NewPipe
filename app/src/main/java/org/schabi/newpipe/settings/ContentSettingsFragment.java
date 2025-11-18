@@ -36,6 +36,72 @@ public class ContentSettingsFragment extends BasePreferenceFragment {
 
         setupAppLanguagePreferences();
         setupImageQualityPref();
+        setupFeedAutoUpdatePreferences();
+    }
+
+    private void setupFeedAutoUpdatePreferences() {
+        // Listen for changes to smart scheduling toggle
+        requirePreference(R.string.feed_smart_update_scheduling_key)
+            .setOnPreferenceChangeListener((preference, newValue) -> {
+                final boolean smartSchedulingEnabled = (Boolean) newValue;
+
+                if (!smartSchedulingEnabled) {
+                    // If smart scheduling is disabled, cancel the auto-update worker
+                    org.schabi.newpipe.local.feed.notifications.FeedAutoUpdateWorker
+                        .cancel(requireContext());
+                } else {
+                    // If smart scheduling is enabled and auto-update is enabled,
+                    // schedule the worker
+                    final boolean autoUpdateEnabled = defaultPreferences.getBoolean(
+                        getString(R.string.feed_auto_update_enabled_key), false);
+                    if (autoUpdateEnabled) {
+                        org.schabi.newpipe.local.feed.notifications.FeedAutoUpdateWorker
+                            .initialize(requireContext());
+                    }
+                }
+                return true;
+            });
+
+        // Listen for changes to auto-update enabled toggle
+        requirePreference(R.string.feed_auto_update_enabled_key)
+            .setOnPreferenceChangeListener((preference, newValue) -> {
+                final boolean autoUpdateEnabled = (Boolean) newValue;
+
+                if (autoUpdateEnabled) {
+                    // Schedule the worker
+                    org.schabi.newpipe.local.feed.notifications.FeedAutoUpdateWorker
+                        .schedule(requireContext());
+                } else {
+                    // Cancel the worker
+                    org.schabi.newpipe.local.feed.notifications.FeedAutoUpdateWorker
+                        .cancel(requireContext());
+                }
+                return true;
+            });
+
+        // Listen for changes to auto-update interval
+        requirePreference(R.string.feed_auto_update_interval_key)
+            .setOnPreferenceChangeListener((preference, newValue) -> {
+                // Reschedule with the new interval (force=true)
+                org.schabi.newpipe.local.feed.notifications.FeedAutoUpdateWorker
+                    .schedule(requireContext(),
+                        org.schabi.newpipe.local.feed.notifications.FeedAutoUpdateScheduleOptions
+                            .from(requireContext()),
+                        true);
+                return true;
+            });
+
+        // Listen for changes to auto-update network preference
+        requirePreference(R.string.feed_auto_update_network_key)
+            .setOnPreferenceChangeListener((preference, newValue) -> {
+                // Reschedule with the new network constraint (force=true)
+                org.schabi.newpipe.local.feed.notifications.FeedAutoUpdateWorker
+                    .schedule(requireContext(),
+                        org.schabi.newpipe.local.feed.notifications.FeedAutoUpdateScheduleOptions
+                            .from(requireContext()),
+                        true);
+                return true;
+            });
     }
 
     private void setupAppLanguagePreferences() {

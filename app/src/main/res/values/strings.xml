@@ -499,6 +499,8 @@
     <string name="show_crash_the_player_title">Show \"Crash the player\"</string>
     <string name="show_crash_the_player_summary">Shows a crash option when using the player</string>
     <string name="check_new_streams">Run check for new streams</string>
+    <string name="run_feed_auto_update_now">Run feed auto-update now</string>
+    <string name="run_feed_auto_update_now_summary">Manually trigger background feed update for all subscriptions</string>
     <string name="crash_the_app">Crash the app</string>
     <string name="show_error_snackbar">Show an error snackbar</string>
     <string name="create_error_notification">Create an error notification</string>
@@ -737,6 +739,14 @@
     <!-- Smart feed scheduling -->
     <string name="feed_smart_update_scheduling_title">Smart update scheduling</string>
     <string name="feed_smart_update_scheduling_summary">Only check subscriptions when new videos are predicted to be available. Reduces API calls and improves performance.</string>
+    
+    <!-- Feed auto-update -->
+    <string name="feed_auto_update_enabled_title">Auto-update feeds in background</string>
+    <string name="feed_auto_update_enabled_summary">Automatically refresh all subscriptions in the background (requires smart scheduling)</string>
+    <string name="feed_auto_update_interval_title">Auto-update interval</string>
+    <string name="feed_auto_update_network_title">Network for auto-update</string>
+    <string name="feed_auto_update_network_any_label">Any network</string>
+    <string name="feed_auto_update_network_wifi_label">WiFi only</string>
     
     <!-- Feed refresh options -->
     <string name="feed_refresh_options">Refresh options</string>

@@ -244,6 +244,7 @@
     <string name="show_image_indicators_key">show_image_indicators_key</string>
     <string name="show_crash_the_player_key">show_crash_the_player_key</string>
     <string name="check_new_streams_key">check_new_streams</string>
+    <string name="run_feed_auto_update_now_key">run_feed_auto_update_now</string>
     <string name="crash_the_app_key">crash_the_app_key</string>
     <string name="show_error_snackbar_key">show_error_snackbar_key</string>
     <string name="create_error_notification_key">create_error_notification_key</string>
@@ -390,6 +391,41 @@
 
     <!-- Smart Feed Scheduling -->
     <string name="feed_smart_update_scheduling_key">feed_smart_update_scheduling</string>
+
+    <!-- Feed Auto Update -->
+    <string name="feed_auto_update_enabled_key">feed_auto_update_enabled</string>
+    <string name="feed_auto_update_interval_key">feed_auto_update_interval</string>
+    <string name="feed_auto_update_interval_default">14400</string>
+    <!-- Values will be localized in runtime -->
+    <string-array name="feed_auto_update_interval_description">
+        <item>1 hour</item>
+        <item>2 hours</item>
+        <item>4 hours</item>
+        <item>8 hours</item>
+        <item>12 hours</item>
+        <item>24 hours</item>
+    </string-array>
+    <!-- Auto-update check frequency in seconds -->
+    <string-array name="feed_auto_update_interval_values">
+        <item>3600</item>
+        <item>7200</item>
+        <item>14400</item>
+        <item>28800</item>
+        <item>43200</item>
+        <item>86400</item>
+    </string-array>
+    <string name="feed_auto_update_network_key">feed_auto_update_network</string>
+    <string name="feed_auto_update_network_default">wifi</string>
+    <string name="feed_auto_update_network_any">any</string>
+    <string name="feed_auto_update_network_wifi">wifi</string>
+    <string-array name="feed_auto_update_network_values">
+        <item>any</item>
+        <item>wifi</item>
+    </string-array>
+    <string-array name="feed_auto_update_network_description">
+        <item>@string/feed_auto_update_network_any_label</item>
+        <item>@string/feed_auto_update_network_wifi_label</item>
+    </string-array>
 
     <string name="feed_fetch_channel_tabs_key">feed_fetch_channel_tabs</string>
     <string name="fetch_channel_tabs_videos">fetch_channel_tabs_videos</string>

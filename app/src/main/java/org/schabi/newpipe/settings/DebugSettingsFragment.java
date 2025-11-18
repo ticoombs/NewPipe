@@ -29,6 +29,8 @@ public class DebugSettingsFragment extends BasePreferenceFragment {
                 findPreference(getString(R.string.show_image_indicators_key));
         final Preference checkNewStreamsPreference =
                 findPreference(getString(R.string.check_new_streams_key));
+        final Preference runFeedAutoUpdatePreference =
+                findPreference(getString(R.string.run_feed_auto_update_now_key));
         final Preference crashTheAppPreference =
                 findPreference(getString(R.string.crash_the_app_key));
         final Preference showErrorSnackbarPreference =
@@ -40,6 +42,7 @@ public class DebugSettingsFragment extends BasePreferenceFragment {
         assert showMemoryLeaksPreference != null;
         assert showImageIndicatorsPreference != null;
         assert checkNewStreamsPreference != null;
+        assert runFeedAutoUpdatePreference != null;
         assert crashTheAppPreference != null;
         assert showErrorSnackbarPreference != null;
         assert createErrorNotificationPreference != null;
@@ -71,8 +74,19 @@ public class DebugSettingsFragment extends BasePreferenceFragment {
             return true;
         });
 
+        runFeedAutoUpdatePreference.setOnPreferenceClickListener(preference -> {
+            org.schabi.newpipe.local.feed.notifications.FeedAutoUpdateWorker
+                    .runNow(preference.getContext());
+            return true;
+        });
+
         crashTheAppPreference.setOnPreferenceClickListener(preference -> {
-            throw new RuntimeException(DUMMY);
+            // Intentional crash for testing error reporting
+            // Post to handler to allow the click to complete first
+            preference.getContext().getMainLooper().getQueue().addIdleHandler(() -> {
+                throw new RuntimeException(DUMMY);
+            });
+            return true;
         });
 
         showErrorSnackbarPreference.setOnPreferenceClickListener(preference -> {

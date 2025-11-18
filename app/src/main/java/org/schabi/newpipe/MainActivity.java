@@ -74,6 +74,7 @@ import org.schabi.newpipe.fragments.MainFragment;
 import org.schabi.newpipe.fragments.detail.VideoDetailFragment;
 import org.schabi.newpipe.fragments.list.comments.CommentRepliesFragment;
 import org.schabi.newpipe.fragments.list.search.SearchFragment;
+import org.schabi.newpipe.local.feed.notifications.FeedAutoUpdateWorker;
 import org.schabi.newpipe.local.feed.notifications.NotificationWorker;
 import org.schabi.newpipe.player.Player;
 import org.schabi.newpipe.player.event.OnKeyDownListener;
@@ -190,6 +191,9 @@ public class MainActivity extends AppCompatActivity {
             // if this is enabled by the user.
             NotificationWorker.initialize(this);
         }
+        // Schedule worker for auto-updating all feeds in the background
+        // if this is enabled by the user and smart scheduling is enabled.
+        FeedAutoUpdateWorker.initialize(this);
         if (!UpdateSettingsFragment.wasUserAskedForConsent(this)
                 && !App.getApp().isFirstRun()
                 && ReleaseVersionUtil.INSTANCE.isReleaseApk()) {
@@ -665,6 +669,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case PermissionHelper.POST_NOTIFICATIONS_REQUEST_CODE:
                 NotificationWorker.initialize(this);
+                FeedAutoUpdateWorker.initialize(this);
                 break;
         }
     }

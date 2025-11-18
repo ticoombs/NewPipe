@@ -199,9 +199,9 @@ class FeedFragment : BaseStateFragment<FeedState>() {
             false
         )
 
-        // Disable swipe-to-refresh when smart scheduling is enabled
-        // Users should use the menu options instead
-        _feedBinding?.swipeRefreshLayout?.isEnabled = !smartSchedulingEnabled
+        // Always enable swipe-to-refresh
+        // It will use smart refresh when enabled, or full refresh otherwise
+        _feedBinding?.swipeRefreshLayout?.isEnabled = true
         _feedBinding?.refreshRootView?.isVisible = !smartSchedulingEnabled
     }
 
@@ -339,9 +339,11 @@ class FeedFragment : BaseStateFragment<FeedState>() {
 
     override fun showLoading() {
         super.showLoading()
-        feedBinding.itemsList.animateHideRecyclerViewAllowingScrolling()
-        feedBinding.refreshRootView.animate(false, 0)
-        feedBinding.loadingProgressText.animate(true, 200)
+        // Keep the items list visible - progress is shown in notification instead
+        // feedBinding.itemsList.animateHideRecyclerViewAllowingScrolling()
+        // feedBinding.refreshRootView.animate(false, 0)
+        // feedBinding.loadingProgressText.animate(true, 200)
+        // Re-enable swipe refresh indicator
         feedBinding.swipeRefreshLayout.isRefreshing = true
         isRefreshing = true
     }
@@ -385,26 +387,10 @@ class FeedFragment : BaseStateFragment<FeedState>() {
     private fun handleProgressState(progressState: FeedState.ProgressState) {
         showLoading()
 
-        val isIndeterminate = progressState.currentProgress == -1 &&
-            progressState.maxProgress == -1
-
-        feedBinding.loadingProgressText.text = if (!isIndeterminate) {
-            if (progressState.skippedCount > 0) {
-                "${progressState.currentProgress}/${progressState.maxProgress} (${progressState.skippedCount} skipped)"
-            } else {
-                "${progressState.currentProgress}/${progressState.maxProgress}"
-            }
-        } else if (progressState.progressMessage > 0) {
-            getString(progressState.progressMessage)
-        } else {
-            "∞/∞"
-        }
-
-        feedBinding.loadingProgressBar.isIndeterminate = isIndeterminate ||
-            (progressState.maxProgress > 0 && progressState.currentProgress == 0)
-        feedBinding.loadingProgressBar.progress = progressState.currentProgress
-
-        feedBinding.loadingProgressBar.max = progressState.maxProgress
+        // Progress UI updates removed - notification system handles all progress display
+        // Hide the progress bar and text completely
+        feedBinding.loadingProgressBar.animate(false, 0)
+        feedBinding.loadingProgressText.animate(false, 0)
     }
 
     private fun showInfoItemDialog(item: StreamInfoItem) {
@@ -709,8 +695,18 @@ class FeedFragment : BaseStateFragment<FeedState>() {
     override fun doInitialLoadLogic() {}
 
     override fun reloadContent() {
-        // Default behavior: full refresh (for backward compatibility with swipe refresh)
-        performFullRefresh()
+        // Use smart refresh if enabled, otherwise use full refresh
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val smartSchedulingEnabled = sharedPreferences.getBoolean(
+            getString(R.string.feed_smart_update_scheduling_key),
+            false
+        )
+
+        if (smartSchedulingEnabled) {
+            performSmartRefresh()
+        } else {
+            performFullRefresh()
+        }
     }
 
     private fun performSmartRefresh() {
