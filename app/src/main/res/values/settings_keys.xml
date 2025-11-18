@@ -394,25 +394,61 @@
 
     <!-- Feed Auto Update -->
     <string name="feed_auto_update_enabled_key">feed_auto_update_enabled</string>
-    <string name="feed_auto_update_interval_key">feed_auto_update_interval</string>
-    <string name="feed_auto_update_interval_default">14400</string>
+    <string name="feed_auto_update_time_key">feed_auto_update_time</string>
+    <string name="feed_auto_update_time_default">8</string>
     <!-- Values will be localized in runtime -->
-    <string-array name="feed_auto_update_interval_description">
-        <item>1 hour</item>
-        <item>2 hours</item>
-        <item>4 hours</item>
-        <item>8 hours</item>
-        <item>12 hours</item>
-        <item>24 hours</item>
+    <string-array name="feed_auto_update_time_description">
+        <item>12:00 AM</item>
+        <item>1:00 AM</item>
+        <item>2:00 AM</item>
+        <item>3:00 AM</item>
+        <item>4:00 AM</item>
+        <item>5:00 AM</item>
+        <item>6:00 AM</item>
+        <item>7:00 AM</item>
+        <item>8:00 AM</item>
+        <item>9:00 AM</item>
+        <item>10:00 AM</item>
+        <item>11:00 AM</item>
+        <item>12:00 PM</item>
+        <item>1:00 PM</item>
+        <item>2:00 PM</item>
+        <item>3:00 PM</item>
+        <item>4:00 PM</item>
+        <item>5:00 PM</item>
+        <item>6:00 PM</item>
+        <item>7:00 PM</item>
+        <item>8:00 PM</item>
+        <item>9:00 PM</item>
+        <item>10:00 PM</item>
+        <item>11:00 PM</item>
     </string-array>
-    <!-- Auto-update check frequency in seconds -->
-    <string-array name="feed_auto_update_interval_values">
-        <item>3600</item>
-        <item>7200</item>
-        <item>14400</item>
-        <item>28800</item>
-        <item>43200</item>
-        <item>86400</item>
+    <!-- Auto-update time in 24-hour format (hour of day) -->
+    <string-array name="feed_auto_update_time_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+        <item>21</item>
+        <item>22</item>
+        <item>23</item>
     </string-array>
     <string name="feed_auto_update_network_key">feed_auto_update_network</string>
     <string name="feed_auto_update_network_default">wifi</string>

@@ -125,12 +125,27 @@ class FeedAutoUpdateWorker(
                     }
                 ).build()
 
+            // Calculate initial delay to the next scheduled time
+            val currentTime = java.util.Calendar.getInstance()
+            val targetTime = java.util.Calendar.getInstance().apply {
+                set(java.util.Calendar.HOUR_OF_DAY, options.hourOfDay)
+                set(java.util.Calendar.MINUTE, 0)
+                set(java.util.Calendar.SECOND, 0)
+                set(java.util.Calendar.MILLISECOND, 0)
+                // If the target time has already passed today, schedule for tomorrow
+                if (before(currentTime)) {
+                    add(java.util.Calendar.DAY_OF_MONTH, 1)
+                }
+            }
+            val initialDelay = targetTime.timeInMillis - currentTime.timeInMillis
+
             val request = PeriodicWorkRequest.Builder(
                 FeedAutoUpdateWorker::class.java,
-                options.interval,
-                TimeUnit.MILLISECONDS
+                1,
+                TimeUnit.DAYS
             ).setConstraints(constraints)
                 .addTag(WORK_TAG)
+                .setInitialDelay(initialDelay, TimeUnit.MILLISECONDS)
                 .build()
 
             WorkManager.getInstance(context)

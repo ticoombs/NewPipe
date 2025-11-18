@@ -742,8 +742,8 @@
     
     <!-- Feed auto-update -->
     <string name="feed_auto_update_enabled_title">Auto-update feeds in background</string>
-    <string name="feed_auto_update_enabled_summary">Automatically refresh all subscriptions in the background (requires smart scheduling)</string>
-    <string name="feed_auto_update_interval_title">Auto-update interval</string>
+    <string name="feed_auto_update_enabled_summary">Automatically refresh all subscriptions once per day in the background (requires smart scheduling)</string>
+    <string name="feed_auto_update_time_title">Auto-update time</string>
     <string name="feed_auto_update_network_title">Network for auto-update</string>
     <string name="feed_auto_update_network_any_label">Any network</string>
     <string name="feed_auto_update_network_wifi_label">WiFi only</string>

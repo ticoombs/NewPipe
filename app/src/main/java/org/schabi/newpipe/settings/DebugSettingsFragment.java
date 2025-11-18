@@ -81,12 +81,7 @@ public class DebugSettingsFragment extends BasePreferenceFragment {
         });
 
         crashTheAppPreference.setOnPreferenceClickListener(preference -> {
-            // Intentional crash for testing error reporting
-            // Post to handler to allow the click to complete first
-            preference.getContext().getMainLooper().getQueue().addIdleHandler(() -> {
-                throw new RuntimeException(DUMMY);
-            });
-            return true;
+            throw new RuntimeException(DUMMY);
         });
 
         showErrorSnackbarPreference.setOnPreferenceClickListener(preference -> {

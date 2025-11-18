@@ -79,10 +79,10 @@ public class ContentSettingsFragment extends BasePreferenceFragment {
                 return true;
             });
 
-        // Listen for changes to auto-update interval
-        requirePreference(R.string.feed_auto_update_interval_key)
+        // Listen for changes to auto-update time
+        requirePreference(R.string.feed_auto_update_time_key)
             .setOnPreferenceChangeListener((preference, newValue) -> {
-                // Reschedule with the new interval (force=true)
+                // Reschedule with the new time (force=true)
                 org.schabi.newpipe.local.feed.notifications.FeedAutoUpdateWorker
                     .schedule(requireContext(),
                         org.schabi.newpipe.local.feed.notifications.FeedAutoUpdateScheduleOptions
