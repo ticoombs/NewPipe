@@ -48,6 +48,13 @@
         app:iconSpaceReserved="false" />
 
     <Preference
+        android:key="@string/run_feed_auto_update_now_key"
+        android:title="@string/run_feed_auto_update_now"
+        android:summary="@string/run_feed_auto_update_now_summary"
+        app:singleLineTitle="false"
+        app:iconSpaceReserved="false" />
+
+    <Preference
         android:key="@string/crash_the_app_key"
         android:title="@string/crash_the_app"
         app:singleLineTitle="false"

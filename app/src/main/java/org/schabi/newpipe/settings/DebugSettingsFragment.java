@@ -25,13 +25,23 @@ public class DebugSettingsFragment extends BasePreferenceFragment {
         final Preference showMemoryLeaksPreference =
                 requirePreference(R.string.show_memory_leaks_key);
         final Preference checkNewStreamsPreference =
-                requirePreference(R.string.check_new_streams_key);
+                findPreference(getString(R.string.check_new_streams_key));
+        final Preference runFeedAutoUpdatePreference =
+                findPreference(getString(R.string.run_feed_auto_update_now_key));
         final Preference crashTheAppPreference =
                 requirePreference(R.string.crash_the_app_key);
         final Preference showErrorSnackbarPreference =
                 requirePreference(R.string.show_error_snackbar_key);
         final Preference createErrorNotificationPreference =
                 requirePreference(R.string.create_error_notification_key);
+
+        assert allowHeapDumpingPreference != null;
+        assert showMemoryLeaksPreference != null;
+        assert checkNewStreamsPreference != null;
+        assert runFeedAutoUpdatePreference != null;
+        assert crashTheAppPreference != null;
+        assert showErrorSnackbarPreference != null;
+        assert createErrorNotificationPreference != null;
 
 
         final Optional<DebugSettingsBVDLeakCanaryAPI> optBVLeakCanary = getBVDLeakCanary();
@@ -53,6 +63,12 @@ public class DebugSettingsFragment extends BasePreferenceFragment {
 
         checkNewStreamsPreference.setOnPreferenceClickListener(preference -> {
             NotificationWorker.runNow(preference.getContext());
+            return true;
+        });
+
+        runFeedAutoUpdatePreference.setOnPreferenceClickListener(preference -> {
+            org.schabi.newpipe.local.feed.notifications.FeedAutoUpdateWorker
+                    .runNow(preference.getContext());
             return true;
         });
 

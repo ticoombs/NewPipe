@@ -45,6 +45,7 @@ import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.evernote.android.state.State
+import com.google.android.material.snackbar.Snackbar
 import com.xwray.groupie.GroupieAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.OnItemClickListener
@@ -123,6 +124,8 @@ class FeedFragment : BaseStateFragment<FeedState>() {
         onSettingsChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
             if (getString(R.string.list_view_mode_key).equals(key)) {
                 updateListViewModeOnResume = true
+            } else if (getString(R.string.feed_smart_update_scheduling_key).equals(key)) {
+                updateSwipeRefreshState()
             }
         }
         PreferenceManager.getDefaultSharedPreferences(activity)
@@ -163,6 +166,7 @@ class FeedFragment : BaseStateFragment<FeedState>() {
 
         feedBinding.itemsList.adapter = groupAdapter
         setupListViewMode()
+        updateSwipeRefreshState()
     }
 
     override fun onPause() {
@@ -192,6 +196,17 @@ class FeedFragment : BaseStateFragment<FeedState>() {
         }
     }
 
+    private fun updateSwipeRefreshState() {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val smartSchedulingEnabled = sharedPreferences.getBoolean(
+            getString(R.string.feed_smart_update_scheduling_key),
+            false
+        )
+
+        _feedBinding?.swipeRefreshLayout?.isEnabled = true
+        _feedBinding?.refreshRootView?.isVisible = !smartSchedulingEnabled
+    }
+
     override fun initListeners() {
         super.initListeners()
         feedBinding.refreshRootView.setOnClickListener { reloadContent() }
@@ -219,28 +234,43 @@ class FeedFragment : BaseStateFragment<FeedState>() {
 
     @Deprecated("Deprecated in Java")
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.menu_item_feed_help) {
-            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        when (item.itemId) {
+            R.id.menu_item_feed_help -> {
+                val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
 
-            val usingDedicatedMethod = sharedPreferences
-                .getBoolean(getString(R.string.feed_use_dedicated_fetch_method_key), false)
-            val enableDisableButtonText = when {
-                usingDedicatedMethod -> R.string.feed_use_dedicated_fetch_method_disable_button
-                else -> R.string.feed_use_dedicated_fetch_method_enable_button
+                val usingDedicatedMethod = sharedPreferences
+                    .getBoolean(getString(R.string.feed_use_dedicated_fetch_method_key), false)
+                val enableDisableButtonText = when {
+                    usingDedicatedMethod -> R.string.feed_use_dedicated_fetch_method_disable_button
+                    else -> R.string.feed_use_dedicated_fetch_method_enable_button
+                }
+
+                AlertDialog.Builder(requireContext())
+                    .setMessage(R.string.feed_use_dedicated_fetch_method_help_text)
+                    .setNeutralButton(enableDisableButtonText) { _, _ ->
+                        sharedPreferences.edit {
+                            putBoolean(getString(R.string.feed_use_dedicated_fetch_method_key), !usingDedicatedMethod)
+                        }
+                    }
+                    .setPositiveButton(resources.getString(R.string.ok), null)
+                    .show()
+                return true
             }
 
-            AlertDialog.Builder(requireContext())
-                .setMessage(R.string.feed_use_dedicated_fetch_method_help_text)
-                .setNeutralButton(enableDisableButtonText) { _, _ ->
-                    sharedPreferences.edit {
-                        putBoolean(getString(R.string.feed_use_dedicated_fetch_method_key), !usingDedicatedMethod)
-                    }
-                }
-                .setPositiveButton(resources.getString(R.string.ok), null)
-                .show()
-            return true
-        } else if (item.itemId == R.id.menu_item_feed_toggle_played_items) {
-            showStreamVisibilityDialog()
+            R.id.menu_item_feed_toggle_played_items -> {
+                showStreamVisibilityDialog()
+                return true
+            }
+
+            R.id.menu_item_feed_smart_refresh -> {
+                performSmartRefresh()
+                return true
+            }
+
+            R.id.menu_item_feed_full_refresh -> {
+                performFullRefresh()
+                return true
+            }
         }
 
         return super.onOptionsItemSelected(item)
@@ -317,9 +347,9 @@ class FeedFragment : BaseStateFragment<FeedState>() {
 
     override fun showLoading() {
         super.showLoading()
-        feedBinding.itemsList.animateHideRecyclerViewAllowingScrolling()
-        feedBinding.refreshRootView.animate(false, 0)
-        feedBinding.loadingProgressText.animate(true, 200)
+        // feedBinding.itemsList.animateHideRecyclerViewAllowingScrolling()
+        // feedBinding.refreshRootView.animate(false, 0)
+        // feedBinding.loadingProgressText.animate(true, 200)
         feedBinding.swipeRefreshLayout.isRefreshing = true
         isRefreshing = true
     }
@@ -363,22 +393,8 @@ class FeedFragment : BaseStateFragment<FeedState>() {
     private fun handleProgressState(progressState: FeedState.ProgressState) {
         showLoading()
 
-        val isIndeterminate = progressState.currentProgress == -1 &&
-            progressState.maxProgress == -1
-
-        feedBinding.loadingProgressText.text = if (!isIndeterminate) {
-            "${progressState.currentProgress}/${progressState.maxProgress}"
-        } else if (progressState.progressMessage > 0) {
-            getString(progressState.progressMessage)
-        } else {
-            "∞/∞"
-        }
-
-        feedBinding.loadingProgressBar.isIndeterminate = isIndeterminate ||
-            (progressState.maxProgress > 0 && progressState.currentProgress == 0)
-        feedBinding.loadingProgressBar.progress = progressState.currentProgress
-
-        feedBinding.loadingProgressBar.max = progressState.maxProgress
+        feedBinding.loadingProgressBar.animate(false, 0)
+        feedBinding.loadingProgressText.animate(false, 0)
     }
 
     private fun showInfoItemDialog(item: StreamInfoItem) {
@@ -453,6 +469,17 @@ class FeedFragment : BaseStateFragment<FeedState>() {
             handleItemsErrors(loadedState.itemsErrors)
         }
         oldestSubscriptionUpdate = loadedState.oldestUpdate
+
+        if (loadedState.smartSchedulingStats != null) {
+            val stats = loadedState.smartSchedulingStats
+            val summaryText = getString(
+                R.string.feed_smart_scheduling_summary,
+                stats.checked,
+                stats.total,
+                stats.skipped
+            )
+            Snackbar.make(feedBinding.root, summaryText, Snackbar.LENGTH_LONG).show()
+        }
 
         if (loadedState.items.isEmpty()) {
             showEmptyState()
@@ -678,11 +705,38 @@ class FeedFragment : BaseStateFragment<FeedState>() {
     override fun doInitialLoadLogic() {}
 
     override fun reloadContent() {
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val smartSchedulingEnabled = sharedPreferences.getBoolean(
+            getString(R.string.feed_smart_update_scheduling_key),
+            false
+        )
+
+        if (smartSchedulingEnabled) {
+            performSmartRefresh()
+        } else {
+            performFullRefresh()
+        }
+    }
+
+    private fun performSmartRefresh() {
         hideNewItemsLoaded(false)
 
         getActivity()?.startService(
             Intent(requireContext(), FeedLoadService::class.java).apply {
                 putExtra(FeedLoadService.EXTRA_GROUP_ID, groupId)
+                putExtra(FeedLoadService.EXTRA_USE_SMART_SCHEDULING, true)
+            }
+        )
+        listState = null
+    }
+
+    private fun performFullRefresh() {
+        hideNewItemsLoaded(false)
+
+        getActivity()?.startService(
+            Intent(requireContext(), FeedLoadService::class.java).apply {
+                putExtra(FeedLoadService.EXTRA_GROUP_ID, groupId)
+                putExtra(FeedLoadService.EXTRA_USE_SMART_SCHEDULING, false)
             }
         )
         listState = null

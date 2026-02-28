@@ -29,6 +29,7 @@ object Migrations {
     const val DB_VER_7 = 7
     const val DB_VER_8 = 8
     const val DB_VER_9 = 9
+    const val DB_VER_10 = 10
 
     private val TAG = Migrations::class.java.getName()
     private val isDebug = MainActivity.DEBUG
@@ -347,5 +348,26 @@ object Migrations {
         } finally {
             db.endTransaction()
         }
+    }
+
+    val MIGRATION_9_10 = Migration(DB_VER_9, DB_VER_10) { db ->
+        db.execSQL(
+            "CREATE TABLE subscription_update_info (" +
+                "subscription_id INTEGER PRIMARY KEY NOT NULL, " +
+                "last_updated INTEGER, " +
+                "next_update INTEGER, " +
+                "fetch_interval INTEGER NOT NULL DEFAULT 7, " +
+                "update_strategy INTEGER NOT NULL DEFAULT 0, " +
+                "FOREIGN KEY(subscription_id) REFERENCES subscriptions(uid) " +
+                "ON UPDATE CASCADE ON DELETE CASCADE DEFERRABLE INITIALLY DEFERRED)"
+        )
+
+        db.execSQL(
+            "INSERT INTO subscription_update_info " +
+                "(subscription_id, last_updated, fetch_interval, update_strategy) " +
+                "SELECT subscription_id, last_updated, 7, 0 FROM feed_last_updated"
+        )
+
+        db.execSQL("DROP TABLE IF EXISTS feed_last_updated")
     }
 }

@@ -15,11 +15,11 @@ import androidx.work.PeriodicWorkRequest
 import androidx.work.WorkManager
 import androidx.work.WorkerParameters
 import androidx.work.rxjava3.RxWorker
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Single
 import java.util.concurrent.TimeUnit
 import org.schabi.newpipe.App
 import org.schabi.newpipe.R
+import org.schabi.newpipe.database.feed.model.FeedGroupEntity
 import org.schabi.newpipe.error.ErrorInfo
 import org.schabi.newpipe.error.ErrorUtil
 import org.schabi.newpipe.error.UserAction
@@ -27,58 +27,37 @@ import org.schabi.newpipe.local.feed.service.FeedLoadManager
 import org.schabi.newpipe.local.feed.service.FeedLoadService
 
 /*
- * Worker which checks for new streams of subscribed channels
+ * Worker which checks for new streams of all subscribed channels
  * in intervals which can be set by the user in the settings.
+ * This worker updates ALL subscriptions in the background using smart scheduling.
  */
-class NotificationWorker(
+class FeedAutoUpdateWorker(
     appContext: Context,
     workerParams: WorkerParameters
 ) : RxWorker(appContext, workerParams) {
 
-    private val notificationHelper by lazy {
-        NotificationHelper(appContext)
-    }
     private val feedLoadManager = FeedLoadManager(appContext)
 
-    override fun createWork(): Single<Result> = if (areNotificationsEnabled(applicationContext)) {
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(applicationContext)
-        val useSmartScheduling = sharedPreferences.getBoolean(
-            applicationContext.getString(R.string.feed_smart_update_scheduling_key),
-            false
-        )
-        feedLoadManager.startLoading(
-            groupId = FeedLoadManager.GROUP_NOTIFICATION_ENABLED,
+    override fun createWork(): Single<Result> {
+        // Always use smart scheduling for auto-update
+        return feedLoadManager.startLoading(
+            groupId = FeedGroupEntity.GROUP_ALL_ID,
             ignoreOutdatedThreshold = false,
-            useSmartScheduling = useSmartScheduling
+            useSmartScheduling = true
         )
             .doOnSubscribe { showLoadingFeedForegroundNotification() }
-            .map { feed ->
-                // filter out feedUpdateInfo items (i.e. channels) with nothing new
-                feed.mapNotNull {
-                    it.value?.takeIf { feedUpdateInfo ->
-                        feedUpdateInfo.newStreams.isNotEmpty()
-                    }
-                }
-            }
-            .observeOn(AndroidSchedulers.mainThread()) // Picasso requires calls from main thread
-            .map { feedUpdateInfoList ->
-                // display notifications for each feedUpdateInfo (i.e. channel)
-                feedUpdateInfoList.forEach { feedUpdateInfo ->
-                    notificationHelper.displayNewStreamsNotifications(feedUpdateInfo)
-                }
+            .map {
+                // Successfully updated all feeds
                 return@map Result.success()
             }
             .doOnError { throwable ->
-                Log.e(TAG, "Error while displaying streams notifications", throwable)
+                Log.e(TAG, "Error while auto-updating feeds", throwable)
                 ErrorUtil.createNotification(
                     applicationContext,
-                    ErrorInfo(throwable, UserAction.NEW_STREAMS_NOTIFICATIONS, "main worker")
+                    ErrorInfo(throwable, UserAction.NEW_STREAMS_NOTIFICATIONS, "feed auto-update worker")
                 )
             }
             .onErrorReturnItem(Result.failure())
-    } else {
-        // the user can disable streams notifications in the device's app settings
-        Single.just(Result.success())
     }
 
     private fun showLoadingFeedForegroundNotification() {
@@ -99,20 +78,30 @@ class NotificationWorker(
 
     companion object {
 
-        private val TAG = NotificationWorker::class.java.simpleName
-        private const val WORK_TAG = App.PACKAGE_NAME + "_streams_notifications"
+        private val TAG = FeedAutoUpdateWorker::class.java.simpleName
+        private const val WORK_TAG = App.PACKAGE_NAME + "_feed_auto_update"
 
-        private fun areNotificationsEnabled(context: Context) = NotificationHelper.areNewStreamsNotificationsEnabled(context) &&
-            NotificationHelper.areNotificationsEnabledOnDevice(context)
+        private fun isAutoUpdateEnabled(context: Context): Boolean {
+            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+            val autoUpdateEnabled = sharedPreferences.getBoolean(
+                context.getString(R.string.feed_auto_update_enabled_key),
+                false
+            )
+            val smartSchedulingEnabled = sharedPreferences.getBoolean(
+                context.getString(R.string.feed_smart_update_scheduling_key),
+                false
+            )
+            return autoUpdateEnabled && smartSchedulingEnabled
+        }
 
         /**
-         * Schedules a task for the [NotificationWorker]
-         * if the (device and in-app) notifications are enabled,
+         * Schedules a task for the [FeedAutoUpdateWorker]
+         * if the auto-update is enabled AND smart scheduling is enabled,
          * otherwise [cancel]s all scheduled tasks.
          */
         @JvmStatic
         fun initialize(context: Context) {
-            if (areNotificationsEnabled(context)) {
+            if (isAutoUpdateEnabled(context)) {
                 schedule(context)
             } else {
                 cancel(context)
@@ -125,7 +114,8 @@ class NotificationWorker(
          * @param force Force the scheduler to use the new options
          * by replacing the previously used worker.
          */
-        fun schedule(context: Context, options: ScheduleOptions, force: Boolean = false) {
+        @JvmStatic
+        fun schedule(context: Context, options: FeedAutoUpdateScheduleOptions, force: Boolean = false) {
             val constraints = Constraints.Builder()
                 .setRequiredNetworkType(
                     if (options.isRequireNonMeteredNetwork) {
@@ -135,12 +125,27 @@ class NotificationWorker(
                     }
                 ).build()
 
+            // Calculate initial delay to the next scheduled time
+            val currentTime = java.util.Calendar.getInstance()
+            val targetTime = java.util.Calendar.getInstance().apply {
+                set(java.util.Calendar.HOUR_OF_DAY, options.hourOfDay)
+                set(java.util.Calendar.MINUTE, 0)
+                set(java.util.Calendar.SECOND, 0)
+                set(java.util.Calendar.MILLISECOND, 0)
+                // If the target time has already passed today, schedule for tomorrow
+                if (before(currentTime)) {
+                    add(java.util.Calendar.DAY_OF_MONTH, 1)
+                }
+            }
+            val initialDelay = targetTime.timeInMillis - currentTime.timeInMillis
+
             val request = PeriodicWorkRequest.Builder(
-                NotificationWorker::class.java,
-                options.interval,
-                TimeUnit.MILLISECONDS
+                FeedAutoUpdateWorker::class.java,
+                1,
+                TimeUnit.DAYS
             ).setConstraints(constraints)
                 .addTag(WORK_TAG)
+                .setInitialDelay(initialDelay, TimeUnit.MILLISECONDS)
                 .build()
 
             WorkManager.getInstance(context)
@@ -156,21 +161,21 @@ class NotificationWorker(
         }
 
         @JvmStatic
-        fun schedule(context: Context) = schedule(context, ScheduleOptions.from(context))
+        fun schedule(context: Context) = schedule(context, FeedAutoUpdateScheduleOptions.from(context))
 
         /**
          * Check for new streams immediately
          */
         @JvmStatic
         fun runNow(context: Context) {
-            val request = OneTimeWorkRequestBuilder<NotificationWorker>()
+            val request = OneTimeWorkRequestBuilder<FeedAutoUpdateWorker>()
                 .addTag(WORK_TAG)
                 .build()
             WorkManager.getInstance(context).enqueue(request)
         }
 
         /**
-         * Cancels all current work related to the [NotificationWorker].
+         * Cancels all current work related to the [FeedAutoUpdateWorker].
          */
         @JvmStatic
         fun cancel(context: Context) {

@@ -4,12 +4,16 @@ import android.content.ContentValues
 import android.database.sqlite.SQLiteDatabase
 import androidx.room.Room
 import androidx.room.testing.MigrationTestHelper
+import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+import java.io.IOException
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotEquals
 import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -335,6 +339,77 @@ class DatabaseMigrationTest {
         assertEquals(2, remoteListFromDB.size)
         assertEquals(remoteUid3, remoteListFromDB[1].uid)
         assertEquals(-1, remoteListFromDB[1].displayIndex)
+    }
+
+    @Test
+    @Throws(IOException::class)
+    fun migrateDatabaseFrom9to10() {
+        val databaseInV9 = testHelper.createDatabase(AppDatabase.DATABASE_NAME, Migrations.DB_VER_9)
+
+        // Insert test data in version 9
+        databaseInV9.run {
+            // Insert a subscription
+            insert(
+                "subscriptions",
+                SQLiteDatabase.CONFLICT_FAIL,
+                ContentValues().apply {
+                    put("uid", 1)
+                    put("service_id", 0)
+                    put("url", "https://youtube.com/test")
+                    put("name", "Test Channel")
+                    put("avatar_url", "")
+                    put("subscriber_count", 1000)
+                    put("description", "")
+                    put("notification_mode", 0)
+                }
+            )
+
+            // Insert feed_last_updated entry
+            insert(
+                "feed_last_updated",
+                SQLiteDatabase.CONFLICT_FAIL,
+                ContentValues().apply {
+                    put("subscription_id", 1)
+                    put("last_updated", System.currentTimeMillis())
+                }
+            )
+
+            close()
+        }
+
+        // Run migration
+        testHelper.runMigrationsAndValidate(
+            AppDatabase.DATABASE_NAME,
+            Migrations.DB_VER_10,
+            true,
+            Migrations.MIGRATION_9_10
+        )
+
+        // Verify data preserved and structure correct
+        val migratedDb = getMigratedDatabase()
+        val cursor = migratedDb.query(SimpleSQLiteQuery("SELECT * FROM subscription_update_info WHERE subscription_id = 1"))
+
+        cursor.use {
+            assertTrue("Update info should exist", it.moveToFirst())
+
+            val subscriptionIdIndex = it.getColumnIndex("subscription_id")
+            val lastUpdatedIndex = it.getColumnIndex("last_updated")
+            val nextUpdateIndex = it.getColumnIndex("next_update")
+            val fetchIntervalIndex = it.getColumnIndex("fetch_interval")
+            val updateStrategyIndex = it.getColumnIndex("update_strategy")
+
+            assertEquals("subscription_id should be 1", 1, it.getLong(subscriptionIdIndex))
+            assertFalse("last_updated should be preserved", it.isNull(lastUpdatedIndex))
+            assertTrue("next_update should be NULL initially", it.isNull(nextUpdateIndex))
+            assertEquals("Default interval should be 7", 7, it.getInt(fetchIntervalIndex))
+            assertEquals("Default strategy should be 0", 0, it.getInt(updateStrategyIndex))
+        }
+
+        // Verify old table was dropped
+        val tablesCursor = migratedDb.query(SimpleSQLiteQuery("SELECT name FROM sqlite_master WHERE type='table' AND name='feed_last_updated'"))
+        tablesCursor.use {
+            assertFalse("feed_last_updated table should be dropped", it.moveToFirst())
+        }
     }
 
     private fun getMigratedDatabase(): AppDatabase {

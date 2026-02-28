@@ -243,6 +243,7 @@
     <string name="show_original_time_ago_key">show_original_time_ago_key</string>
     <string name="show_crash_the_player_key">show_crash_the_player_key</string>
     <string name="check_new_streams_key">check_new_streams</string>
+    <string name="run_feed_auto_update_now_key">run_feed_auto_update_now</string>
     <string name="crash_the_app_key">crash_the_app_key</string>
     <string name="show_error_snackbar_key">show_error_snackbar_key</string>
     <string name="create_error_notification_key">create_error_notification_key</string>
@@ -387,6 +388,80 @@
         <item>86400</item>
     </string-array>
     <string name="feed_use_dedicated_fetch_method_key">feed_use_dedicated_fetch_method</string>
+
+    <!-- Smart Feed Scheduling -->
+    <string name="feed_smart_update_scheduling_key">feed_smart_update_scheduling</string>
+
+    <!-- Feed Auto Update -->
+    <string name="feed_auto_update_enabled_key">feed_auto_update_enabled</string>
+    <string name="feed_auto_update_time_key">feed_auto_update_time</string>
+    <string name="feed_auto_update_time_default">8</string>
+    <!-- Values will be localized in runtime -->
+    <string-array name="feed_auto_update_time_description">
+        <item>12:00 AM</item>
+        <item>1:00 AM</item>
+        <item>2:00 AM</item>
+        <item>3:00 AM</item>
+        <item>4:00 AM</item>
+        <item>5:00 AM</item>
+        <item>6:00 AM</item>
+        <item>7:00 AM</item>
+        <item>8:00 AM</item>
+        <item>9:00 AM</item>
+        <item>10:00 AM</item>
+        <item>11:00 AM</item>
+        <item>12:00 PM</item>
+        <item>1:00 PM</item>
+        <item>2:00 PM</item>
+        <item>3:00 PM</item>
+        <item>4:00 PM</item>
+        <item>5:00 PM</item>
+        <item>6:00 PM</item>
+        <item>7:00 PM</item>
+        <item>8:00 PM</item>
+        <item>9:00 PM</item>
+        <item>10:00 PM</item>
+        <item>11:00 PM</item>
+    </string-array>
+    <!-- Auto-update time in 24-hour format (hour of day) -->
+    <string-array name="feed_auto_update_time_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>13</item>
+        <item>14</item>
+        <item>15</item>
+        <item>16</item>
+        <item>17</item>
+        <item>18</item>
+        <item>19</item>
+        <item>20</item>
+        <item>21</item>
+        <item>22</item>
+        <item>23</item>
+    </string-array>
+    <string name="feed_auto_update_network_key">feed_auto_update_network</string>
+    <string name="feed_auto_update_network_default">wifi</string>
+    <string name="feed_auto_update_network_any">any</string>
+    <string name="feed_auto_update_network_wifi">wifi</string>
+    <string-array name="feed_auto_update_network_values">
+        <item>any</item>
+        <item>wifi</item>
+    </string-array>
+    <string-array name="feed_auto_update_network_description">
+        <item>@string/feed_auto_update_network_any_label</item>
+        <item>@string/feed_auto_update_network_wifi_label</item>
+    </string-array>
 
     <string name="feed_fetch_channel_tabs_key">feed_fetch_channel_tabs</string>
     <string name="fetch_channel_tabs_videos">fetch_channel_tabs_videos</string>

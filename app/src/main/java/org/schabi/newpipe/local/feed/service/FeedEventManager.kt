@@ -27,8 +27,14 @@ object FeedEventManager {
 
     sealed class Event {
         data object IdleEvent : Event()
-        data class ProgressEvent(val currentProgress: Int = -1, val maxProgress: Int = -1, @StringRes val progressMessage: Int = 0) : Event() {
-            constructor(@StringRes progressMessage: Int) : this(-1, -1, progressMessage)
+        data class ProgressEvent(
+            val currentProgress: Int = -1,
+            val maxProgress: Int = -1,
+            @StringRes val progressMessage: Int = 0,
+            val skippedCount: Int = 0,
+            val totalSubscriptions: Int = 0
+        ) : Event() {
+            constructor(@StringRes progressMessage: Int) : this(-1, -1, progressMessage, 0, 0)
         }
 
         data class SuccessResultEvent(val itemsErrors: List<Throwable> = emptyList()) : Event()
