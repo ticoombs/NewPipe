@@ -744,7 +744,7 @@
 
     <!-- Smart feed scheduling -->
     <string name="feed_smart_update_scheduling_title">Smart update scheduling</string>
-    <string name="feed_smart_update_scheduling_summary">Only check subscriptions when new videos are predicted to be available. Reduces API calls and improves performance.</string>
+    <string name="feed_smart_update_scheduling_summary">Only check subscriptions when new videos are predicted to be available. Changes pull-to-refresh behavior, shows next check times in Subscriptions tab, and reduces API calls.</string>
 
     <!-- Feed auto-update -->
     <string name="feed_auto_update_enabled_title">Auto-update feeds in background</string>
