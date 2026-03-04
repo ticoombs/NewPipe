@@ -357,7 +357,17 @@ class FeedFragment : BaseStateFragment<FeedState>() {
     override fun hideLoading() {
         super.hideLoading()
         feedBinding.itemsList.animate(true, 0)
-        feedBinding.refreshRootView.animate(true, 200)
+
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val smartSchedulingEnabled = sharedPreferences.getBoolean(
+            getString(R.string.feed_smart_update_scheduling_key),
+            false
+        )
+
+        if (!smartSchedulingEnabled) {
+            feedBinding.refreshRootView.animate(true, 200)
+        }
+
         feedBinding.loadingProgressText.animate(false, 0)
         feedBinding.swipeRefreshLayout.isRefreshing = false
         isRefreshing = false
@@ -366,7 +376,17 @@ class FeedFragment : BaseStateFragment<FeedState>() {
     override fun showEmptyState() {
         super.showEmptyState()
         feedBinding.itemsList.animateHideRecyclerViewAllowingScrolling()
-        feedBinding.refreshRootView.animate(true, 200)
+
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val smartSchedulingEnabled = sharedPreferences.getBoolean(
+            getString(R.string.feed_smart_update_scheduling_key),
+            false
+        )
+
+        if (!smartSchedulingEnabled) {
+            feedBinding.refreshRootView.animate(true, 200)
+        }
+
         feedBinding.loadingProgressText.animate(false, 0)
         feedBinding.swipeRefreshLayout.isRefreshing = false
     }
@@ -582,10 +602,20 @@ class FeedFragment : BaseStateFragment<FeedState>() {
     }
 
     private fun updateRefreshViewState() {
-        feedBinding.refreshText.text = getString(
-            R.string.feed_oldest_subscription_update,
-            oldestSubscriptionUpdate?.let { Localization.relativeTime(it) } ?: "—"
+        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(requireContext())
+        val smartSchedulingEnabled = sharedPreferences.getBoolean(
+            getString(R.string.feed_smart_update_scheduling_key),
+            false
         )
+
+        if (smartSchedulingEnabled) {
+            feedBinding.refreshRootView.animate(false, 0)
+        } else {
+            feedBinding.refreshText.text = getString(
+                R.string.feed_oldest_subscription_update,
+                oldestSubscriptionUpdate?.let { Localization.relativeTime(it) } ?: "—"
+            )
+        }
     }
 
     /**
