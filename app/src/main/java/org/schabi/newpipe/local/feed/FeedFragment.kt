@@ -109,6 +109,7 @@ class FeedFragment : BaseStateFragment<FeedState>() {
     private var isRefreshing = false
 
     private var lastNewItemsCount = 0
+    private var refreshStartTime: OffsetDateTime? = null
 
     init {
         setHasOptionsMenu(true)
@@ -459,13 +460,17 @@ class FeedFragment : BaseStateFragment<FeedState>() {
         }
         loadedState.items.forEach { it.itemVersion = itemVersion }
 
-        // This need to be saved in a variable as the update occurs async
         val oldOldestSubscriptionUpdate = oldestSubscriptionUpdate
+        val smartRefreshStartTime = refreshStartTime
 
         groupAdapter.updateAsync(loadedState.items, false) {
-            oldOldestSubscriptionUpdate?.run {
-                highlightNewItemsAfter(oldOldestSubscriptionUpdate)
+            val highlightAfterTime = smartRefreshStartTime ?: oldOldestSubscriptionUpdate
+
+            highlightAfterTime?.run {
+                highlightNewItemsAfter(highlightAfterTime)
             }
+
+            refreshStartTime = null
         }
 
         listState?.run {
@@ -750,6 +755,7 @@ class FeedFragment : BaseStateFragment<FeedState>() {
 
     private fun performSmartRefresh() {
         hideNewItemsLoaded(false)
+        refreshStartTime = OffsetDateTime.now()
 
         getActivity()?.startService(
             Intent(requireContext(), FeedLoadService::class.java).apply {
