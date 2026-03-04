@@ -325,7 +325,7 @@ class FeedLoadManager(private val context: Context) {
     private fun calculateAndStoreInterval(subscriptionId: Long) {
         try {
             val streams = feedDatabaseManager.database().feedDAO()
-                .getStreamsForSubscription(subscriptionId, 10)
+                .getStreamsForSubscription(subscriptionId, 10, false)
                 .blockingFirst()
 
             val interval = FetchInterval.calculateInterval(streams)

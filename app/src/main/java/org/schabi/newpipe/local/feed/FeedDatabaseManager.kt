@@ -2,6 +2,7 @@ package org.schabi.newpipe.local.feed
 
 import android.content.Context
 import android.util.Log
+import androidx.preference.PreferenceManager
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Flowable
@@ -12,6 +13,7 @@ import java.time.OffsetDateTime
 import java.time.ZoneOffset
 import org.schabi.newpipe.MainActivity.DEBUG
 import org.schabi.newpipe.NewPipeDatabase
+import org.schabi.newpipe.R
 import org.schabi.newpipe.database.feed.model.FeedEntity
 import org.schabi.newpipe.database.feed.model.FeedGroupEntity
 import org.schabi.newpipe.database.feed.model.SubscriptionUpdateInfoEntity
@@ -27,6 +29,7 @@ class FeedDatabaseManager(context: Context) {
     private val feedTable = database.feedDAO()
     private val feedGroupTable = database.feedGroupDAO()
     private val streamTable = database.streamDAO()
+    private val context = context
 
     companion object {
         /**
@@ -46,11 +49,19 @@ class FeedDatabaseManager(context: Context) {
         includePartiallyPlayedStreams: Boolean,
         includeFutureStreams: Boolean
     ): Maybe<List<StreamWithState>> {
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+        val orderByValue = prefs.getString(
+            context.getString(R.string.feed_order_by_key),
+            context.getString(R.string.feed_order_by_default)
+        )
+        val orderByDiscoveryDate = orderByValue == "discovery_date"
+
         return feedTable.getStreams(
             groupId,
             includePlayedStreams,
             includePartiallyPlayedStreams,
-            if (includeFutureStreams) null else OffsetDateTime.now()
+            if (includeFutureStreams) null else OffsetDateTime.now(),
+            orderByDiscoveryDate
         )
     }
 

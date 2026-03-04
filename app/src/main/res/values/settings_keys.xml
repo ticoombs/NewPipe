@@ -484,6 +484,17 @@
         <item>@string/channel_tab_likes</item>
     </string-array>
 
+    <string name="feed_order_by_key">feed_order_by</string>
+    <string name="feed_order_by_default">upload_date</string>
+    <string-array name="feed_order_by_values">
+        <item>discovery_date</item>
+        <item>upload_date</item>
+    </string-array>
+    <string-array name="feed_order_by_entries">
+        <item>@string/feed_order_by_discovery_date</item>
+        <item>@string/feed_order_by_upload_date</item>
+    </string-array>
+
     <string name="import_export_data_path">import_export_data_path</string>
     <string name="import_data">import_data</string>
     <string name="export_data">export_data</string>

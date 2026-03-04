@@ -69,7 +69,16 @@ abstract class FeedDAO {
             OR s.upload_date < :uploadDateBefore
         )
 
-        ORDER BY s.upload_date IS NULL DESC, s.upload_date DESC, s.uploader ASC
+        ORDER BY 
+            CASE :orderByDiscoveryDate
+                WHEN 1 THEN f.discovery_date IS NULL
+                ELSE s.upload_date IS NULL
+            END DESC,
+            CASE :orderByDiscoveryDate
+                WHEN 1 THEN f.discovery_date
+                ELSE s.upload_date
+            END DESC,
+            s.uploader ASC
         LIMIT 500
         """
     )
@@ -77,7 +86,8 @@ abstract class FeedDAO {
         groupId: Long,
         includePlayed: Boolean,
         includePartiallyPlayed: Boolean,
-        uploadDateBefore: OffsetDateTime?
+        uploadDateBefore: OffsetDateTime?,
+        orderByDiscoveryDate: Boolean
     ): Maybe<List<StreamWithState>>
 
     @Query(
@@ -243,9 +253,17 @@ abstract class FeedDAO {
         SELECT s.* FROM streams s
         INNER JOIN feed f ON s.uid = f.stream_id
         WHERE f.subscription_id = :subscriptionId
-        ORDER BY s.upload_date DESC
+        ORDER BY 
+            CASE :orderByDiscoveryDate
+                WHEN 1 THEN f.discovery_date
+                ELSE s.upload_date
+            END DESC
         LIMIT :limit
         """
     )
-    abstract fun getStreamsForSubscription(subscriptionId: Long, limit: Int): Flowable<List<StreamEntity>>
+    abstract fun getStreamsForSubscription(
+        subscriptionId: Long,
+        limit: Int,
+        orderByDiscoveryDate: Boolean
+    ): Flowable<List<StreamEntity>>
 }

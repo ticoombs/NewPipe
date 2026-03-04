@@ -30,6 +30,7 @@ object Migrations {
     const val DB_VER_8 = 8
     const val DB_VER_9 = 9
     const val DB_VER_10 = 10
+    const val DB_VER_11 = 11
 
     private val TAG = Migrations::class.java.getName()
     private val isDebug = MainActivity.DEBUG
@@ -369,5 +370,10 @@ object Migrations {
         )
 
         db.execSQL("DROP TABLE IF EXISTS feed_last_updated")
+    }
+
+    val MIGRATION_10_11 = Migration(DB_VER_10, DB_VER_11) { db ->
+        // Add discovery_date column to feed table
+        db.execSQL("ALTER TABLE feed ADD COLUMN discovery_date INTEGER")
     }
 }

@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
+import java.time.OffsetDateTime
 import org.schabi.newpipe.database.feed.model.FeedEntity.Companion.FEED_TABLE
 import org.schabi.newpipe.database.feed.model.FeedEntity.Companion.STREAM_ID
 import org.schabi.newpipe.database.feed.model.FeedEntity.Companion.SUBSCRIPTION_ID
@@ -38,7 +39,10 @@ data class FeedEntity(
     var streamId: Long,
 
     @ColumnInfo(name = SUBSCRIPTION_ID)
-    var subscriptionId: Long
+    var subscriptionId: Long,
+
+    @ColumnInfo(name = DISCOVERY_DATE)
+    var discoveryDate: OffsetDateTime? = null
 ) {
 
     companion object {
@@ -46,5 +50,8 @@ data class FeedEntity(
 
         const val STREAM_ID = "stream_id"
         const val SUBSCRIPTION_ID = "subscription_id"
+        const val DISCOVERY_DATE = "discovery_date"
     }
+
+    constructor(streamId: Long, subscriptionId: Long) : this(streamId, subscriptionId, OffsetDateTime.now())
 }

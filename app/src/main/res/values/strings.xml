@@ -33,6 +33,10 @@
     <string name="subscription_change_failed">Could not change subscription</string>
     <string name="subscription_update_failed">Could not update subscription</string>
     <string name="subscription_next_check">Next check: %s</string>
+    <string name="feed_order_by_title">What\'s New ordering</string>
+    <string name="feed_order_by_summary">Choose how to order videos in What\'s New feed</string>
+    <string name="feed_order_by_discovery_date">Discovery date (when found by NewPipe)</string>
+    <string name="feed_order_by_upload_date">Upload date (when published by creator)</string>
     <string name="show_info">Show info</string>
     <string name="tab_subscriptions">Subscriptions</string>
     <string name="tab_bookmarks">Bookmarked Playlists</string>
