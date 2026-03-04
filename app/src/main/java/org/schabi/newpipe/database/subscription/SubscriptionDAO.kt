@@ -23,6 +23,16 @@ abstract class SubscriptionDAO : BasicDAO<SubscriptionEntity> {
 
     @Query(
         """
+        SELECT s.*, sui.next_update
+        FROM subscriptions s
+        LEFT JOIN subscription_update_info sui ON s.uid = sui.subscription_id
+        ORDER BY s.name COLLATE NOCASE ASC
+        """
+    )
+    abstract fun getAllWithUpdateInfo(): Flowable<List<SubscriptionWithUpdateInfo>>
+
+    @Query(
+        """
         SELECT * FROM subscriptions
 
         WHERE name LIKE '%' || :filter || '%'

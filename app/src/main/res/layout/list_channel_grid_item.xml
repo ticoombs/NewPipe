@@ -59,4 +59,18 @@
         tools:ignore="RtlHardcoded"
         tools:text="@tools:sample/lorem/random" />
 
+    <TextView
+        android:id="@+id/itemNextCheckView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/itemChannelDescriptionView"
+        android:layout_centerHorizontal="true"
+        android:lines="1"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textSize="@dimen/video_item_search_upload_date_text_size"
+        android:textColor="?attr/colorAccent"
+        android:gravity="center"
+        tools:ignore="RtlHardcoded"
+        tools:text="Next check: in 2 days" />
+
 </RelativeLayout>

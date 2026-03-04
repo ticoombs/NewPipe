@@ -32,6 +32,7 @@
     <string name="channel_unsubscribed">Channel unsubscribed</string>
     <string name="subscription_change_failed">Could not change subscription</string>
     <string name="subscription_update_failed">Could not update subscription</string>
+    <string name="subscription_next_check">Next check: %s</string>
     <string name="show_info">Show info</string>
     <string name="tab_subscriptions">Subscriptions</string>
     <string name="tab_bookmarks">Bookmarked Playlists</string>

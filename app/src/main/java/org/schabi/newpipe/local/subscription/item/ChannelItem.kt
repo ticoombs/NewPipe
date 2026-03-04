@@ -1,10 +1,12 @@
 package org.schabi.newpipe.local.subscription.item
 
 import android.content.Context
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.xwray.groupie.GroupieViewHolder
 import com.xwray.groupie.Item
+import java.time.OffsetDateTime
 import org.schabi.newpipe.R
 import org.schabi.newpipe.extractor.channel.ChannelInfoItem
 import org.schabi.newpipe.util.Localization
@@ -15,7 +17,8 @@ class ChannelItem(
     private val infoItem: ChannelInfoItem,
     private val subscriptionId: Long = -1L,
     var itemVersion: ItemVersion = ItemVersion.NORMAL,
-    var gesturesListener: OnClickGesture<ChannelInfoItem>? = null
+    var gesturesListener: OnClickGesture<ChannelInfoItem>? = null,
+    private val nextUpdate: OffsetDateTime? = null
 ) : Item<GroupieViewHolder>() {
     override fun getId(): Long = if (subscriptionId == -1L) super.getId() else subscriptionId
 
@@ -32,11 +35,22 @@ class ChannelItem(
         val itemAdditionalDetails = viewHolder.root.findViewById<TextView>(R.id.itemAdditionalDetails)
         val itemChannelDescriptionView = viewHolder.root.findViewById<TextView>(R.id.itemChannelDescriptionView)
         val itemThumbnailView = viewHolder.root.findViewById<ImageView>(R.id.itemThumbnailView)
+        val itemNextCheckView = viewHolder.root.findViewById<TextView>(R.id.itemNextCheckView)
 
         itemTitleView.text = infoItem.name
         itemAdditionalDetails.text = getDetailLine(viewHolder.root.context)
         if (itemVersion == ItemVersion.NORMAL) {
             itemChannelDescriptionView.text = infoItem.description
+        }
+
+        if (nextUpdate != null) {
+            itemNextCheckView?.visibility = View.VISIBLE
+            itemNextCheckView?.text = viewHolder.root.context.getString(
+                R.string.subscription_next_check,
+                Localization.relativeTime(nextUpdate)
+            )
+        } else {
+            itemNextCheckView?.visibility = View.GONE
         }
 
         CoilHelper.loadAvatar(itemThumbnailView, infoItem.thumbnails)
