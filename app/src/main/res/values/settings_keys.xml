@@ -337,6 +337,13 @@
     <string name="show_description_key">show_description</string>
     <string name="show_meta_info_key">show_meta_info</string>
     <string name="stream_info_selected_tab_key">stream_info_selected_tab</string>
+
+    <!-- Default video detail tab -->
+    <string name="default_video_detail_tab_key">default_video_detail_tab</string>
+    <string name="default_video_detail_tab_comments_key">COMMENTS</string>
+    <string name="default_video_detail_tab_related_key">NEXT VIDEO</string>
+    <string name="default_video_detail_tab_description_key">DESCRIPTION TAB</string>
+    <string name="default_video_detail_tab_default">@string/default_video_detail_tab_comments_key</string>
     <string name="show_hold_to_append_key">show_hold_to_append</string>
     <string name="content_language_key">content_language</string>
     <string name="peertube_instance_setup_key">peertube_instance_setup</string>

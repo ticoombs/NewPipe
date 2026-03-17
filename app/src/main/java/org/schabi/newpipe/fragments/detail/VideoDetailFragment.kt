@@ -166,6 +166,7 @@ class VideoDetailFragment :
     private var showRelatedItems = false
     private var showDescription = false
     private lateinit var selectedTabTag: String
+    private lateinit var defaultTabTag: String
 
     @AttrRes val tabIcons = ArrayList<Int>()
 
@@ -183,6 +184,13 @@ class VideoDetailFragment :
                 tabSettingsChanged = true
             } else if (getString(R.string.show_description_key) == key) {
                 showDescription = sharedPreferences.getBoolean(key, true)
+                tabSettingsChanged = true
+            } else if (getString(R.string.default_video_detail_tab_key) == key) {
+                defaultTabTag = sharedPreferences.getString(
+                    key,
+                    COMMENTS_TAB_TAG
+                )!!
+                selectedTabTag = defaultTabTag
                 tabSettingsChanged = true
             }
         }
@@ -264,10 +272,11 @@ class VideoDetailFragment :
         showComments = prefs.getBoolean(getString(R.string.show_comments_key), true)
         showRelatedItems = prefs.getBoolean(getString(R.string.show_next_video_key), true)
         showDescription = prefs.getBoolean(getString(R.string.show_description_key), true)
-        selectedTabTag = prefs.getString(
-            getString(R.string.stream_info_selected_tab_key),
+        defaultTabTag = prefs.getString(
+            getString(R.string.default_video_detail_tab_key),
             COMMENTS_TAB_TAG
         )!!
+        selectedTabTag = defaultTabTag
         prefs.registerOnSharedPreferenceChangeListener(preferenceChangeListener)
 
         setupBroadcastReceiver()
@@ -300,12 +309,6 @@ class VideoDetailFragment :
         super.onPause()
         currentWorker?.dispose()
         restoreDefaultBrightness()
-        PreferenceManager.getDefaultSharedPreferences(requireContext()).edit {
-            putString(
-                getString(R.string.stream_info_selected_tab_key),
-                pageAdapter.getItemTitle(binding.viewPager.currentItem)
-            )
-        }
     }
 
     override fun onResume() {
@@ -323,6 +326,11 @@ class VideoDetailFragment :
         if (tabSettingsChanged) {
             tabSettingsChanged = false
             initTabs()
+            selectedTabTag = defaultTabTag
+            val position = pageAdapter.getItemPositionByTitle(selectedTabTag)
+            if (position != -1) {
+                binding.viewPager.setCurrentItem(position)
+            }
             currentInfo?.let { updateTabs(it) }
         }
 
@@ -854,6 +862,8 @@ class VideoDetailFragment :
             val position = pageAdapter.getItemPositionByTitle(selectedTabTag)
             if (position != -1) {
                 binding.viewPager.setCurrentItem(position)
+            } else {
+                binding.viewPager.setCurrentItem(0)
             }
             updateTabIconsAndContentDescriptions()
         }
