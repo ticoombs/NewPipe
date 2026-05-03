@@ -7,8 +7,10 @@ package org.schabi.newpipe.util
 
 import android.content.Context
 import androidx.preference.PreferenceManager
+import java.time.format.DateTimeFormatter
 import java.util.regex.Matcher
 import org.schabi.newpipe.R
+import org.schabi.newpipe.extractor.stream.StreamInfo
 import org.schabi.newpipe.ktx.getStringSafe
 
 object FilenameUtils {
@@ -46,6 +48,74 @@ object FilenameUtils {
         }
 
         return createFilename(title, charset, Matcher.quoteReplacement(replacementChar))
+    }
+
+    /**
+     * Build a filename for the given [info] by applying the user-configured prefix/suffix
+     * templates around the (sanitized) stream title, then sanitizing the whole result.
+     *
+     * Supported placeholders in the prefix/suffix templates:
+     *  - `{title}`        - stream title
+     *  - `{uploader}`     - uploader / channel name
+     *  - `{upload_date}`  - upload date formatted as `yyyy-MM-dd` (empty if unknown)
+     *  - `{quality}`      - the resolved stream quality (e.g. `1080p`, `128kbps`); empty if null
+     *
+     * If both prefix and suffix preferences are empty, the result is identical to
+     * `createFilename(context, info.name)`.
+     *
+     * @param context  context to read preferences and resources from
+     * @param info     the [StreamInfo] being downloaded
+     * @param quality  the user-selected quality string, or null if not yet known
+     * @return the sanitized filename (without extension)
+     */
+    @JvmStatic
+    @JvmOverloads
+    fun createFilenameWithTemplate(
+        context: Context,
+        info: StreamInfo,
+        quality: String? = null
+    ): String {
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+        val prefix = prefs.getStringSafe(
+            context.getString(R.string.settings_filename_template_prefix_key),
+            ""
+        )
+        val suffix = prefs.getStringSafe(
+            context.getString(R.string.settings_filename_template_suffix_key),
+            ""
+        )
+
+        val title = info.name.orEmpty()
+        if (prefix.isEmpty() && suffix.isEmpty()) {
+            return createFilename(context, title)
+        }
+
+        val uploader = info.uploaderName.orEmpty()
+        val uploadDate = info.uploadDate?.offsetDateTime()
+            ?.format(DateTimeFormatter.ISO_LOCAL_DATE).orEmpty()
+        val qualityValue = quality.orEmpty()
+
+        val expandedPrefix = expandPlaceholders(prefix, title, uploader, uploadDate, qualityValue)
+        val expandedSuffix = expandPlaceholders(suffix, title, uploader, uploadDate, qualityValue)
+
+        // Sanitize the assembled string as a whole so any illegal chars introduced by
+        // literal text in the template (or by metadata values) are replaced consistently.
+        return createFilename(context, expandedPrefix + title + expandedSuffix)
+    }
+
+    private fun expandPlaceholders(
+        template: String,
+        title: String,
+        uploader: String,
+        uploadDate: String,
+        quality: String
+    ): String {
+        if (template.isEmpty()) return template
+        return template
+            .replace("{title}", title)
+            .replace("{uploader}", uploader)
+            .replace("{upload_date}", uploadDate)
+            .replace("{quality}", quality)
     }
 
     /**

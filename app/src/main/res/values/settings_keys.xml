@@ -527,6 +527,10 @@
     <string name="settings_file_charset_key">file_rename_charset</string>
     <string name="settings_file_replacement_character_key">file_replacement_character</string>
     <string name="settings_file_replacement_character_default_value">_</string>
+    <string name="settings_filename_template_prefix_key">file_template_prefix</string>
+    <string name="settings_filename_template_suffix_key">file_template_suffix</string>
+    <string name="settings_filename_template_prefix_default_value"></string>
+    <string name="settings_filename_template_suffix_default_value"></string>
 
 
     <string name="charset_letters_and_digits_value">CHARSET_LETTERS_AND_DIGITS</string>

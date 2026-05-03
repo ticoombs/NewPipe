@@ -53,6 +53,22 @@
         app:singleLineTitle="false"
         app:iconSpaceReserved="false" />
 
+    <EditTextPreference
+        android:defaultValue="@string/settings_filename_template_prefix_default_value"
+        android:key="@string/settings_filename_template_prefix_key"
+        android:summary="@string/settings_filename_template_prefix_summary"
+        android:title="@string/settings_filename_template_prefix_title"
+        app:singleLineTitle="false"
+        app:iconSpaceReserved="false" />
+
+    <EditTextPreference
+        android:defaultValue="@string/settings_filename_template_suffix_default_value"
+        android:key="@string/settings_filename_template_suffix_key"
+        android:summary="@string/settings_filename_template_suffix_summary"
+        android:title="@string/settings_filename_template_suffix_title"
+        app:singleLineTitle="false"
+        app:iconSpaceReserved="false" />
+
     <ListPreference
         android:defaultValue="@string/downloads_maximum_retry_default"
         android:entries="@array/downloads_maximum_retry_list"

@@ -298,8 +298,8 @@ public class DownloadDialog extends DialogFragment
             return; // the dialog is being dismissed, see the call to dismiss() in onCreate()
         }
 
-        dialogBinding.fileName.setText(FilenameUtils.createFilename(getContext(),
-                currentInfo.getName()));
+        dialogBinding.fileName.setText(FilenameUtils.createFilenameWithTemplate(getContext(),
+                currentInfo));
         selectedAudioIndex = ListHelper.getDefaultAudioFormat(getContext(),
                 getWrappedAudioStreams().getStreamsList());
 

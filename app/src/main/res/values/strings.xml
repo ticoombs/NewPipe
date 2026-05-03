@@ -384,6 +384,10 @@
     <string name="settings_file_replacement_character_title">Replacement character</string>
     <string name="charset_letters_and_digits">Letters and digits</string>
     <string name="charset_most_special_characters">Most special characters</string>
+    <string name="settings_filename_template_prefix_title">Filename prefix</string>
+    <string name="settings_filename_template_prefix_summary">Text added before the title. Supports placeholders: {title}, {uploader}, {upload_date}, {quality}</string>
+    <string name="settings_filename_template_suffix_title">Filename suffix</string>
+    <string name="settings_filename_template_suffix_summary">Text added after the title (before the extension). Supports placeholders: {title}, {uploader}, {upload_date}, {quality}</string>
     <!-- About -->
     <string name="title_activity_about">About NewPipe</string>
     <string name="title_licenses">Third-party Licenses</string>
