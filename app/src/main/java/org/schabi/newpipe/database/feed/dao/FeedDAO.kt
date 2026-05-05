@@ -73,7 +73,7 @@ abstract class FeedDAO {
             CASE :orderByDiscoveryDate
                 WHEN 1 THEN f.discovery_date IS NULL
                 ELSE s.upload_date IS NULL
-            END DESC,
+            END ASC,
             CASE :orderByDiscoveryDate
                 WHEN 1 THEN f.discovery_date
                 ELSE s.upload_date

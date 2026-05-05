@@ -31,6 +31,7 @@ object Migrations {
     const val DB_VER_9 = 9
     const val DB_VER_10 = 10
     const val DB_VER_11 = 11
+    const val DB_VER_12 = 12
 
     private val TAG = Migrations::class.java.getName()
     private val isDebug = MainActivity.DEBUG
@@ -373,7 +374,38 @@ object Migrations {
     }
 
     val MIGRATION_10_11 = Migration(DB_VER_10, DB_VER_11) { db ->
-        // Add discovery_date column to feed table
+        // Add discovery_date column to feed table.
         db.execSQL("ALTER TABLE feed ADD COLUMN discovery_date INTEGER")
+        // Backfill existing feed rows from streams.upload_date so that toggling the
+        // "order by discovery date" preference does not reorder pre-existing items.
+        // Without this, all historical rows would have NULL discovery_date and the
+        // ORDER BY would collapse to the s.uploader ASC tie-breaker, producing an
+        // alphabetical-by-uploader order that confuses users.
+        db.execSQL(
+            """
+            UPDATE feed
+            SET discovery_date = (
+                SELECT s.upload_date FROM streams s WHERE s.uid = feed.stream_id
+            )
+            WHERE discovery_date IS NULL
+            """
+        )
+    }
+
+    val MIGRATION_11_12 = Migration(DB_VER_11, DB_VER_12) { db ->
+        // Backfill discovery_date for users who already migrated to v11 before the
+        // backfill was added to MIGRATION_10_11. Same rationale as above: rows with
+        // NULL discovery_date cause the ORDER BY tie-breaker (s.uploader ASC) to
+        // dominate, producing alphabetical-by-uploader ordering when the user has
+        // "order by discovery date" enabled.
+        db.execSQL(
+            """
+            UPDATE feed
+            SET discovery_date = (
+                SELECT s.upload_date FROM streams s WHERE s.uid = feed.stream_id
+            )
+            WHERE discovery_date IS NULL
+            """
+        )
     }
 }
