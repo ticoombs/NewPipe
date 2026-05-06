@@ -126,10 +126,36 @@ class FeedDatabaseManager(context: Context) {
 
         feedTable.unlinkOldLivestreams(subscriptionId)
 
+        val isFirstRefresh = feedTable.getUpdateInfo(subscriptionId) == null
+
         if (itemsToInsert.isNotEmpty()) {
             val streamEntities = itemsToInsert.map { StreamEntity(it) }
             val streamIds = streamTable.upsertAll(streamEntities)
-            val feedEntities = streamIds.map { FeedEntity(it, subscriptionId) }
+
+            val feedEntities = if (isFirstRefresh) {
+                // On the very first refresh after subscribing, none of the channel's
+                // existing videos are genuinely "new since last refresh" – there was
+                // no last refresh. Linking all of them to the feed would flood
+                // What's New with the channel's back-catalogue. Instead, link only
+                // the single most recent video so What's New shows that the new
+                // subscription has been picked up without drowning out other
+                // channels. All streams still go into the streams table above so
+                // the channel page itself is fully populated.
+                //
+                // "Most recent" = max uploadDate; live streams (null uploadDate)
+                // are treated as happening now and therefore win.
+                val latestIdx = itemsToInsert.indices.maxByOrNull { i ->
+                    itemsToInsert[i].uploadDate?.offsetDateTime()?.toEpochSecond()
+                        ?: Long.MAX_VALUE
+                }
+                if (latestIdx != null) {
+                    listOf(FeedEntity(streamIds[latestIdx], subscriptionId))
+                } else {
+                    emptyList()
+                }
+            } else {
+                streamIds.map { FeedEntity(it, subscriptionId) }
+            }
 
             feedTable.insertAll(feedEntities)
         }
