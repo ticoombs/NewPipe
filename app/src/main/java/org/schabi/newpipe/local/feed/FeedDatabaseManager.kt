@@ -148,8 +148,17 @@ class FeedDatabaseManager(context: Context) {
         }
     }
 
-    fun removeOrphansOrOlderStreams(oldestAllowedDate: OffsetDateTime = FEED_OLDEST_ALLOWED_DATE) {
-        feedTable.unlinkStreamsOlderThan(oldestAllowedDate)
+    /**
+     * Remove streams from the database which are not linked / used by any table.
+     *
+     * Previously this also unlinked feed entries older than [FEED_OLDEST_ALLOWED_DATE],
+     * but that caused the What's New feed to lose history: users could no longer scroll
+     * back through older videos from their subscriptions. The date cap is now only applied
+     * on initial import in [upsertAll] (to avoid flooding the feed when subscribing to a
+     * new channel) and in FeedLoadManager.filterNewStreams; once an entry is in the feed
+     * it stays there indefinitely.
+     */
+    fun removeOrphansOrOlderStreams() {
         streamTable.deleteOrphans()
     }
 
