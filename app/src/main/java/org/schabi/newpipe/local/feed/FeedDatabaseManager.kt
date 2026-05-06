@@ -96,6 +96,24 @@ class FeedDatabaseManager(context: Context) {
         items: List<StreamInfoItem>,
         oldestAllowedDate: OffsetDateTime = FEED_OLDEST_ALLOWED_DATE
     ) {
+        upsertStreamsToFeed(subscriptionId, items, oldestAllowedDate)
+
+        feedTable.upsertUpdateInfo(
+            SubscriptionUpdateInfoEntity(
+                subscriptionId,
+                OffsetDateTime.now(ZoneOffset.UTC),
+                null,
+                7,
+                0
+            )
+        )
+    }
+
+    fun upsertStreamsToFeed(
+        subscriptionId: Long,
+        items: List<StreamInfoItem>,
+        oldestAllowedDate: OffsetDateTime = FEED_OLDEST_ALLOWED_DATE
+    ) {
         val itemsToInsert = items.mapNotNull { stream ->
             val uploadDate = stream.uploadDate
 
@@ -109,22 +127,25 @@ class FeedDatabaseManager(context: Context) {
         feedTable.unlinkOldLivestreams(subscriptionId)
 
         if (itemsToInsert.isNotEmpty()) {
+            val now = OffsetDateTime.now()
             val streamEntities = itemsToInsert.map { StreamEntity(it) }
             val streamIds = streamTable.upsertAll(streamEntities)
-            val feedEntities = streamIds.map { FeedEntity(it, subscriptionId) }
+            val feedEntities = itemsToInsert.zip(streamIds).map { (item, streamId) ->
+                // Use min(now, uploadDate) so a video that was uploaded weeks/months
+                // ago but only just surfaced in the extractor's response (e.g. due to
+                // YouTube re-pinning, unlisting/relisting, or pagination) does NOT
+                // bubble to the top of the discovery_date-ordered feed. Genuinely
+                // new uploads still get a near-now discovery_date because their
+                // uploadDate is close to now. Live streams (null uploadDate) fall
+                // back to now() so they do appear at the top.
+                val uploadDate = item.uploadDate?.offsetDateTime()
+                val discoveryDate =
+                    if (uploadDate != null && uploadDate.isBefore(now)) uploadDate else now
+                FeedEntity(streamId, subscriptionId, discoveryDate)
+            }
 
             feedTable.insertAll(feedEntities)
         }
-
-        feedTable.upsertUpdateInfo(
-            SubscriptionUpdateInfoEntity(
-                subscriptionId,
-                OffsetDateTime.now(ZoneOffset.UTC),
-                null,
-                7,
-                0
-            )
-        )
     }
 
     fun removeOrphansOrOlderStreams(oldestAllowedDate: OffsetDateTime = FEED_OLDEST_ALLOWED_DATE) {

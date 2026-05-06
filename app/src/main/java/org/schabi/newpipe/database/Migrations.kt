@@ -32,6 +32,7 @@ object Migrations {
     const val DB_VER_10 = 10
     const val DB_VER_11 = 11
     const val DB_VER_12 = 12
+    const val DB_VER_13 = 13
 
     private val TAG = Migrations::class.java.getName()
     private val isDebug = MainActivity.DEBUG
@@ -405,6 +406,32 @@ object Migrations {
                 SELECT s.upload_date FROM streams s WHERE s.uid = feed.stream_id
             )
             WHERE discovery_date IS NULL
+            """
+        )
+    }
+
+    val MIGRATION_12_13 = Migration(DB_VER_12, DB_VER_13) { db ->
+        // Heal feed rows where discovery_date was incorrectly stamped with now()
+        // during a refresh that surfaced an older upload for the first time. The
+        // FeedEntity constructor used to unconditionally set discovery_date = now()
+        // for any newly-inserted feed link, so a video uploaded weeks ago that the
+        // extractor only just returned (e.g. YouTube re-pinning, unlisting/relisting,
+        // pagination drift) would float to the top of the discovery_date-ordered
+        // feed. Clamp discovery_date to <= upload_date so historical videos sit in
+        // their proper chronological position. Future inserts no longer have this
+        // problem (see FeedDatabaseManager.upsertStreamsToFeed).
+        db.execSQL(
+            """
+            UPDATE feed
+            SET discovery_date = (
+                SELECT s.upload_date FROM streams s WHERE s.uid = feed.stream_id
+            )
+            WHERE EXISTS (
+                SELECT 1 FROM streams s
+                WHERE s.uid = feed.stream_id
+                  AND s.upload_date IS NOT NULL
+                  AND feed.discovery_date > s.upload_date
+            )
             """
         )
     }
