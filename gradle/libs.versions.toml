@@ -46,6 +46,7 @@ phoenix = "3.0.0"
 preference = "1.2.1"
 prettytime = "5.0.8.Final"
 recyclerview = "1.4.0"
+robolectric = "4.16"
 room = "2.7.2" # Newer versions require minSdk >= 23
 runner = "1.7.0"
 rxandroid = "3.0.2"
@@ -148,6 +149,7 @@ pinterest-ktlint = { module = "com.pinterest.ktlint:ktlint-cli", version.ref = "
 puppycrawl-checkstyle = { module = "com.puppycrawl.tools:checkstyle", version.ref = "checkstyle" }
 reactivex-rxandroid = { module = "io.reactivex.rxjava3:rxandroid", version.ref = "rxandroid" }
 reactivex-rxjava = { module = "io.reactivex.rxjava3:rxjava", version.ref = "rxjava" }
+robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 squareup-leakcanary-core = { module = "com.squareup.leakcanary:leakcanary-android-core", version.ref = "leakcanary" }
 squareup-leakcanary-plumber = { module = "com.squareup.leakcanary:plumber-android", version.ref = "leakcanary" }
 squareup-leakcanary-watcher = { module = "com.squareup.leakcanary:leakcanary-object-watcher-android", version.ref = "leakcanary" }

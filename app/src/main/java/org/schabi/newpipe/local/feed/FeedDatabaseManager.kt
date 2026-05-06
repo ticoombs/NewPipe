@@ -14,6 +14,7 @@ import java.time.ZoneOffset
 import org.schabi.newpipe.MainActivity.DEBUG
 import org.schabi.newpipe.NewPipeDatabase
 import org.schabi.newpipe.R
+import org.schabi.newpipe.database.AppDatabase
 import org.schabi.newpipe.database.feed.model.FeedEntity
 import org.schabi.newpipe.database.feed.model.FeedGroupEntity
 import org.schabi.newpipe.database.feed.model.SubscriptionUpdateInfoEntity
@@ -24,12 +25,13 @@ import org.schabi.newpipe.extractor.stream.StreamInfoItem
 import org.schabi.newpipe.extractor.stream.StreamType
 import org.schabi.newpipe.local.subscription.FeedGroupIcon
 
-class FeedDatabaseManager(context: Context) {
-    private val database = NewPipeDatabase.getInstance(context)
+class FeedDatabaseManager @JvmOverloads constructor(
+    private val context: Context,
+    private val database: AppDatabase = NewPipeDatabase.getInstance(context)
+) {
     private val feedTable = database.feedDAO()
     private val feedGroupTable = database.feedGroupDAO()
     private val streamTable = database.streamDAO()
-    private val context = context
 
     companion object {
         /**
