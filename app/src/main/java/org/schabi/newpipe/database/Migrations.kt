@@ -410,29 +410,19 @@ object Migrations {
         )
     }
 
-    val MIGRATION_12_13 = Migration(DB_VER_12, DB_VER_13) { db ->
-        // Heal feed rows where discovery_date was incorrectly stamped with now()
-        // during a refresh that surfaced an older upload for the first time. The
-        // FeedEntity constructor used to unconditionally set discovery_date = now()
-        // for any newly-inserted feed link, so a video uploaded weeks ago that the
-        // extractor only just returned (e.g. YouTube re-pinning, unlisting/relisting,
-        // pagination drift) would float to the top of the discovery_date-ordered
-        // feed. Clamp discovery_date to <= upload_date so historical videos sit in
-        // their proper chronological position. Future inserts no longer have this
-        // problem (see FeedDatabaseManager.upsertStreamsToFeed).
-        db.execSQL(
-            """
-            UPDATE feed
-            SET discovery_date = (
-                SELECT s.upload_date FROM streams s WHERE s.uid = feed.stream_id
-            )
-            WHERE EXISTS (
-                SELECT 1 FROM streams s
-                WHERE s.uid = feed.stream_id
-                  AND s.upload_date IS NOT NULL
-                  AND feed.discovery_date > s.upload_date
-            )
-            """
-        )
-    }
+    /**
+     * No-op data migration. An earlier iteration of this migration clamped
+     * discovery_date to upload_date to mitigate the "2-month bug" where old
+     * videos resurfaced at the top of the discovery_date-ordered feed. That
+     * approach was wrong: it destroyed the genuine "first time we saw this"
+     * semantic of discovery_date. The actual root cause was
+     * removeOrphansOrOlderStreams() unlinking feed entries older than 13 weeks
+     * on every refresh, which let the next refresh re-insert them with a fresh
+     * now() discovery_date. That call has been removed (see fix(feed): retain
+     * feed history past 13 weeks).
+     *
+     * The version bump is preserved because v13 has already shipped to dev
+     * builds. Schema 13.json is identical to 12.json (data-only migration).
+     */
+    val MIGRATION_12_13 = Migration(DB_VER_12, DB_VER_13) { _ -> }
 }
