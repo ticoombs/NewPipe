@@ -521,6 +521,8 @@
     <string name="disable_media_tunneling_automatic_info">Media tunneling was disabled by default on your device because your device model is known to not support it.</string>
     <string name="show_crash_the_player_title">Show \"Crash the player\"</string>
     <string name="show_crash_the_player_summary">Shows a crash option when using the player</string>
+    <string name="hide_parsing_error_popups_title">Hide "Could not parse website" popups</string>
+    <string name="hide_parsing_error_popups_summary">Suppresses snackbars and notifications shown when the extractor fails to parse a website. Inline error panels and the report screen are unaffected.</string>
     <string name="check_new_streams">Run check for new streams</string>
     <string name="run_feed_auto_update_now">Run feed auto-update now</string>
     <string name="run_feed_auto_update_now_summary">Manually trigger background feed update for all subscriptions</string>
@@ -781,6 +783,22 @@
     <!-- Smart feed scheduling -->
     <string name="feed_smart_update_scheduling_title">Smart update scheduling</string>
     <string name="feed_smart_update_scheduling_summary">Only check subscriptions when new videos are predicted to be available. Changes pull-to-refresh behavior, shows next check times in Subscriptions tab, and reduces API calls.</string>
+    <string name="smart_scheduling_title">Smart subscription scheduling</string>
+    <string name="smart_scheduling_summary">Show predicted next-check time under each subscription and adapt the polling interval per channel</string>
+    <string name="next_check_info_title">Next check info</string>
+    <string name="next_check_refresh_now">Refresh now</string>
+    <string name="next_check_close">Close</string>
+    <string name="next_check_info_summary">Next check: %1$s</string>
+    <string name="next_check_info_pattern_weekday">Detected pattern: %1$s</string>
+    <string name="next_check_info_pattern_active">No fixed weekday pattern — averaging recent uploads</string>
+    <string name="next_check_info_pattern_dormant">Channel appears inactive — backing off (×%1$.1f)</string>
+    <string name="next_check_info_pattern_new">Learning schedule\u2026</string>
+    <string name="next_check_info_interval">Average interval: %1$s</string>
+    <string name="next_check_info_confidence_high">Confidence: High</string>
+    <string name="next_check_info_confidence_medium">Confidence: Medium</string>
+    <string name="next_check_info_confidence_low">Confidence: Low</string>
+    <string name="next_check_info_uploads_header">Recent uploads:</string>
+    <string name="next_check_info_last_refresh">Last refresh: %1$s</string>
 
     <!-- Feed auto-update -->
     <string name="feed_auto_update_enabled_title">Auto-update feeds in background</string>

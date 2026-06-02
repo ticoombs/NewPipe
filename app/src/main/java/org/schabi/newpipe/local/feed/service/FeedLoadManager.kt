@@ -13,6 +13,7 @@ import io.reactivex.rxjava3.processors.PublishProcessor
 import io.reactivex.rxjava3.schedulers.Schedulers
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 import org.schabi.newpipe.R
@@ -44,6 +45,7 @@ class FeedLoadManager(private val context: Context) {
     private val feedResultsHolder = FeedResultsHolder()
     private val totalSubscriptionsCount = AtomicInteger(0)
     private val skippedSubscriptionsCount = AtomicInteger(0)
+    private val inFlightRefreshes = ConcurrentHashMap<Long, Boolean>()
 
     val notification: Flowable<FeedLoadState> = notificationUpdater.map { description ->
         FeedLoadState(description, maxProgress.get(), currentProgress.get(), skippedSubscriptionsCount.get())
@@ -99,7 +101,7 @@ class FeedLoadManager(private val context: Context) {
         }
 
         val outdatedSubscriptions = if (useSmartScheduling) {
-            val (_, windowUpper) = FetchInterval.getWindow()
+            val windowUpper = OffsetDateTime.now(ZoneOffset.UTC).plusDays(1)
             when (groupId) {
                 FeedGroupEntity.GROUP_ALL_ID -> feedDatabaseManager.database().feedDAO().getAllDueForUpdate(windowUpper, outdatedThreshold)
 
@@ -177,6 +179,18 @@ class FeedLoadManager(private val context: Context) {
 
     fun cancel() {
         cancelSignal.set(true)
+    }
+
+    fun forceRefreshOne(subscriptionId: Long): Completable {
+        return Completable.fromAction {
+            val exists = subscriptionManager.subscriptions()
+                .blockingFirst()
+                .any { it.uid == subscriptionId }
+            if (!exists) {
+                return@fromAction
+            }
+            calculateAndStoreInterval(subscriptionId)
+        }.subscribeOn(Schedulers.io())
     }
 
     private fun broadcastProgress() {
@@ -323,23 +337,31 @@ class FeedLoadManager(private val context: Context) {
     }
 
     private fun calculateAndStoreInterval(subscriptionId: Long) {
+        if (inFlightRefreshes.putIfAbsent(subscriptionId, true) != null) {
+            return
+        }
+
         try {
-            val streams = feedDatabaseManager.database().feedDAO()
-                .getStreamsForSubscription(subscriptionId, 10, false)
-                .blockingFirst()
+            val nowUtc = OffsetDateTime.now(ZoneOffset.UTC)
+            val feedDAO = feedDatabaseManager.database().feedDAO()
+            val uploadDates = feedDAO.getRecentUploadDates(subscriptionId, 30, nowUtc)
+            val prevBackoffMultiplier = feedDAO.getUpdateInfo(subscriptionId)?.backoffMultiplier ?: 1.0f
+            val analyzer = UploadCadenceAnalyzer { OffsetDateTime.now(ZoneOffset.UTC) }
+            val prediction = analyzer.predict(uploadDates, prevBackoffMultiplier)
 
-            val interval = FetchInterval.calculateInterval(streams)
-            val updateInfo = feedDatabaseManager.database().feedDAO().getUpdateInfo(subscriptionId)
-            val lastUpdated = updateInfo?.lastUpdated ?: OffsetDateTime.now(ZoneOffset.UTC)
-            val nextUpdate = FetchInterval.calculateNextUpdate(lastUpdated, interval)
-
-            feedDatabaseManager.database().feedDAO().setFetchIntervalForSubscription(
+            feedDAO.setSchedulerStateForSubscription(
                 subscriptionId,
-                interval,
-                nextUpdate
+                prediction.intervalDays,
+                prediction.nextCheck,
+                prediction.backoffMultiplier,
+                prediction.pattern.ordinal,
+                prediction.detectedWeekday?.value,
+                prediction.confidence
             )
         } catch (e: Exception) {
             android.util.Log.e(TAG, "Failed to calculate interval for subscription $subscriptionId", e)
+        } finally {
+            inFlightRefreshes.remove(subscriptionId)
         }
     }
 

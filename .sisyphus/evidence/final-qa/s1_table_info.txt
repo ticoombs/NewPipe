@@ -1,0 +1,10 @@
+0|subscription_id|INTEGER|1||1
+1|last_updated|INTEGER|0||0
+2|next_update|INTEGER|0||0
+3|fetch_interval|INTEGER|1||0
+4|update_strategy|INTEGER|1||0
+5|backoff_multiplier|REAL|1|1.0|0
+6|detected_pattern|INTEGER|1|0|0
+7|detected_weekday|INTEGER|0||0
+8|confidence|REAL|1|0.0|0
+user_version: 14

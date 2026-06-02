@@ -54,6 +54,8 @@ object ListHelper {
             AudioTrackType.DESCRIPTIVE
         )
 
+    private const val YOUTUBE_IOS_CLIENT_PARAMETER = "c=IOS"
+
     /**
      * List of supported YouTube Itag ids.
      * The original order is kept.
@@ -201,6 +203,38 @@ object ListHelper {
         return getFilteredStreamList(streamList) { stream ->
             stream.deliveryMethod == deliveryMethod
         }
+    }
+
+    /**
+     * Return a [Stream] list suitable for downloading. Mirrors [getPlayableStreams] but
+     * excludes HLS delivery (the downloader handles direct URLs only, not HLS manifests).
+     *
+     * @param streamList the original stream list
+     * @param serviceId  the service ID from which the streams come from
+     * @param <S>        the item type's class that extends [Stream]
+     * @return a stream list filtered for download compatibility
+     */
+    @JvmStatic
+    fun <S : Stream> getDownloadableStreams(
+        streamList: List<S>?,
+        serviceId: Int
+    ): List<S> {
+        val youtubeServiceId = ServiceList.YouTube.serviceId
+        return getFilteredStreamList(streamList) { stream ->
+            stream.deliveryMethod != DeliveryMethod.TORRENT &&
+                stream.deliveryMethod != DeliveryMethod.HLS &&
+                (
+                    serviceId != youtubeServiceId ||
+                        (
+                            stream.itagItem?.id?.let { SUPPORTED_ITAG_IDS.contains(it) } != false &&
+                                !isYoutubeIosStream(stream)
+                            )
+                    )
+        }
+    }
+
+    private fun isYoutubeIosStream(stream: Stream): Boolean {
+        return stream.content.contains(YOUTUBE_IOS_CLIENT_PARAMETER, ignoreCase = true)
     }
 
     /**

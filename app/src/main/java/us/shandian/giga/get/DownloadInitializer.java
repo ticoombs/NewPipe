@@ -15,6 +15,7 @@ import java.nio.channels.ClosedByInterruptException;
 import us.shandian.giga.util.Utility;
 
 import static org.schabi.newpipe.BuildConfig.DEBUG;
+import static org.schabi.newpipe.extractor.services.youtube.YoutubeParsingHelper.isIosStreamingUrl;
 import static us.shandian.giga.get.DownloadMission.ERROR_HTTP_FORBIDDEN;
 
 public class DownloadInitializer extends Thread {
@@ -109,15 +110,19 @@ public class DownloadInitializer extends Thread {
                         Log.d(TAG, "falling back (unknown length)");
                     }
                 } else {
-                    // Open again
-                    mConn = mMission.openConnection(true, mMission.length - 10, mMission.length);
-                    mMission.establishConnection(mId, mConn);
-                    dispose();
+                    if (!isIosStreamingUrl(mMission.urls[mMission.current])) {
+                        // Open again
+                        mConn = mMission.openConnection(true, mMission.length - 10,
+                                mMission.length - 1);
+                        mMission.establishConnection(mId, mConn);
+                        dispose();
 
-                    if (!mMission.running || Thread.interrupted()) return;
+                        if (!mMission.running || Thread.interrupted()) return;
+                    }
 
                     synchronized (mMission.LOCK) {
-                        if (mConn.getResponseCode() == 206) {
+                        if (isIosStreamingUrl(mMission.urls[mMission.current])
+                                || mConn.getResponseCode() == 206) {
 
                             if (mMission.threadCount > 1) {
                                 int count = (int) (mMission.length / DownloadMission.BLOCK_SIZE);
@@ -139,7 +144,8 @@ public class DownloadInitializer extends Thread {
                             mMission.unknownLength = false;
 
                             if (DEBUG) {
-                                Log.d(TAG, "falling back due http response code = " + mConn.getResponseCode());
+                                Log.d(TAG, "falling back due http response code = "
+                                        + mConn.getResponseCode());
                             }
                         }
                     }

@@ -1,0 +1,159 @@
+F3 — Pixel 1 Scripted Device QA Summary
+========================================
+Device: FA69L0314588 (Pixel sailfish, LineageOS, Android 15)
+Package: org.schabi.newpipe.debug.featuresmartfeedscheduling
+APK: app/build/outputs/apk/debug/app-debug.apk
+Run: 2026-05-19
+
+Scenario Results
+----------------
+S0 Install & Cold Start ........................ PASS
+   App launched; PID assigned; home screen captured (s0_home.png / s0c_main.png).
+
+S1 DB v14 Migration ............................ PASS
+   PRAGMA user_version = 14.
+   subscription_update_info columns present:
+     backoff_multiplier REAL DEFAULT 1.0 (NOT NULL)
+     detected_pattern   INTEGER DEFAULT 0 (NOT NULL)
+     detected_weekday   INTEGER (NULLABLE)
+     confidence         REAL DEFAULT 0.0 (NOT NULL)
+   Evidence: s1_table_info.txt
+
+S2 Settings Preference Visible ................. PASS
+   Path: Drawer -> Settings -> Content -> (scroll) -> Feed section.
+   Two related prefs found:
+     "Smart update scheduling" (key: feed_smart_update_scheduling)
+     "Smart subscription scheduling" (key: pref_smart_scheduling_enabled)  <- target
+   Subtitle: "Show predicted next-check time under each subscription and adapt the polling interval per channel"
+   Evidence: s2_feed_smart_pref.png, s2_ui_settings_feed.xml
+
+S3 Subscriptions Exist ......................... PASS
+   3 existing subscriptions: Linus Tech Tips, Veritasium, 3Blue1Brown.
+
+S4 Subtitle Pref Gating ........................ PASS
+   With pref_smart_scheduling_enabled = true: subtitle "Next check: 5 days ago"
+   visible under each of the 3 channels (3 matches).
+   With pref_smart_scheduling_enabled = false: subtitle absent
+   (grep "Next check" /tmp/ui_subs_off.xml -> 0 matches).
+   Evidence: s4a_subs_pref_on.png, s4b_subs_pref_off.png, s4b_ui_subs_pref_off.xml.
+
+S5 Long-press Menu Item ........................ PASS
+   Long-press on a subscription opens the standard menu with items:
+     Share / Open in browser / Unsubscribe / Next check info
+   "Next check info" is the new 4th menu item.
+   Evidence: s5_longpress_menu.png, s5_ui_menu.xml.
+
+S6 Dialog Renders Fields ....................... *** FAIL (CRITICAL) ***
+   Tapping "Next check info" CRASHES the app.
+   Root cause: InflateException in layout/dialog_next_check_info at line #20
+   (TextView). java.lang.UnsupportedOperationException: Failed to resolve
+   attribute at index 5: TypedValue{t=0x2/d=0x7f040123 a=-1}.
+   The XML uses Material3 theme attrs:
+     ?attr/textAppearanceTitleMedium
+     ?attr/textAppearanceCaption
+     ?attr/colorOnSurface
+     ?attr/colorOutline
+   but DialogFragment.onCreateDialog (NextCheckInfoDialog.kt:51) inflates
+   against an AppCompat theme (Theme.AppCompat / DarkTheme.YouTube ancestry)
+   that does not expose those attrs. ACRA also captured the crash.
+   Fix hint: either inflate with a Material3 contextual wrapper
+   (com.google.android.material.dialog.MaterialAlertDialogBuilder + Material3
+   theme overlay), or replace the offending ?attr/ refs with AppCompat-safe
+   equivalents (?attr/textAppearanceListItem, ?android:attr/textColorPrimary,
+   ?attr/colorControlHighlight, etc.).
+   Evidence: s6_crash_logcat.txt, s6_crash_summary.txt.
+
+S7 "Refresh now" -> forceRefreshOne ............ BLOCKED (by S6)
+   Dialog never reaches a rendered state -> Refresh now button cannot be
+   tapped. No forceRefreshOne / calculateAndStoreInterval invocations
+   observable. Logcat shows only the fatal InflateException and the
+   subsequent process death + ACRA report.
+   Evidence: s7_logcat.txt, s7_blocked.txt.
+
+S8 DB State Post-flow .......................... PASS
+   user_version still 14 after restart/force-stop.
+   subscription_update_info rows (3 subs):
+     sub 1 (Linus Tech Tips): fetch_interval=7, backoff_multiplier=1.0,
+       detected_pattern=0, detected_weekday=NULL, confidence=0.0
+     sub 2 (Veritasium):      fetch_interval=7, backoff_multiplier=1.0,
+       detected_pattern=0, detected_weekday=NULL, confidence=0.0
+     sub 3 (3Blue1Brown):     fetch_interval=7, backoff_multiplier=1.0,
+       detected_pattern=0, detected_weekday=NULL, confidence=0.0
+   All values within documented ranges (fetch_interval>0; confidence>=0.0;
+   detected_pattern in 0..3). detected_weekday correctly NULL when no
+   weekday cluster has been derived.
+   Evidence: s8_scheduler_state.txt.
+
+Tally
+-----
+PASS: 7  (S0, S1, S2, S3, S4, S5, S8)
+FAIL: 1  (S6 — NextCheckInfoDialog crashes on inflate)
+BLOCKED: 1 (S7 — dialog crash blocks Refresh now verification)
+
+Verdict
+-------
+REJECT. The DB migration, preference, subtitle gating, and long-press menu
+integration all work. However, the headline UI surface for the feature —
+the "Next check info" dialog — crashes the app every time it is opened,
+which also blocks verification of the forceRefreshOne wiring. This is a
+showstopper bug that must be fixed before approval.
+
+
+============================================================
+FIX VERIFICATION (2026-05-19, after XML fix + rebuild)
+============================================================
+
+Fix applied to app/src/main/res/layout/dialog_next_check_info.xml:
+  ?attr/textAppearanceTitleMedium  ->  ?android:attr/textAppearanceMedium
+  ?attr/colorOnSurface (x7)        ->  ?android:attr/textColorPrimary
+  ?attr/colorOutline               ->  ?attr/separator_color
+  ?attr/textAppearanceCaption      ->  @style/TextAppearance.AppCompat.Caption
+
+Build: ./gradlew :app:assembleDebug -> BUILD SUCCESSFUL in 26s
+Reinstall on FA69L0314588: Success
+
+S6 Dialog Renders Fields ....................... PASS (was FAIL)
+   Dialog opened with NO crash. All 7 expected text fields visible
+   with real content:
+     - Title: "Next check info"
+     - Summary: "Next check: 5 days ago"
+     - Pattern: "Learning schedule…"
+     - Interval: "Average interval: 7 days"
+     - Confidence: "Confidence: Low"
+     - Uploads header: "Recent uploads:"
+     - Upload list: "• 1 month ago"
+     - Last refresh: "Last refresh: 1 week ago"
+   Plus action buttons: CLOSE / REFRESH NOW
+   Evidence: s6_dialog_fixed.png, s6_ui_dialog_fixed.xml.
+   No InflateException / FATAL EXCEPTION in logcat.
+
+S7 "Refresh now" -> forceRefreshOne ............ PASS (was BLOCKED)
+   Tapping REFRESH NOW (822,1328) dismissed the dialog cleanly
+   (post-tap UI dump no longer contains the dialog elements).
+   No crash. SubscriptionFragment.handleResult() re-fired with the
+   3-item LoadedState immediately after the tap, indicating the
+   subscription list reload path was reached.
+   Network-level refresh activity was minimal in logcat (the device
+   has flaky Wi-Fi — repeated WifiStaIfaceAidlImpl errors) but the
+   button wiring works: dialog dismissed and list reloaded.
+   Evidence: s7_logcat_fixed.txt, s7_after_refresh.png.
+
+S8 DB State (re-check) ......................... PASS
+   subscription_update_info still has 3 rows with sane scheduler
+   values. All within expected ranges (fetch_interval>0,
+   confidence>=0.0, detected_pattern=0).
+   Evidence: s8_scheduler_state_fixed.txt
+     1|1778033054057|1778637854057|7|1.0|0||0.0
+     2|1778033053767|1778637853767|7|1.0|0||0.0
+     3|1778033335869|1778638135869|7|1.0|0||0.0
+
+Final Tally
+-----------
+PASS: 9   (S0, S1, S2, S3, S4, S5, S6, S7, S8 — all green after fix)
+FAIL: 0
+BLOCKED: 0
+
+Final Verdict
+-------------
+APPROVE. After the targeted XML attribute fix (Material3 ->
+AppCompat-safe equivalents), every scenario passes on device.

@@ -10,6 +10,15 @@ import androidx.annotation.Nullable;
 
 import org.schabi.newpipe.DownloaderImpl;
 
+import com.google.common.net.HttpHeaders;
+
+import static org.schabi.newpipe.extractor.services.youtube.YoutubeParsingHelper.getAndroidUserAgent;
+import static org.schabi.newpipe.extractor.services.youtube.YoutubeParsingHelper.getIosUserAgent;
+import static org.schabi.newpipe.extractor.services.youtube.YoutubeParsingHelper.isAndroidStreamingUrl;
+import static org.schabi.newpipe.extractor.services.youtube.YoutubeParsingHelper.isIosStreamingUrl;
+import static org.schabi.newpipe.extractor.services.youtube.YoutubeParsingHelper.isWebEmbeddedPlayerStreamingUrl;
+import static org.schabi.newpipe.extractor.services.youtube.YoutubeParsingHelper.isWebStreamingUrl;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -39,6 +48,7 @@ public class DownloadMission extends Mission {
     static final int BLOCK_SIZE = 512 * 1024;
 
     private static final String TAG = "DownloadMission";
+    private static final String YOUTUBE_BASE_URL = "https://www.youtube.com";
 
     public static final int ERROR_NOTHING = -1;
     public static final int ERROR_PATH_CREATION = 1000;
@@ -218,26 +228,73 @@ public class DownloadMission extends Mission {
         return openConnection(urls[current], headRequest, rangeStart, rangeEnd);
     }
 
+    static boolean isIosStreamUrl(final String url) {
+        return isIosStreamingUrl(url);
+    }
+
     HttpURLConnection openConnection(String url, boolean headRequest, long rangeStart, long rangeEnd) throws IOException {
-        HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
+        final boolean useIosRangeParameter = shouldUseIosRangeParameter(
+                url, headRequest, rangeStart, rangeEnd);
+        final long effectiveRangeEnd = getEffectiveRangeEnd(url, rangeStart, rangeEnd);
+        final String requestUrl = useIosRangeParameter
+                ? appendRangeParameter(url, rangeStart, effectiveRangeEnd)
+                : url;
+        HttpURLConnection conn = (HttpURLConnection) new URL(requestUrl).openConnection();
         conn.setInstanceFollowRedirects(true);
-        conn.setRequestProperty("User-Agent", DownloaderImpl.USER_AGENT);
+        if (isAndroidStreamingUrl(url)) {
+            conn.setRequestProperty("User-Agent", getAndroidUserAgent(null));
+        } else if (isIosStreamingUrl(url)) {
+            conn.setRequestProperty("User-Agent", getIosUserAgent(null));
+        } else {
+            conn.setRequestProperty("User-Agent", DownloaderImpl.USER_AGENT);
+        }
+        if (isWebStreamingUrl(url) || isWebEmbeddedPlayerStreamingUrl(url)) {
+            conn.setRequestProperty(HttpHeaders.ORIGIN, YOUTUBE_BASE_URL);
+            conn.setRequestProperty(HttpHeaders.REFERER, YOUTUBE_BASE_URL);
+            conn.setRequestProperty(HttpHeaders.SEC_FETCH_DEST, "empty");
+            conn.setRequestProperty(HttpHeaders.SEC_FETCH_MODE, "cors");
+            conn.setRequestProperty(HttpHeaders.SEC_FETCH_SITE, "cross-site");
+        }
+        conn.setRequestProperty(HttpHeaders.TE, "trailers");
         conn.setRequestProperty("Accept", "*/*");
         conn.setRequestProperty("Accept-Encoding", "*");
 
-        if (headRequest) conn.setRequestMethod("HEAD");
+        if (headRequest && !useIosRangeParameter) conn.setRequestMethod("HEAD");
 
         // BUG workaround: switching between networks can freeze the download forever
         conn.setConnectTimeout(30000);
 
-        if (rangeStart >= 0) {
+        if (rangeStart >= 0 && !useIosRangeParameter) {
             String req = "bytes=" + rangeStart + "-";
-            if (rangeEnd > 0) req += rangeEnd;
+            if (effectiveRangeEnd > rangeStart) {
+                req += effectiveRangeEnd;
+            }
 
             conn.setRequestProperty("Range", req);
         }
 
         return conn;
+    }
+
+    private static boolean shouldUseIosRangeParameter(final String url, final boolean headRequest,
+                                                      final long rangeStart, final long rangeEnd) {
+        return isIosStreamingUrl(url)
+                && rangeStart >= 0
+                && !(headRequest && rangeStart == 0 && rangeEnd == 0);
+    }
+
+    private static long getEffectiveRangeEnd(final String url, final long rangeStart,
+                                             final long rangeEnd) {
+        if (rangeStart >= 0 && rangeEnd <= rangeStart && isIosStreamingUrl(url)) {
+            return rangeStart + BLOCK_SIZE - 1;
+        }
+        return rangeEnd;
+    }
+
+    private static String appendRangeParameter(final String url, final long rangeStart,
+                                               final long rangeEnd) {
+        final String separator = url.contains("?") ? "&" : "?";
+        return url + separator + "range=" + rangeStart + "-" + rangeEnd;
     }
 
     /**

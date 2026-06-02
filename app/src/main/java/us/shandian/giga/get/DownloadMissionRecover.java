@@ -189,7 +189,7 @@ public class DownloadMissionRecover extends Thread {
         ////// Validate the http resource doing a range request
         /////////////////////
         try {
-            mConn = mMission.openConnection(url, true, mMission.length - 10, mMission.length);
+            mConn = mMission.openConnection(url, true, mMission.length - 10, mMission.length - 1);
             mConn.setRequestProperty("If-Range", mRecovery.getValidateCondition());
             mMission.establishConnection(mID, mConn);
 
@@ -286,10 +286,10 @@ public class DownloadMissionRecover extends Thread {
         if (mMission.urls[mMission.current] == null) return false;
 
         try {
-            mConn = mMission.openConnection(mMission.urls[mMission.current], true, -1, -1);
+            mConn = mMission.openConnection(mMission.urls[mMission.current], true, 0, DownloadMission.BLOCK_SIZE - 1);
             mMission.establishConnection(mID, mConn);
 
-            if (mConn.getResponseCode() == 200) return true;
+            if (mConn.getResponseCode() == 200 || mConn.getResponseCode() == 206) return true;
         } catch (Exception e) {
             // nothing to do
         } finally {

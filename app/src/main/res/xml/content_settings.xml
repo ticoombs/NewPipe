@@ -175,6 +175,14 @@
             app:defaultValue="false"
             app:iconSpaceReserved="false" />
 
+        <SwitchPreferenceCompat
+            android:key="@string/smart_scheduling_enabled_key"
+            android:defaultValue="@string/smart_scheduling_enabled_default"
+            android:title="@string/smart_scheduling_title"
+            android:summary="@string/smart_scheduling_summary"
+            app:singleLineTitle="false"
+            app:iconSpaceReserved="false" />
+
         <!-- Feed ordering preference -->
         <ListPreference
             android:key="@string/feed_order_by_key"

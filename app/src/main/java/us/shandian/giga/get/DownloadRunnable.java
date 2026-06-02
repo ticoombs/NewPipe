@@ -12,6 +12,7 @@ import java.util.Objects;
 
 import us.shandian.giga.get.DownloadMission.Block;
 import us.shandian.giga.get.DownloadMission.HttpError;
+import us.shandian.giga.util.Utility;
 
 import static org.schabi.newpipe.BuildConfig.DEBUG;
 import static us.shandian.giga.get.DownloadMission.ERROR_HTTP_FORBIDDEN;
@@ -100,11 +101,16 @@ public class DownloadRunnable extends Thread {
                 retry = false;
 
                 // The server may be ignoring the range request
-                if (mConn.getResponseCode() != 206) {
+                final int responseCode = mConn.getResponseCode();
+                final long expectedLength = end - start + 1;
+                final boolean iosRangeParameterResponse = responseCode == 200
+                        && DownloadMission.isIosStreamUrl(mMission.urls[mMission.current])
+                        && Utility.getContentLength(mConn) == expectedLength;
+                if (responseCode != 206 && !iosRangeParameterResponse) {
                     if (DEBUG) {
-                        Log.e(TAG, mId + ":Unsupported " + mConn.getResponseCode());
+                        Log.e(TAG, mId + ":Unsupported " + responseCode);
                     }
-                    mMission.notifyError(new DownloadMission.HttpError(mConn.getResponseCode()));
+                    mMission.notifyError(new DownloadMission.HttpError(responseCode));
                     break;
                 }
 

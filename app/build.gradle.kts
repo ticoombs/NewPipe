@@ -44,13 +44,29 @@ configure<ApplicationExtension> {
         minSdk = 23
         targetSdk = 35
 
-        versionCode = System.getProperty("versionCodeOverride")?.toInt() ?: 1010
+versionCode = System.getProperty("versionCodeOverride")?.toInt() ?: 1018
 
         versionName = "0.28.5"
         System.getProperty("versionNameSuffix")?.let { versionNameSuffix = it }
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+
+    // Release signing driven by env vars (source ../fdroid-repo/keystore/newpipe.env).
+    // If NEWPIPE_KEYSTORE is unset or missing, release build is left unsigned.
+    val npKeystorePath: String? = System.getenv("NEWPIPE_KEYSTORE")
+    val npKeystoreFile: java.io.File? = npKeystorePath?.let { file(it) }?.takeIf { it.isFile }
+    signingConfigs {
+        create("release") {
+            if (npKeystoreFile != null) {
+                storeFile = npKeystoreFile
+                storePassword = System.getenv("NEWPIPE_KEYSTORE_PASSWORD")
+                keyAlias = System.getenv("NEWPIPE_KEY_ALIAS")
+                keyPassword = System.getenv("NEWPIPE_KEY_PASSWORD")
+            }
+        }
+    }
+
 
     buildTypes {
         debug {
@@ -80,6 +96,9 @@ configure<ApplicationExtension> {
             }
             isMinifyEnabled = true
             isShrinkResources = true
+            if (System.getenv("NEWPIPE_KEYSTORE")?.let { file(it).isFile } == true) {
+                signingConfig = signingConfigs.getByName("release")
+            }
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"

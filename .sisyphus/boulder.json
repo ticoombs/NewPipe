@@ -1,0 +1,100 @@
+{
+  "active_plan": "/home/timc/repos/NewPipe/.sisyphus/plans/smart-subscription-scheduling.md",
+  "started_at": "2026-05-15T00:22:59.167Z",
+  "session_ids": [
+    "ses_1d6fc24e0ffe7SXgBbY7GNg9cX",
+    "ses_1d6ce0717ffeNha3unrXXwGXCp",
+    "ses_1d6cde98dffecRk3fIDWK2j7wE",
+    "ses_1d6cda8a5ffeYKLe3AvcU7MNA8",
+    "ses_1d6cd7c81ffeND5dP9k2YBNEFr",
+    "ses_1d6cd49d2ffed0GlUOJ5nVg3q8",
+    "ses_1d6cce42affewBW6DNUg66w4oo",
+    "ses_1d6ccc564ffeRgB42YXqBtEhiz"
+  ],
+  "session_origins": {
+    "ses_1d6fc24e0ffe7SXgBbY7GNg9cX": "direct",
+    "ses_1d6ce0717ffeNha3unrXXwGXCp": "appended",
+    "ses_1d6cde98dffecRk3fIDWK2j7wE": "appended",
+    "ses_1d6cda8a5ffeYKLe3AvcU7MNA8": "appended",
+    "ses_1d6cd7c81ffeND5dP9k2YBNEFr": "appended",
+    "ses_1d6cd49d2ffed0GlUOJ5nVg3q8": "appended",
+    "ses_1d6cce42affewBW6DNUg66w4oo": "appended",
+    "ses_1d6ccc564ffeRgB42YXqBtEhiz": "appended"
+  },
+  "plan_name": "smart-subscription-scheduling",
+  "agent": "atlas",
+  "task_sessions": {
+    "todo:1": {
+      "task_key": "todo:1",
+      "task_label": "1",
+      "task_title": "**Add `pref_smart_scheduling_enabled` preference + i18n**",
+      "session_id": "ses_1d6fa15ffffexaFEzdEXZfMMvr",
+      "agent": "Sisyphus-Junior",
+      "category": "quick",
+      "updated_at": "2026-05-15T00:29:32.917Z"
+    },
+    "todo:3": {
+      "task_key": "todo:3",
+      "task_label": "3",
+      "task_title": "**`UploadCadenceAnalyzer` state machine + comprehensive JVM tests (TDD red→green)**",
+      "session_id": "ses_1d6eff6b9ffe0XHKIjPD3xJMev",
+      "agent": "Sisyphus-Junior",
+      "category": "ultrabrain",
+      "updated_at": "2026-05-15T00:40:59.789Z"
+    },
+    "todo:4": {
+      "task_key": "todo:4",
+      "task_label": "4",
+      "task_title": "**FeedDAO: `getRecentUploadDates` query + extend `setFetchIntervalForSubscription` to persist new state fields**",
+      "session_id": "ses_1d6ea5995ffeo4RW2rRAJo2WPP",
+      "agent": "Sisyphus-Junior",
+      "category": "quick",
+      "updated_at": "2026-05-15T00:46:22.869Z"
+    },
+    "todo:6": {
+      "task_key": "todo:6",
+      "task_label": "6",
+      "task_title": "**`FeedLoadManager`: integrate analyzer, single-flight guard, `forceRefreshOne` API; DELETE `FetchInterval.kt` + tests**",
+      "session_id": "ses_1d6e20b6cffeNuwjytTzX4rhNO",
+      "agent": "Sisyphus-Junior",
+      "category": "deep",
+      "updated_at": "2026-05-15T00:56:22.541Z"
+    },
+    "todo:7": {
+      "task_key": "todo:7",
+      "task_label": "7",
+      "task_title": "**Layout `dialog_next_check_info.xml` + 5 i18n string keys**",
+      "session_id": "ses_1d6dba45cffevg2gorUraNvT6f",
+      "agent": "Sisyphus-Junior",
+      "category": "visual-engineering",
+      "updated_at": "2026-05-15T01:00:30.761Z"
+    },
+    "todo:8": {
+      "task_key": "todo:8",
+      "task_label": "8",
+      "task_title": "**`NextCheckInfoDialog` Kotlin class — binds state to text, [Refresh now] wires `forceRefreshOne`**",
+      "session_id": "ses_1d6d875fdffeRdDLMk3jCHZzk7",
+      "agent": "Sisyphus-Junior",
+      "category": "unspecified-high",
+      "updated_at": "2026-05-15T01:04:57.889Z"
+    },
+    "todo:9": {
+      "task_key": "todo:9",
+      "task_label": "9",
+      "task_title": "**`SubscriptionFragment.showLongTapDialog`: add \"Next check info\" item**",
+      "session_id": "ses_1d6d43c2effecihY9mxePZASbY",
+      "agent": "Sisyphus-Junior",
+      "category": "quick",
+      "updated_at": "2026-05-15T01:09:28.915Z"
+    },
+    "final-wave:f1": {
+      "task_key": "final-wave:f1",
+      "task_label": "F1",
+      "task_title": "**Plan Compliance Audit** — `oracle`",
+      "session_id": "ses_1d6ca03bdffe9ax1JB0aA3q28z",
+      "agent": "Sisyphus-Junior",
+      "category": "deep",
+      "updated_at": "2026-05-15T01:20:44.031Z"
+    }
+  }
+}

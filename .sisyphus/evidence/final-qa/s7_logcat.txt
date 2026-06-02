@@ -1,0 +1,492 @@
+--------- beginning of kernel
+05-19 10:47:01.027 I/binder  (    0): 6950:6950 ioctl 40046210 7ff2532344 returned -22
+--------- beginning of main
+05-19 10:47:01.146 D/audioserver( 1084): logFgsApiBegin: FGS Logger Transaction failed, -129
+05-19 10:47:01.151 W/AS.PlaybackActivityMon( 1505): No piid assigned for invalid/internal port id 24
+05-19 10:47:01.153 I/ACDB-LOADER( 1054): ACDB AFE returned = -19
+05-19 10:47:01.153 D/hardware_info( 1054): hw_info_append_hw_type : device_name = speaker
+05-19 10:47:01.153 D/audio_hw_primary( 1054): enable_snd_device: snd_device(2: speaker)
+05-19 10:47:01.153 D/audio_route( 1054): Apply path: speaker
+05-19 10:47:01.153 D/audio_hw_primary( 1054): enable_audio_route: usecase(1) apply and update mixer path: low-latency-playback speaker
+05-19 10:47:01.153 D/audio_route( 1054): Apply path: low-latency-playback speaker
+05-19 10:47:01.155 E/ANDR-PERF-OPTSHANDLER( 2748): Warning: Resource [2, 0] not supported for core 1. Instead use resource for core 0
+05-19 10:47:01.155 E/ANDR-PERF-RESOURCEQS( 2748): Failed to apply optimization [2, 2, 0]
+05-19 10:47:01.159 I/tfa98xx_spk_event()(    0): event 2
+05-19 10:47:01.160 W/WindowOnBackDispatcher( 5231): sendCancelIfRunning: isInProgress=false callback=android.view.ViewRootImpl$$ExternalSyntheticLambda13@1e87e56
+--------- beginning of system
+05-19 10:47:01.161 D/CoreBackPreview( 1505): Window{a000034 u0 org.schabi.newpipe.debug.featuresmartfeedscheduling/org.schabi.newpipe.MainActivity}: Setting back callback null
+05-19 10:47:01.165 D/HWUI    ( 5231): endAllActiveAnimators on 0x76229bcbe0 (AlertController$RecycleListView) with handle 0x74d2765f50
+05-19 10:47:01.171 E/[AUD] q6asm(    0): q6asm_callback: payload size of 8 is less than expected.
+05-19 10:47:01.171 E/q6core_get_service_version(    0): Failed to get service size for service id 8 with error -95
+05-19 10:47:01.184 D/audio_hw_primary( 1054): out_write: retry previous failed cal level set
+05-19 10:47:01.188 D/AndroidRuntime( 5231): Shutting down VM
+--------- beginning of crash
+05-19 10:47:01.190 E/AndroidRuntime( 5231): FATAL EXCEPTION: main
+05-19 10:47:01.190 E/AndroidRuntime( 5231): Process: org.schabi.newpipe.debug.featuresmartfeedscheduling, PID: 5231
+05-19 10:47:01.190 E/AndroidRuntime( 5231): android.view.InflateException: Binary XML file line #20 in org.schabi.newpipe.debug.featuresmartfeedscheduling:layout/dialog_next_check_info: Binary XML file line #20 in org.schabi.newpipe.debug.featuresmartfeedscheduling:layout/dialog_next_check_info: Error inflating class TextView
+05-19 10:47:01.190 E/AndroidRuntime( 5231): Caused by: android.view.InflateException: Binary XML file line #20 in org.schabi.newpipe.debug.featuresmartfeedscheduling:layout/dialog_next_check_info: Error inflating class TextView
+05-19 10:47:01.190 E/AndroidRuntime( 5231): Caused by: java.lang.UnsupportedOperationException: Failed to resolve attribute at index 5: TypedValue{t=0x2/d=0x7f040123 a=-1}, theme={InheritanceMap=[id=0x7f14014dorg.schabi.newpipe.debug.featuresmartfeedscheduling:style/DarkTheme.YouTube, id=0x7f140149org.schabi.newpipe.debug.featuresmartfeedscheduling:style/DarkTheme, id=0x7f140013org.schabi.newpipe.debug.featuresmartfeedscheduling:style/Base.DarkTheme, id=0x7f1400d0org.schabi.newpipe.debug.featuresmartfeedscheduling:style/Base.V35.DarkTheme, id=0x7f1400ccorg.schabi.newpipe.debug.featuresmartfeedscheduling:style/Base.V29.DarkTheme, id=0x7f1400c6org.schabi.newpipe.debug.featuresmartfeedscheduling:style/Base.V27.DarkTheme, id=0x7f1400aaorg.schabi.newpipe.debug.featuresmartfeedscheduling:style/Base.V21.DarkTheme, id=0x7f14000borg.schabi.newpipe.debug.featuresmartfeedscheduling:style/Base, id=0x7f1400ceorg.schabi.newpipe.debug.featuresmartfeedscheduling:style/Base.V35, id=0x7f1400caorg.schabi.newpipe.debug.featuresmartfeedscheduling:style/Base.V29, id=0x7f1400c4org.schabi.newpipe.debug.featuresmartfeedscheduling:style/Base.V27, id=0x7f1400a8org.schabi.newpipe.debug.featuresmartfeedscheduling:style/Base.V21, id=0x7f14029forg.schabi.newpipe.debug.featuresmartfeedscheduling:style/Theme.AppCompat.DayNight.NoActionBar, id=0x7f1402acorg.schabi.newpipe.debug.featuresmartfeedscheduling:style/Theme.AppCompat.NoActionBar, id=0x7f140297org.schabi.newpipe.debug.featuresmartfeedscheduling:style/Theme.AppCompat, id=0x7f140052org.schabi.newpipe.debug.featuresmartfeedscheduling:style/Base.Theme.AppCompat, id=0x7f1400c8org.schabi.newpipe.debug.featuresmartfeedscheduling:style/Base.V28.Theme.AppCompat, id=0x7f1400c1org.schabi.newpipe.debug.featuresmartfeedscheduling:style/Base.V26.Theme.AppCompat, id=0x7f1400bborg.schabi.newpipe.debug.featuresmartfeedscheduling:style/Base.V23.Theme.AppCompat, id=0x7f1400b9org.schabi.newpipe.debug.featuresmartfeedscheduling:style/Base.V22.Theme.AppCompat, id=0x7f1400adorg.schabi.newpipe.debug.featuresmartfeedscheduling:style/Base.V21.Theme.AppCompat, id=0x7f1400d2org.schabi.newpipe.debug.featuresmartfeedscheduling:style/Base.V7.Theme.AppCompat, id=0x7f140198org.schabi.newpipe.debug.featuresmartfeedscheduling:style/Platform.AppCompat, id=0x7f1401a3org.schabi.newpipe.debug.featuresmartfeedscheduling:style/Platform.V25.AppCompat, id=0x103022eandroid:style/Theme.Material.NoActionBar, id=0x1030224android:style/Theme.Material, id=0x1030005android:style/Theme], Themes=[org.schabi.newpipe.debug.featuresmartfeedscheduling:style/DarkTheme.YouTube, forced, org.schabi.newpipe.debug.featuresmartfeedscheduling:style/OpeningTheme, forced, org.schabi.newpipe.debug.featuresmartfeedscheduling:style/Theme.AppCompat.Empty, forced, android:style/Theme.DeviceDefault.Light.DarkActionBar, forced]}
+05-19 10:47:01.190 E/AndroidRuntime( 5231): 	at android.content.res.TypedArray.getColorStateList(TypedArray.java:608)
+05-19 10:47:01.190 E/AndroidRuntime( 5231): 	at android.widget.TextView.readTextAppearance(TextView.java:4356)
+05-19 10:47:01.190 E/AndroidRuntime( 5231): 	at android.widget.TextView.<init>(TextView.java:1288)
+05-19 10:47:01.190 E/AndroidRuntime( 5231): 	at android.widget.TextView.<init>(TextView.java:1186)
+05-19 10:47:01.190 E/AndroidRuntime( 5231): 	at androidx.appcompat.widget.AppCompatTextView.<init>(AppCompatTextView.java:115)
+05-19 10:47:01.190 E/AndroidRuntime( 5231): 	at androidx.appcompat.widget.AppCompatTextView.<init>(AppCompatTextView.java:110)
+05-19 10:47:01.190 E/AndroidRuntime( 5231): 	at androidx.appcompat.app.AppCompatViewInflater.createTextView(AppCompatViewInflater.java:228)
+05-19 10:47:01.190 E/AndroidRuntime( 5231): 	at androidx.appcompat.app.AppCompatViewInflater.createView(AppCompatViewInflater.java:148)
+05-19 10:47:01.190 V/WindowManager( 1505): Unknown focus tokens, dropping reportFocusChanged
+05-19 10:47:01.190 E/AndroidRuntime( 5231): 	at androidx.appcompat.app.AppCompatDelegateImpl.createView(AppCompatDelegateImpl.java:1654)
+05-19 10:47:01.190 E/AndroidRuntime( 5231): 	at androidx.appcompat.app.AppCompatDelegateImpl.onCreateView(AppCompatDelegateImpl.java:1705)
+05-19 10:47:01.190 E/AndroidRuntime( 5231): 	at android.view.LayoutInflater.tryCreateView(LayoutInflater.java:949)
+05-19 10:47:01.190 E/AndroidRuntime( 5231): 	at android.view.LayoutInflater.createViewFromTag(LayoutInflater.java:885)
+05-19 10:47:01.190 E/AndroidRuntime( 5231): 	at android.view.LayoutInflater.createViewFromTag(LayoutInflater.java:849)
+05-19 10:47:01.190 E/AndroidRuntime( 5231): 	at android.view.LayoutInflater.rInflate(LayoutInflater.java:1011)
+05-19 10:47:01.190 E/AndroidRuntime( 5231): 	at android.view.LayoutInflater.rInflateChildren(LayoutInflater.java:972)
+05-19 10:47:01.190 E/AndroidRuntime( 5231): 	at android.view.LayoutInflater.rInflate(LayoutInflater.java:1014)
+05-19 10:47:01.190 E/AndroidRuntime( 5231): 	at android.view.LayoutInflater.rInflateChildren(LayoutInflater.java:972)
+05-19 10:47:01.190 E/AndroidRuntime( 5231): 	at android.view.LayoutInflater.inflate(LayoutInflater.java:570)
+05-19 10:47:01.190 E/AndroidRuntime( 5231): 	at android.view.LayoutInflater.inflate(LayoutInflater.java:462)
+05-19 10:47:01.190 E/AndroidRuntime( 5231): 	at org.schabi.newpipe.local.subscription.dialog.NextCheckInfoDialog.onCreateDialog(NextCheckInfoDialog.kt:51)
+05-19 10:47:01.190 E/AndroidRuntime( 5231): 	at androidx.fragment.app.DialogFragment.prepareDialog(DialogFragment.java:925)
+05-19 10:47:01.190 E/AndroidRuntime( 5231): 	at androidx.fragment.app.DialogFragment.onGetLayoutInflater(DialogFragment.java:839)
+05-19 10:47:01.190 E/AndroidRuntime( 5231): 	at androidx.fragment.app.Fragment.performGetLayoutInflater(Fragment.java:1760)
+05-19 10:47:01.190 E/AndroidRuntime( 5231): 	at androidx.fragment.app.FragmentStateManager.createView(FragmentStateManager.java:547)
+05-19 10:47:01.190 E/AndroidRuntime( 5231): 	at androidx.fragment.app.FragmentStateManager.moveToExpectedState(FragmentStateManager.java:286)
+05-19 10:47:01.190 E/AndroidRuntime( 5231): 	at androidx.fragment.app.FragmentManager.executeOpsTogether(FragmentManager.java:2214)
+05-19 10:47:01.190 E/AndroidRuntime( 5231): 	at androidx.fragment.app.FragmentManager.removeRedundantOperationsAndExecute(FragmentManager.java:2115)
+05-19 10:47:01.190 E/AndroidRuntime( 5231): 	at androidx.fragment.app.FragmentManager.execPendingActions(FragmentManager.java:2052)
+05-19 10:47:01.190 E/AndroidRuntime( 5231): 	at androidx.fragment.app.FragmentManager$5.run(FragmentManager.java:703)
+05-19 10:47:01.190 E/AndroidRuntime( 5231): 	at android.os.Handler.handleCallback(Handler.java:991)
+05-19 10:47:01.190 E/AndroidRuntime( 5231): 	at android.os.Handler.dispatchMessage(Handler.java:102)
+05-19 10:47:01.190 E/AndroidRuntime( 5231): 	at android.os.Looper.loopOnce(Looper.java:232)
+05-19 10:47:01.190 E/AndroidRuntime( 5231): 	at android.os.Looper.loop(Looper.java:317)
+05-19 10:47:01.190 E/AndroidRuntime( 5231): 	at android.app.ActivityThread.main(ActivityThread.java:8934)
+05-19 10:47:01.190 E/AndroidRuntime( 5231): 	at java.lang.reflect.Method.invoke(Native Method)
+05-19 10:47:01.190 E/AndroidRuntime( 5231): 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:591)
+05-19 10:47:01.190 E/AndroidRuntime( 5231): 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:911)
+05-19 10:47:01.181 E/q6core_get_service_version(    0): Failed to get service size for service id 7 with error -95
+05-19 10:47:01.182 E/[AUD] q6asm(    0): q6asm_callback: payload size of 8 is less than expected.
+05-19 10:47:01.187 E/[AUD] q6asm(    0): q6asm_callback: payload size of 8 is less than expected.
+05-19 10:47:01.340 E/ACRA    ( 5231): ACRA caught a InflateException for org.schabi.newpipe.debug.featuresmartfeedscheduling
+05-19 10:47:01.340 E/ACRA    ( 5231): android.view.InflateException: Binary XML file line #20 in org.schabi.newpipe.debug.featuresmartfeedscheduling:layout/dialog_next_check_info: Binary XML file line #20 in org.schabi.newpipe.debug.featuresmartfeedscheduling:layout/dialog_next_check_info: Error inflating class TextView
+05-19 10:47:01.340 E/ACRA    ( 5231): Caused by: android.view.InflateException: Binary XML file line #20 in org.schabi.newpipe.debug.featuresmartfeedscheduling:layout/dialog_next_check_info: Error inflating class TextView
+05-19 10:47:01.340 E/ACRA    ( 5231): Caused by: java.lang.UnsupportedOperationException: Failed to resolve attribute at index 5: TypedValue{t=0x2/d=0x7f040123 a=-1}, theme={InheritanceMap=[id=0x7f14014dorg.schabi.newpipe.debug.featuresmartfeedscheduling:style/DarkTheme.YouTube, id=0x7f140149org.schabi.newpipe.debug.featuresmartfeedscheduling:style/DarkTheme, id=0x7f140013org.schabi.newpipe.debug.featuresmartfeedscheduling:style/Base.DarkTheme, id=0x7f1400d0org.schabi.newpipe.debug.featuresmartfeedscheduling:style/Base.V35.DarkTheme, id=0x7f1400ccorg.schabi.newpipe.debug.featuresmartfeedscheduling:style/Base.V29.DarkTheme, id=0x7f1400c6org.schabi.newpipe.debug.featuresmartfeedscheduling:style/Base.V27.DarkTheme, id=0x7f1400aaorg.schabi.newpipe.debug.featuresmartfeedscheduling:style/Base.V21.DarkTheme, id=0x7f14000borg.schabi.newpipe.debug.featuresmartfeedscheduling:style/Base, id=0x7f1400ceorg.schabi.newpipe.debug.featuresmartfeedscheduling:style/Base.V35, id=0x7f1400caorg.schabi.newpipe.debug.featuresmartfeedscheduling:style/Base.V29, id=0x7f1400c4org.schabi.newpipe.debug.featuresmartfeedscheduling:style/Base.V27, id=0x7f1400a8org.schabi.newpipe.debug.featuresmartfeedscheduling:style/Base.V21, id=0x7f14029forg.schabi.newpipe.debug.featuresmartfeedscheduling:style/Theme.AppCompat.DayNight.NoActionBar, id=0x7f1402acorg.schabi.newpipe.debug.featuresmartfeedscheduling:style/Theme.AppCompat.NoActionBar, id=0x7f140297org.schabi.newpipe.debug.featuresmartfeedscheduling:style/Theme.AppCompat, id=0x7f140052org.schabi.newpipe.debug.featuresmartfeedscheduling:style/Base.Theme.AppCompat, id=0x7f1400c8org.schabi.newpipe.debug.featuresmartfeedscheduling:style/Base.V28.Theme.AppCompat, id=0x7f1400c1org.schabi.newpipe.debug.featuresmartfeedscheduling:style/Base.V26.Theme.AppCompat, id=0x7f1400bborg.schabi.newpipe.debug.featuresmartfeedscheduling:style/Base.V23.Theme.AppCompat, id=0x7f1400b9org.schabi.newpipe.debug.featuresmartfeedscheduling:style/Base.V22.Theme.AppCompat, id=0x7f1400adorg.schabi.newpipe.debug.featuresmartfeedscheduling:style/Base.V21.Theme.AppCompat, id=0x7f1400d2org.schabi.newpipe.debug.featuresmartfeedscheduling:style/Base.V7.Theme.AppCompat, id=0x7f140198org.schabi.newpipe.debug.featuresmartfeedscheduling:style/Platform.AppCompat, id=0x7f1401a3org.schabi.newpipe.debug.featuresmartfeedscheduling:style/Platform.V25.AppCompat, id=0x103022eandroid:style/Theme.Material.NoActionBar, id=0x1030224android:style/Theme.Material, id=0x1030005android:style/Theme], Themes=[org.schabi.newpipe.debug.featuresmartfeedscheduling:style/DarkTheme.YouTube, forced, org.schabi.newpipe.debug.featuresmartfeedscheduling:style/OpeningTheme, forced, org.schabi.newpipe.debug.featuresmartfeedscheduling:style/Theme.AppCompat.Empty, forced, android:style/Theme.DeviceDefault.Light.DarkActionBar, forced]}
+05-19 10:47:01.340 E/ACRA    ( 5231): 	at android.content.res.TypedArray.getColorStateList(TypedArray.java:608)
+05-19 10:47:01.340 E/ACRA    ( 5231): 	at android.widget.TextView.readTextAppearance(TextView.java:4356)
+05-19 10:47:01.340 E/ACRA    ( 5231): 	at android.widget.TextView.<init>(TextView.java:1288)
+05-19 10:47:01.340 E/ACRA    ( 5231): 	at android.widget.TextView.<init>(TextView.java:1186)
+05-19 10:47:01.340 E/ACRA    ( 5231): 	at androidx.appcompat.widget.AppCompatTextView.<init>(AppCompatTextView.java:115)
+05-19 10:47:01.340 E/ACRA    ( 5231): 	at androidx.appcompat.widget.AppCompatTextView.<init>(AppCompatTextView.java:110)
+05-19 10:47:01.340 E/ACRA    ( 5231): 	at androidx.appcompat.app.AppCompatViewInflater.createTextView(AppCompatViewInflater.java:228)
+05-19 10:47:01.340 E/ACRA    ( 5231): 	at androidx.appcompat.app.AppCompatViewInflater.createView(AppCompatViewInflater.java:148)
+05-19 10:47:01.340 E/ACRA    ( 5231): 	at androidx.appcompat.app.AppCompatDelegateImpl.createView(AppCompatDelegateImpl.java:1654)
+05-19 10:47:01.340 E/ACRA    ( 5231): 	at androidx.appcompat.app.AppCompatDelegateImpl.onCreateView(AppCompatDelegateImpl.java:1705)
+05-19 10:47:01.340 E/ACRA    ( 5231): 	at android.view.LayoutInflater.tryCreateView(LayoutInflater.java:949)
+05-19 10:47:01.340 E/ACRA    ( 5231): 	at android.view.LayoutInflater.createViewFromTag(LayoutInflater.java:885)
+05-19 10:47:01.340 E/ACRA    ( 5231): 	at android.view.LayoutInflater.createViewFromTag(LayoutInflater.java:849)
+05-19 10:47:01.340 E/ACRA    ( 5231): 	at android.view.LayoutInflater.rInflate(LayoutInflater.java:1011)
+05-19 10:47:01.340 E/ACRA    ( 5231): 	at android.view.LayoutInflater.rInflateChildren(LayoutInflater.java:972)
+05-19 10:47:01.340 E/ACRA    ( 5231): 	at android.view.LayoutInflater.rInflate(LayoutInflater.java:1014)
+05-19 10:47:01.340 E/ACRA    ( 5231): 	at android.view.LayoutInflater.rInflateChildren(LayoutInflater.java:972)
+05-19 10:47:01.340 E/ACRA    ( 5231): 	at android.view.LayoutInflater.inflate(LayoutInflater.java:570)
+05-19 10:47:01.340 E/ACRA    ( 5231): 	at android.view.LayoutInflater.inflate(LayoutInflater.java:462)
+05-19 10:47:01.340 E/ACRA    ( 5231): 	at org.schabi.newpipe.local.subscription.dialog.NextCheckInfoDialog.onCreateDialog(NextCheckInfoDialog.kt:51)
+05-19 10:47:01.340 E/ACRA    ( 5231): 	at androidx.fragment.app.DialogFragment.prepareDialog(DialogFragment.java:925)
+05-19 10:47:01.340 E/ACRA    ( 5231): 	at androidx.fragment.app.DialogFragment.onGetLayoutInflater(DialogFragment.java:839)
+05-19 10:47:01.340 E/ACRA    ( 5231): 	at androidx.fragment.app.Fragment.performGetLayoutInflater(Fragment.java:1760)
+05-19 10:47:01.340 E/ACRA    ( 5231): 	at androidx.fragment.app.FragmentStateManager.createView(FragmentStateManager.java:547)
+05-19 10:47:01.340 E/ACRA    ( 5231): 	at androidx.fragment.app.FragmentStateManager.moveToExpectedState(FragmentStateManager.java:286)
+05-19 10:47:01.340 E/ACRA    ( 5231): 	at androidx.fragment.app.FragmentManager.executeOpsTogether(FragmentManager.java:2214)
+05-19 10:47:01.340 E/ACRA    ( 5231): 	at androidx.fragment.app.FragmentManager.removeRedundantOperationsAndExecute(FragmentManager.java:2115)
+05-19 10:47:01.340 E/ACRA    ( 5231): 	at androidx.fragment.app.FragmentManager.execPendingActions(FragmentManager.java:2052)
+05-19 10:47:01.340 E/ACRA    ( 5231): 	at androidx.fragment.app.FragmentManager$5.run(FragmentManager.java:703)
+05-19 10:47:01.340 E/ACRA    ( 5231): 	at android.os.Handler.handleCallback(Handler.java:991)
+05-19 10:47:01.340 E/ACRA    ( 5231): 	at android.os.Handler.dispatchMessage(Handler.java:102)
+05-19 10:47:01.340 E/ACRA    ( 5231): 	at android.os.Looper.loopOnce(Looper.java:232)
+05-19 10:47:01.340 E/ACRA    ( 5231): 	at android.os.Looper.loop(Looper.java:317)
+05-19 10:47:01.340 E/ACRA    ( 5231): 	at android.app.ActivityThread.main(ActivityThread.java:8934)
+05-19 10:47:01.340 E/ACRA    ( 5231): 	at java.lang.reflect.Method.invoke(Native Method)
+05-19 10:47:01.340 E/ACRA    ( 5231): 	at com.android.internal.os.RuntimeInit$MethodAndArgsCaller.run(RuntimeInit.java:591)
+05-19 10:47:01.340 E/ACRA    ( 5231): 	at com.android.internal.os.ZygoteInit.main(ZygoteInit.java:911)
+05-19 10:47:01.353 D/audioserver( 1084): logFgsApiEnd: FGS Logger Transaction failed, -129
+05-19 10:47:01.369 I/logd    (    0): logdr: UID=10219 GID=10219 PID=6958 n tail=100 logMask=99 pid=0 start=0ns deadline=0ns
+05-19 10:47:01.424 I/binder  (    0): 6967:6967 ioctl 40046210 7fc4721574 returned -22
+05-19 10:47:01.426 E/SELinux (    0): avc:  denied  { find } for pid=6967 uid=10219 name=meminfo scontext=u:r:untrusted_app:s0:c219,c256,c512,c768 tcontext=u:object_r:meminfo_service:s0 tclass=service_manager permissive=0
+05-19 10:47:01.435 V/WindowManagerShell( 2014): Transition requested (#25): android.os.BinderProxy@5d8dc48 TransitionRequestInfo { type = CLOSE, triggerTask = TaskInfo{userId=0 taskId=46 effectiveUid=10219 displayId=0 isRunning=false baseIntent=Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10200000 cmp=org.schabi.newpipe.debug.featuresmartfeedscheduling/org.schabi.newpipe.MainActivity } baseActivity=null topActivity=null origActivity=null realActivity=ComponentInfo{org.schabi.newpipe.debug.featuresmartfeedscheduling/org.schabi.newpipe.MainActivity} numActivities=0 lastActiveTime=1164691 supportsMultiWindow=true resizeMode=2 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{android.window.IWindowContainerToken$Stub$Proxy@823eae1} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=Rect(0, 0 - 0, 0) topActivityInfo=null launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=true isVisible=true isVisibleRequested=true isTopActivityNoDisplay=false isSleeping=false locusId=null displayAreaFeatureId=1 isTopActivityTransparent=false isActivityStackTransparent=true lastNonFullscreenBounds=Rect(213, 425 - 867, 1505) capturedLink=null capturedLinkTimestamp=0 requestedVisibleTypes=-9 topActivityRequestOpenInBrowserEducationTimestamp=0 appCompatTaskInfo=AppCompatTaskInfo { topActivityInSizeCompat=false eligibleForLetterboxEducation= false isLetterboxEducationEnabled= false isLetterboxDoubleTapEnabled= false eligibleForUserAspectRatioButton= false topActivityBoundsLetterboxed= false isFromLetterboxDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 topActivityLetterboxAppWidth=-1 topActivityLetterboxAppHeight=-1 isUserFullscreenOverrideEnabled=false isSystemFullscreenOverrideEnabled=false hasMinAspectRatioOverride=false topActivityLetterboxBounds=null cameraCompatTaskInfo=CameraCompatTaskInfo { freeformCameraCompatMode=inactive}} topActivityMainWindowFrame=null}, pipChange = null, remoteTransition = null, displayChange = null, flags = 0, debugId = 25 }
+05-19 10:47:01.440 I/BpBinder(  704): onLastStrongRef automatically unlinking death recipients: 
+05-19 10:47:01.453 I/BpBinder(  704): onLastStrongRef automatically unlinking death recipients: 
+05-19 10:47:01.469 D/CompatChangeReporter( 5231): Compat change id reported: 311402873; UID 10219; state: ENABLED
+05-19 10:47:01.470 D/CompatChangeReporter( 5231): Compat change id reported: 323349338; UID 10219; state: ENABLED
+05-19 10:47:01.471 W/JobInfo ( 5231): Job 'org.schabi.newpipe.debug.featuresmartfeedscheduling/org.acra.sender.JobSenderService#0' has a deadline with no functional constraints. The deadline won't improve job execution latency. Consider removing the deadline.
+05-19 10:47:01.475 D/CompatChangeReporter( 1505): Compat change id reported: 311402873; UID 10219; state: ENABLED
+05-19 10:47:01.475 D/CompatChangeReporter( 1505): Compat change id reported: 323349338; UID 10219; state: ENABLED
+05-19 10:47:01.475 W/JobInfo ( 1505): Job 'org.schabi.newpipe.debug.featuresmartfeedscheduling/org.acra.sender.JobSenderService#0' has a deadline with no functional constraints. The deadline won't improve job execution latency. Consider removing the deadline.
+05-19 10:47:01.478 V/GrammaticalInflectionUtils( 1505): AttributionSource: AttributionSource { uid = 10219, packageName = null, attributionTag = null, token = android.os.Binder@25814ca, deviceId = 0, next = null } does not have READ_SYSTEM_GRAMMATICAL_GENDER permission.
+05-19 10:47:01.484 I/Process ( 5231): Sending signal. PID: 5231 SIG: 9
+05-19 10:47:01.500 D/Zygote  ( 1034): Forked child process 6968
+05-19 10:47:01.502 I/ActivityManager( 1505): Start proc 6968:org.schabi.newpipe.debug.featuresmartfeedscheduling:acra/u0a219 for service {org.schabi.newpipe.debug.featuresmartfeedscheduling/org.acra.sender.JobSenderService}
+05-19 10:47:01.521 I/scheduling:acra( 6968): Late-enabling -Xcheck:jni
+05-19 10:47:01.568 I/scheduling:acra( 6968): Using CollectorTypeCC GC.
+05-19 10:47:01.576 I/adbd    ( 1215): jdwp connection from 6968
+05-19 10:47:01.616 D/nativeloader( 6968): Load libframework-connectivity-tiramisu-jni.so using APEX ns com_android_tethering for caller /apex/com.android.tethering/javalib/framework-connectivity-t.jar: ok
+05-19 10:47:01.617 I/binder  (    0): 6968:6968 ioctl 40046210 7ff1526ad4 returned -22
+05-19 10:47:01.678 D/BufferPoolAccessor2.0( 1277): bufferpool2 0x7366c072b8 : 0(0 size) total buffers - 0(0 size) used buffers - 1593/1598 (recycle/alloc) - 13/1598 (fetch/transfer)
+05-19 10:47:01.678 D/BufferPoolAccessor2.0( 1277): Destruction - bufferpool2 0x7366c072b8 cached: 0/0M, 0/0% in use; allocs: 1598, 100% recycled; transfers: 1598, 99% unfetched
+05-19 10:47:01.720 I/Zygote  ( 2148): Process 5270 exited cleanly (0)
+05-19 10:47:01.721 I/ActivityManager( 1505): Process com.android.webview:sandboxed_process0:org.chromium.content.app.SandboxedProcessService0:0 (pid 5270) has died: fg +1 BTOP
+05-19 10:47:01.723 W/ActivityManager( 1505): Scheduling restart of crashed service org.schabi.newpipe.debug.featuresmartfeedscheduling/org.chromium.content.app.SandboxedProcessService0:0 in 10000ms for connection
+05-19 10:47:01.724 D/DisplayManagerService( 1505): Drop pending events for gone uid 99001
+05-19 10:47:01.725 D/ForegroundUtils( 2792): UID: 99001 deleted.
+05-19 10:47:01.740 I/libprocessgroup( 1505): Removed cgroup /sys/fs/cgroup/uid_99001/pid_5270
+05-19 10:47:01.753 D/ApplicationLoaders( 6968): Returning zygote-cached class loader: /system_ext/framework/androidx.window.extensions.jar
+05-19 10:47:01.754 D/ApplicationLoaders( 6968): Returning zygote-cached class loader: /system_ext/framework/androidx.window.sidecar.jar
+05-19 10:47:01.758 W/ziparchive( 6968): Unable to open '/data/app/~~3e_LfGEqs0WbphHoyTostQ==/org.schabi.newpipe.debug.featuresmartfeedscheduling-5FE2OGFWCMgTu8k9pr0I1Q==/base.dm': No such file or directory
+05-19 10:47:01.759 W/ziparchive( 6968): Unable to open '/data/app/~~3e_LfGEqs0WbphHoyTostQ==/org.schabi.newpipe.debug.featuresmartfeedscheduling-5FE2OGFWCMgTu8k9pr0I1Q==/base.dm': No such file or directory
+05-19 10:47:01.784 I/adbd    ( 1215): Remote process closed the socket (on MSG_PEEK)
+05-19 10:47:01.785 I/ActivityManager( 1505): Process org.schabi.newpipe.debug.featuresmartfeedscheduling (pid 5231) has died: fg  TOP 
+05-19 10:47:01.788 D/CompatChangeReporter( 1505): Compat change id reported: 311208629; UID 10219; state: ENABLED
+05-19 10:47:01.794 I/libprocessgroup( 1505): Removed cgroup /sys/fs/cgroup/uid_10219/pid_5231
+05-19 10:47:01.796 D/BackgroundInstallControlService( 1505): Package event received: 0
+05-19 10:47:01.799 D/ConnectivityService( 1505): releasing NetworkRequest [ REQUEST id=147, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED&NOT_BANDWIDTH_CONSTRAINED Uid: 10219 RequestorUid: 10219 RequestorPkg: org.schabi.newpipe.debug.featuresmartfeedscheduling UnderlyingNetworks: Null] ] (release request)
+05-19 10:47:01.800 I/Zygote  ( 1034): Process 5231 exited due to signal 9 (Killed)
+05-19 10:47:01.804 I/netd    ( 1027): tetherGetStats() -> {[]} <2.35ms>
+05-19 10:47:01.814 I/WindowManager( 1505): WIN DEATH: Window{1a75ec1 u0 org.schabi.newpipe.debug.featuresmartfeedscheduling/org.schabi.newpipe.MainActivity}
+05-19 10:47:01.816 D/ForegroundUtils( 2792): Foreground UID status:
+05-19 10:47:01.816 D/ForegroundUtils( 2792): UID: 10178 is in foreground: true
+05-19 10:47:01.816 D/ForegroundUtils( 2792): UID: 10179 is in foreground: true
+05-19 10:47:01.816 D/ForegroundUtils( 2792): UID: 10205 is in foreground: false
+05-19 10:47:01.816 D/ForegroundUtils( 2792): UID: 10217 is in foreground: true
+05-19 10:47:01.816 D/ForegroundUtils( 2792): UID: 10219 is in foreground: true
+05-19 10:47:01.818 D/ViewRootImpl( 2177): Skipping stats log for color mode
+05-19 10:47:01.818 W/ActivityManager( 1505): setHasOverlayUi called on unknown pid: 5231
+05-19 10:47:01.820 W/ActivityManager( 1505): Unable to start service Intent { act=com.android.launcher3.WINDOW_OVERLAY dat=app://com.android.launcher3:10178/... pkg=com.google.android.googlequicksearchbox } U=0: not found
+05-19 10:47:01.820 D/BackgroundInstallControlService( 1505): Package event received: 0
+05-19 10:47:01.822 D/BackgroundInstallControlService( 1505): Package event received: 0
+05-19 10:47:01.822 D/StatsLog( 2177): LAUNCHER_ONRESUME
+05-19 10:47:01.822 D/BackgroundInstallControlService( 1505): Package event received: 0
+05-19 10:47:01.824 I/AppWidgetServiceImpl( 1505): startListening() 0
+05-19 10:47:01.825 I/AppWidgetServiceImpl( 1505): startListening() 0
+05-19 10:47:01.827 D/WindowManagerShell( 2014): setLauncherKeepClearAreaHeight: visible=true, height=273
+05-19 10:47:01.864 D/BaseDepthController( 2177): setSurface:
+05-19 10:47:01.864 D/BaseDepthController( 2177): 	mWaitingOnSurfaceValidity: false
+05-19 10:47:01.864 D/BaseDepthController( 2177): 	mSurface: Surface(name=com.android.launcher3/com.android.launcher3.uioverrides.QuickstepLauncher)/@0x3ee1050
+05-19 10:47:01.886 W/ActivityTaskManager( 1505): Unable to send transaction to client proc org.schabi.newpipe.debug.featuresmartfeedscheduling: no app thread
+05-19 10:47:01.892 D/BackgroundInstallControlService( 1505): Package event received: 0
+05-19 10:47:01.892 D/BackgroundInstallControlService( 1505): Package event received: 0
+05-19 10:47:01.892 D/BackgroundInstallControlService( 1505): Package event received: 0
+05-19 10:47:01.893 D/ForegroundUtils( 2792): Foreground UID status:
+05-19 10:47:01.893 D/ForegroundUtils( 2792): UID: 10178 is in foreground: true
+05-19 10:47:01.893 D/ForegroundUtils( 2792): UID: 10179 is in foreground: true
+05-19 10:47:01.893 D/ForegroundUtils( 2792): UID: 10205 is in foreground: false
+05-19 10:47:01.893 D/ForegroundUtils( 2792): UID: 10217 is in foreground: true
+05-19 10:47:01.893 D/ForegroundUtils( 2792): UID: 10219 is in foreground: false
+05-19 10:47:01.894 V/WindowManagerShell( 2014): onTransitionReady(transaction=6463925782132)
+05-19 10:47:01.894 V/WindowManagerShell( 2014): onTransitionReady (#25) android.os.BinderProxy@5d8dc48: {id=25 t=CLOSE f=0x0 trk=0 r=[0@Point(0, 0)] c=[
+05-19 10:47:01.894 V/WindowManagerShell( 2014):         {m=TO_FRONT f=SHOW_WALLPAPER|MOVE_TO_TOP leash=Surface(name=Task=1)/@0x3e1c006 sb=Rect(0, 0 - 1080, 1920) eb=Rect(0, 0 - 1080, 1920) epz=Point(1080, 1920) d=0 taskParent=-1},
+05-19 10:47:01.894 V/WindowManagerShell( 2014):         {m=CLOSE f=NONE leash=Surface(name=Task=46)/@0xa44c6c7 sb=Rect(0, 0 - 1080, 1920) eb=Rect(0, 0 - 1080, 1920) epz=Point(1080, 1920) d=0 taskParent=-1},
+05-19 10:47:01.894 V/WindowManagerShell( 2014):         {m=TO_FRONT f=IS_WALLPAPER leash=Surface(name=WallpaperWindowToken{489db5c token=android.os.Binder@b4a5cf})/@0x8c374f4 sb=Rect(0, 0 - 1080, 1920) eb=Rect(0, 0 - 1080, 1920) epz=Point(1080, 1920) d=0}
+05-19 10:47:01.894 V/WindowManagerShell( 2014):     ]}
+05-19 10:47:01.894 V/WindowManagerShell( 2014): Playing animation for (#25) android.os.BinderProxy@5d8dc48@0
+05-19 10:47:01.895 V/ShellRecents( 2014): RecentsTransitionHandler.startAnimation: no controller found
+05-19 10:47:01.895 V/WindowManagerShell( 2014): Transition doesn't have explicit remote, search filters for match for {id=25 t=CLOSE f=0x0 trk=0 r=[0@Point(0, 0)] c=[{m=TO_FRONT f=SHOW_WALLPAPER|MOVE_TO_TOP leash=Surface(name=Task=1)/@0x3e1c006 sb=Rect(0, 0 - 1080, 1920) eb=Rect(0, 0 - 1080, 1920) epz=Point(1080, 1920) d=0 taskParent=-1},{m=CLOSE f=NONE leash=Surface(name=Task=46)/@0xa44c6c7 sb=Rect(0, 0 - 1080, 1920) eb=Rect(0, 0 - 1080, 1920) epz=Point(1080, 1920) d=0 taskParent=-1},{m=TO_FRONT f=IS_WALLPAPER leash=Surface(name=WallpaperWindowToken{489db5c token=android.os.Binder@b4a5cf})/@0x8c374f4 sb=Rect(0, 0 - 1080, 1920) eb=Rect(0, 0 - 1080, 1920) epz=Point(1080, 1920) d=0}]}
+05-19 10:47:01.895 V/WindowManagerShell( 2014):  Checking filter Pair{{types=[] flags=0x0] notFlags=0x100 checks=[{atype=home independent=true modes=[OPEN,TO_FRONT] flags=NONE mustBeTask=false order=TOP topActivity=ComponentInfo{com.android.launcher3/com.android.launcher3.uioverrides.QuickstepLauncher} launchCookie=null windowingMode=undefined},{atype=standard independent=true modes=[CLOSE,TO_BACK] flags=NONE mustBeTask=false order=ANY topActivity=null launchCookie=null windowingMode=undefined},{NOT atype=undefined independent=true modes=[] flags=NONE mustBeTask=true order=ANY topActivity=null launchCookie=null customAnim=true windowingMode=undefined}]} RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@b8377e3, appThread = android.app.IApplicationThread$Stub$Proxy@21365e0, debugName = QuickstepLaunchHome }}
+05-19 10:47:01.895 D/BackgroundInstallControlService( 1505): Package event received: 0
+05-19 10:47:01.898 D/BackgroundInstallControlService( 1505): Package event received: 0
+05-19 10:47:01.898 D/BackgroundInstallControlService( 1505): Package event received: 0
+05-19 10:47:01.898 D/BackgroundInstallControlService( 1505): Package event received: 0
+05-19 10:47:01.898 D/BackgroundInstallControlService( 1505): Package event received: 0
+05-19 10:47:01.898 D/BackgroundInstallControlService( 1505): Package event received: 0
+05-19 10:47:01.898 D/BackgroundInstallControlService( 1505): Package event received: 0
+05-19 10:47:01.898 D/BackgroundInstallControlService( 1505): Package event received: 0
+05-19 10:47:01.899 D/BackgroundInstallControlService( 1505): Package event received: 0
+05-19 10:47:01.899 D/RemoteTransitionHandler( 2014): Found filterPair{{types=[] flags=0x0] notFlags=0x100 checks=[{atype=home independent=true modes=[OPEN,TO_FRONT] flags=NONE mustBeTask=false order=TOP topActivity=ComponentInfo{com.android.launcher3/com.android.launcher3.uioverrides.QuickstepLauncher} launchCookie=null windowingMode=undefined},{atype=standard independent=true modes=[CLOSE,TO_BACK] flags=NONE mustBeTask=false order=ANY topActivity=null launchCookie=null windowingMode=undefined},{NOT atype=undefined independent=true modes=[] flags=NONE mustBeTask=true order=ANY topActivity=null launchCookie=null customAnim=true windowingMode=undefined}]} RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@b8377e3, appThread = android.app.IApplicationThread$Stub$Proxy@21365e0, debugName = QuickstepLaunchHome }}
+05-19 10:47:01.899 D/BackgroundInstallControlService( 1505): Package event received: 0
+05-19 10:47:01.899 D/BackgroundInstallControlService( 1505): Package event received: 0
+05-19 10:47:01.899 V/WindowManagerShell( 2014):  Delegate animation for (#25) to RemoteTransition { remoteTransition = android.window.IRemoteTransition$Stub$Proxy@b8377e3, appThread = android.app.IApplicationThread$Stub$Proxy@21365e0, debugName = QuickstepLaunchHome }
+05-19 10:47:01.899 D/BackgroundInstallControlService( 1505): Package event received: 0
+05-19 10:47:01.899 D/BackgroundInstallControlService( 1505): Package event received: 0
+05-19 10:47:01.899 D/BackgroundInstallControlService( 1505): Package event received: 0
+05-19 10:47:01.899 D/BackgroundInstallControlService( 1505): Package event received: 0
+05-19 10:47:01.899 D/BackgroundInstallControlService( 1505): Package event received: 0
+05-19 10:47:01.906 D/BackgroundInstallControlService( 1505): Package event received: 0
+05-19 10:47:01.906 D/BackgroundInstallControlService( 1505): Package event received: 0
+05-19 10:47:01.908 V/WindowManager( 1505): Sent Transition (#25) createdAt=05-19 10:47:01.432 via request=TransitionRequestInfo { type = CLOSE, triggerTask = TaskInfo{userId=0 taskId=46 effectiveUid=10219 displayId=0 isRunning=false baseIntent=Intent { act=android.intent.action.MAIN cat=[android.intent.category.LAUNCHER] flg=0x10200000 cmp=org.schabi.newpipe.debug.featuresmartfeedscheduling/org.schabi.newpipe.MainActivity } baseActivity=null topActivity=null origActivity=null realActivity=ComponentInfo{org.schabi.newpipe.debug.featuresmartfeedscheduling/org.schabi.newpipe.MainActivity} numActivities=0 lastActiveTime=1164691 supportsMultiWindow=true resizeMode=2 isResizeable=true minWidth=-1 minHeight=-1 defaultMinSize=220 token=WCT{RemoteToken{116a290 Task{93df38c #46 type=standard A=10219:org.schabi.newpipe.debug.featuresmartfeedscheduling}}} topActivityType=1 pictureInPictureParams=null shouldDockBigOverlays=false launchIntoPipHostTaskId=-1 lastParentTaskIdBeforePip=-1 displayCutoutSafeInsets=Rect(0, 0 - 0, 0) topActivityInfo=null launchCookies=[] positionInParent=Point(0, 0) parentTaskId=-1 isFocused=true isVisible=true isVisibleRequested=true isTopActivityNoDisplay=false isSleeping=false locusId=null displayAreaFeatureId=1 isTopActivityTransparent=false isActivityStackTransparent=true lastNonFullscreenBounds=Rect(213, 425 - 867, 1505) capturedLink=null capturedLinkTimestamp=0 requestedVisibleTypes=-9 topActivityRequestOpenInBrowserEducationTimestamp=0 appCompatTaskInfo=AppCompatTaskInfo { topActivityInSizeCompat=false eligibleForLetterboxEducation= false isLetterboxEducationEnabled= false isLetterboxDoubleTapEnabled= false eligibleForUserAspectRatioButton= false topActivityBoundsLetterboxed= false isFromLetterboxDoubleTap= false topActivityLetterboxVerticalPosition= -1 topActivityLetterboxHorizontalPosition= -1 topActivityLetterboxWidth=-1 topActivityLetterboxHeight=-1 topActivityLetterboxAppWidth=-1 topActivityLetterboxAppHeight=-1 isUserFullscreenOverrideEnabled=false isSystemFullscreenOverrideEnabled=false hasMinAspectRatioOverride=false topActivityLetterboxBounds=null cameraCompatTaskInfo=CameraCompatTaskInfo { freeformCameraCompatMode=inactive}} topActivityMainWindowFrame=null}, pipChange = null, remoteTransition = null, displayChange = null, flags = 0, debugId = 25 }
+05-19 10:47:01.910 V/WindowManagerShell( 2014):  animated by com.android.wm.shell.transition.RemoteTransitionHandler@ac4bbf4
+05-19 10:47:01.910 V/WindowManager( 1505):     startWCT=WindowContainerTransaction { changes= {} hops= [] errorCallbackToken=null taskFragmentOrganizer=null }
+05-19 10:47:01.911 D/BackgroundInstallControlService( 1505): Package event received: 0
+05-19 10:47:01.911 V/WindowManager( 1505):     info={id=25 t=CLOSE f=0x0 trk=0 r=[0@Point(0, 0)] c=[
+05-19 10:47:01.911 V/WindowManager( 1505):         {WCT{RemoteToken{57ed525 Task{66075de #1 type=home}}} m=TO_FRONT f=SHOW_WALLPAPER|MOVE_TO_TOP leash=Surface(name=Task=1)/@0x76b6aec sb=Rect(0, 0 - 1080, 1920) eb=Rect(0, 0 - 1080, 1920) epz=Point(1080, 1920) d=0 taskParent=-1},
+05-19 10:47:01.911 V/WindowManager( 1505):         {WCT{RemoteToken{116a290 Task{93df38c #46 type=standard A=10219:org.schabi.newpipe.debug.featuresmartfeedscheduling}}} m=CLOSE f=NONE leash=Surface(name=Task=46)/@0x9bf3542 sb=Rect(0, 0 - 1080, 1920) eb=Rect(0, 0 - 1080, 1920) epz=Point(1080, 1920) d=0 taskParent=-1},
+05-19 10:47:01.911 V/WindowManager( 1505):         {m=TO_FRONT f=IS_WALLPAPER leash=Surface(name=WallpaperWindowToken{489db5c token=android.os.Binder@b4a5cf})/@0x45ae2c0 sb=Rect(0, 0 - 1080, 1920) eb=Rect(0, 0 - 1080, 1920) epz=Point(1080, 1920) d=0}
+05-19 10:47:01.911 V/WindowManager( 1505):     ]}
+05-19 10:47:01.915 D/StateManager( 2177): createAtomicAnimation - fromState: Background, toState: Normal, partial trace:
+05-19 10:47:01.915 D/StateManager( 2177): 	at com.android.quickstep.util.WorkspaceRevealAnim.prepareToAnimate(WorkspaceRevealAnim.java:146)
+05-19 10:47:01.915 D/StateManager( 2177): 	at com.android.quickstep.util.WorkspaceRevealAnim.<init>(WorkspaceRevealAnim.java:69)
+05-19 10:47:01.915 D/StateManager( 2177): 	at com.android.launcher3.QuickstepTransitionManager.createWallpaperOpenAnimations(QuickstepTransitionManager.java:1763)
+05-19 10:47:01.915 W/UserManagerService( 1505): Requested status bar icon for non-badged user 0
+05-19 10:47:01.916 D/b/311077782( 2177): LauncherAnimationRunner.setAnimation
+05-19 10:47:01.919 D/BackgroundInstallControlService( 1505): Package event received: 0
+05-19 10:47:01.930 D/ConnectivityService( 1505): requestNetwork for uid/pid:10179/2014 asUid: 10178 activeRequest: null callbackRequest: 172 [NetworkRequest [ REQUEST id=173, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED&NOT_BANDWIDTH_CONSTRAINED Uid: 10178 RequestorUid: 10179 RequestorPkg: com.android.systemui UnderlyingNetworks: Null] ]] callback flags: 0 order: 2147483647 isUidTracked: false declaredMethods: ALL
+05-19 10:47:01.932 D/WifiNetworkFactory( 1505): got request NetworkRequest [ REQUEST id=173, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED&NOT_BANDWIDTH_CONSTRAINED Uid: 10178 RequestorUid: 10179 RequestorPkg: com.android.systemui UnderlyingNetworks: Null] ]
+05-19 10:47:01.933 D/ConnectivityService( 1505): NetReassign [173 : null → 100] [c 1] [a 0] [i 1]
+05-19 10:47:01.933 D/UntrustedWifiNetworkFactory( 1505): got request NetworkRequest [ REQUEST id=173, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED&NOT_BANDWIDTH_CONSTRAINED Uid: 10178 RequestorUid: 10179 RequestorPkg: com.android.systemui UnderlyingNetworks: Null] ]
+05-19 10:47:01.933 D/OemPaidWifiNetworkFactory( 1505): got request NetworkRequest [ REQUEST id=173, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED&NOT_BANDWIDTH_CONSTRAINED Uid: 10178 RequestorUid: 10179 RequestorPkg: com.android.systemui UnderlyingNetworks: Null] ]
+05-19 10:47:01.933 D/MultiInternetWifiNetworkFactory( 1505): got request NetworkRequest [ REQUEST id=173, [ Capabilities: INTERNET&NOT_RESTRICTED&TRUSTED&NOT_VCN_MANAGED&NOT_BANDWIDTH_CONSTRAINED Uid: 10178 RequestorUid: 10179 RequestorPkg: com.android.systemui UnderlyingNetworks: Null] ]
+05-19 10:47:01.934 I/ImeTracker( 1505): com.android.launcher3:da98bf7e: onRequestHide at ORIGIN_SERVER reason HIDE_UNSPECIFIED_WINDOW fromUser false
+05-19 10:47:01.934 D/BackgroundInstallControlService( 1505): Package event received: 0
+05-19 10:47:01.934 D/BackgroundInstallControlService( 1505): Package event received: 0
+05-19 10:47:01.937 D/BackgroundInstallControlService( 1505): Package event received: 0
+05-19 10:47:01.939 W/ActivityTaskManager( 1505): Activity top resumed state loss timeout for ActivityRecord{145113279 u0 org.schabi.newpipe.debug.featuresmartfeedscheduling/org.schabi.newpipe.MainActivity t46 f} isExiting}
+05-19 10:47:01.940 D/InsetsController( 2177): hide(ime(), fromIme=false)
+05-19 10:47:01.940 I/ImeTracker( 2177): com.android.launcher3:da98bf7e: onCancelled at PHASE_CLIENT_ALREADY_HIDDEN
+05-19 10:47:01.950 I/gle.android.tts( 6826): AssetManager2(0x74e267be18) locale list changing from [] to [en-US]
+05-19 10:47:01.959 I/gle.android.tts( 6826): AssetManager2(0x74e26769b8) locale list changing from [] to [en-US]
+05-19 10:47:01.960 D/WindowTokenClient( 6826): Only apply configuration update to Resources because shouldReportConfigChange is false. context=com.google.android.apps.speech.tts.googletts.settings.asr.voiceime.VoiceInputMethodService@cd41dbd, config={1.0 ?mcc0mnc [en_US] ldltr sw411dp w411dp h731dp 420dpi nrml long port night finger -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 1080, 1920) mAppBounds=Rect(0, 0 - 1080, 1920) mMaxBounds=Rect(0, 0 - 1080, 1920) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} as.3 s.24 fontWeightAdjustment=0}, display ID=0
+05-19 10:47:01.960 D/WindowTokenClient( 6826): android.window.WindowTokenClient.onConfigurationChanged:161 android.window.WindowTokenClientController.onWindowContextTokenAttached:229 android.window.WindowTokenClientController.attachToDisplayArea:121 android.window.WindowContextController.attachToDisplayArea:108 android.window.WindowProviderService.attachBaseContext:218 
+05-19 10:47:01.996 D/DesktopModeFlagsUtil( 6826): Toggle override initialized to: OVERRIDE_UNSET
+05-19 10:47:02.001 I/InputMethodManagerWrapp( 6826): #updateService
+05-19 10:47:02.020 I/gle.android.tts( 6826): AssetManager2(0x74e267d718) locale list changing from [] to [en-US]
+05-19 10:47:02.063 W/HWUI    ( 6826): Unknown dataspace 0
+05-19 10:47:02.086 D/WorkspaceRevealAnim( 2177): onAnimationEnd: workspace alpha = 1.0
+05-19 10:47:02.088 V/WindowManagerShell( 2014): Transition animation finished (aborted=false), notifying core (#25) android.os.BinderProxy@5d8dc48@0
+05-19 10:47:02.095 V/WindowManager( 1505): Finish Transition (#25): created at 05-19 10:47:01.432 collect-started=0.19ms request-sent=0.549ms started=12.017ms ready=376.374ms sent=459.23ms finished=662.262ms
+05-19 10:47:02.097 W/ActivityManager( 1505): pid 1505 system sent binder code 7 with flags 1 to frozen apps and got error -32
+05-19 10:47:02.100 W/WindowManager( 1505): Exception thrown during dispatchAppVisibility Window{1a75ec1 u0 org.schabi.newpipe.debug.featuresmartfeedscheduling/org.schabi.newpipe.MainActivity EXITING}
+05-19 10:47:02.100 W/WindowManager( 1505): android.os.DeadObjectException
+05-19 10:47:02.100 W/WindowManager( 1505): 	at android.os.BinderProxy.transactNative(Native Method)
+05-19 10:47:02.100 W/WindowManager( 1505): 	at android.os.BinderProxy.transact(BinderProxy.java:592)
+05-19 10:47:02.100 W/WindowManager( 1505): 	at android.view.IWindow$Stub$Proxy.dispatchAppVisibility(IWindow.java:557)
+05-19 10:47:02.100 W/WindowManager( 1505): 	at com.android.server.wm.WindowState.sendAppVisibilityToClients(WindowState.java:3317)
+05-19 10:47:02.100 W/WindowManager( 1505): 	at com.android.server.wm.WindowContainer.sendAppVisibilityToClients(WindowContainer.java:1343)
+05-19 10:47:02.100 W/WindowManager( 1505): 	at com.android.server.wm.WindowToken.setClientVisible(WindowToken.java:437)
+05-19 10:47:02.100 W/WindowManager( 1505): 	at com.android.server.wm.ActivityRecord.setClientVisible(ActivityRecord.java:7171)
+05-19 10:47:02.100 W/WindowManager( 1505): 	at com.android.server.wm.ActivityRecord.postApplyAnimation(ActivityRecord.java:5865)
+05-19 10:47:02.100 W/WindowManager( 1505): 	at com.android.server.wm.ActivityRecord.commitVisibility(ActivityRecord.java:5808)
+05-19 10:47:02.100 W/WindowManager( 1505): 	at com.android.server.wm.Transition.finishTransition(Transition.java:1375)
+05-19 10:47:02.100 W/WindowManager( 1505): 	at com.android.server.wm.TransitionController.finishTransition(TransitionController.java:986)
+05-19 10:47:02.100 W/WindowManager( 1505): 	at com.android.server.wm.WindowOrganizerController.finishTransition(WindowOrganizerController.java:526)
+05-19 10:47:02.100 W/WindowManager( 1505): 	at android.window.IWindowOrganizerController$Stub.onTransact(IWindowOrganizerController.java:293)
+05-19 10:47:02.100 W/WindowManager( 1505): 	at com.android.server.wm.WindowOrganizerController.onTransact(WindowOrganizerController.java:215)
+05-19 10:47:02.100 W/WindowManager( 1505): 	at android.os.Binder.execTransactInternal(Binder.java:1406)
+05-19 10:47:02.100 W/WindowManager( 1505): 	at android.os.Binder.execTransact(Binder.java:1350)
+05-19 10:47:02.100 W/Process ( 1505): Unable to open /proc/5231/status
+05-19 10:47:02.120 V/WindowManagerShell( 2014): Track 0 became idle
+05-19 10:47:02.120 V/WindowManagerShell( 2014): All active transition animations finished
+05-19 10:47:02.121 W/Looper  ( 2014): Slow dispatch took 33ms wmshell.main h=android.os.Handler c=com.android.wm.shell.transition.RemoteTransitionHandler$1$$ExternalSyntheticLambda0@bedc7bf m=0
+05-19 10:47:02.133 D/RecentsView( 2177): onTaskRemoved: 46, not handling task stack changes
+05-19 10:47:02.133 W/UserManagerService( 1505): Requested status bar icon for non-badged user 0
+05-19 10:47:02.133 D/RecentsView( 2177): onTaskRemoved: 46, not handling task stack changes
+05-19 10:47:02.136 W/UserManagerService( 1505): Requested status bar icon for non-badged user 0
+05-19 10:47:02.137 D/WindowTokenClient( 6826): Configuration not dispatch to IME because configuration is up to date. Current config={1.0 ?mcc0mnc [en_US] ldltr sw411dp w411dp h731dp 420dpi nrml long port night finger -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 1080, 1920) mAppBounds=Rect(0, 0 - 1080, 1920) mMaxBounds=Rect(0, 0 - 1080, 1920) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} as.3 s.24 fontWeightAdjustment=0}, reported config={1.0 ?mcc0mnc [en_US] ldltr sw411dp w411dp h731dp 420dpi nrml long port night finger -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 1080, 1920) mAppBounds=Rect(0, 0 - 1080, 1920) mMaxBounds=Rect(0, 0 - 1080, 1920) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} as.3 s.24 fontWeightAdjustment=0}, updated config={1.0 ?mcc0mnc [en_US] ldltr sw411dp w411dp h731dp 420dpi nrml long port night finger -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 1080, 1920) mAppBounds=Rect(0, 0 - 1080, 1920) mMaxBounds=Rect(0, 0 - 1080, 1920) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} as.3 s.24 fontWeightAdjustment=0}, updated display ID=0
+05-19 10:47:02.137 D/WindowTokenClient( 6826): Configuration not dispatch to IME because configuration is up to date. Current config={1.0 ?mcc0mnc [en_US] ldltr sw411dp w411dp h731dp 420dpi nrml long port night finger -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 1080, 1920) mAppBounds=Rect(0, 0 - 1080, 1920) mMaxBounds=Rect(0, 0 - 1080, 1920) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} as.3 s.24 fontWeightAdjustment=0}, reported config={1.0 ?mcc0mnc [en_US] ldltr sw411dp w411dp h731dp 420dpi nrml long port night finger -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 1080, 1920) mAppBounds=Rect(0, 0 - 1080, 1920) mMaxBounds=Rect(0, 0 - 1080, 1920) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} as.3 s.24 fontWeightAdjustment=0}, updated config={1.0 ?mcc0mnc [en_US] ldltr sw411dp w411dp h731dp 420dpi nrml long port night finger -keyb/v/h -nav/h winConfig={ mBounds=Rect(0, 0 - 1080, 1920) mAppBounds=Rect(0, 0 - 1080, 1920) mMaxBounds=Rect(0, 0 - 1080, 1920) mDisplayRotation=ROTATION_0 mWindowingMode=fullscreen mActivityType=undefined mAlwaysOnTop=undefined mRotation=ROTATION_0} as.3 s.24 fontWeightAdjustment=0}, updated display ID=0
+05-19 10:47:02.140 E/BpTransactionCompletedListener(  704): Failed to transact (-32)
+05-19 10:47:02.147 D/CoreBackPreview( 1505): Window{98a99dd u0 InputMethod}: Setting back callback OnBackInvokedCallbackInfo{mCallback=android.window.IOnBackInvokedCallback$Stub$Proxy@8060b4c, mPriority=0, mIsAnimationCallback=false, mOverrideBehavior=0}
+05-19 10:47:03.288 I/cnss_wlan_pci 0000(    0): 01:00.0: enabling device (0000 -> 0002)
+05-19 10:47:03.401 E/WifiStaIfaceAidlImpl( 1505): getCachedScanData failed with service-specific exception: android.os.ServiceSpecificException:  (code 4)
+05-19 10:47:03.559 D/nativeloader( 6968): Configuring clns-7 for other apk /data/app/~~3e_LfGEqs0WbphHoyTostQ==/org.schabi.newpipe.debug.featuresmartfeedscheduling-5FE2OGFWCMgTu8k9pr0I1Q==/base.apk. target_sdk_version=35, uses_libraries=, library_path=/data/app/~~3e_LfGEqs0WbphHoyTostQ==/org.schabi.newpipe.debug.featuresmartfeedscheduling-5FE2OGFWCMgTu8k9pr0I1Q==/lib/arm64:/data/app/~~3e_LfGEqs0WbphHoyTostQ==/org.schabi.newpipe.debug.featuresmartfeedscheduling-5FE2OGFWCMgTu8k9pr0I1Q==/base.apk!/lib/arm64-v8a, permitted_path=/data:/mnt/expand:/data/user/0/org.schabi.newpipe.debug.featuresmartfeedscheduling
+05-19 10:47:03.564 D/CompatChangeReporter( 6968): Compat change id reported: 202956589; UID 10219; state: ENABLED
+05-19 10:47:03.571 I/scheduling:acra( 6968): AssetManager2(0x74e266fc58) locale list changing from [] to [en-US]
+05-19 10:47:03.581 V/GraphicsEnvironment( 6968): Currently set values for:
+05-19 10:47:03.581 V/GraphicsEnvironment( 6968):   angle_gl_driver_selection_pkgs=[]
+05-19 10:47:03.581 V/GraphicsEnvironment( 6968):   angle_gl_driver_selection_values=[]
+05-19 10:47:03.581 V/GraphicsEnvironment( 6968): org.schabi.newpipe.debug.featuresmartfeedscheduling is not listed in per-application setting
+05-19 10:47:03.581 V/GraphicsEnvironment( 6968): Neither updatable production driver nor prerelease driver is supported.
+05-19 10:47:04.148 D/InfoCache( 6968): clearCache() called
+05-19 10:47:04.301 D/AndroidRuntime( 6988): >>>>>> START com.android.internal.os.RuntimeInit uid 2000 <<<<<<
+05-19 10:47:04.304 E/[AUD] q6asm(    0): q6asm_callback: payload size of 8 is less than expected.
+05-19 10:47:04.313 I/AndroidRuntime( 6988): Using default boot image
+05-19 10:47:04.313 I/AndroidRuntime( 6988): Leaving lock profiling enabled
+05-19 10:47:04.314 I/tfa98xx_spk_event()(    0): event 4
+05-19 10:47:04.320 I/app_process( 6988): Core platform API reporting enabled, enforcing=false
+05-19 10:47:04.321 I/app_process( 6988): Using CollectorTypeCC GC.
+05-19 10:47:04.377 D/audio_hw_primary( 1054): disable_audio_route: usecase(1) reset and update mixer path: low-latency-playback speaker
+05-19 10:47:04.379 D/hardware_info( 1054): hw_info_append_hw_type : device_name = speaker
+05-19 10:47:04.380 D/audio_hw_primary( 1054): disable_snd_device: snd_device(2: speaker)
+05-19 10:47:04.413 I/stetho  ( 6968): Listening on @stetho_org.schabi.newpipe.debug.featuresmartfeedscheduling:acra_devtools_remote
+05-19 10:47:04.495 W/app_process( 6988): FaultHandler: MEMBARRIER_CMD_REGISTER_PRIVATE_EXPEDITED failed: 38 Function not implemented
+05-19 10:47:04.541 I/netd    ( 1027): tetherGetStats() -> {[]} <1.84ms>
+05-19 10:47:04.549 D/nativeloader( 6988): InitDefaultPublicLibraries for_preload=1: libandroid.so:libaaudio.so:libamidi.so:libbinder_ndk.so:libc.so:libcamera2ndk.so:libdl.so:libEGL.so:libGLESv1_CM.so:libGLESv2.so:libGLESv3.so:libicu.so:libicui18n.so:libicuuc.so:libjnigraphics.so:liblog.so:libmediandk.so:libm.so:libnativehelper.so:libnativewindow.so:libOpenMAXAL.so:libOpenSLES.so:libRS.so:libstdc++.so:libsync.so:libvulkan.so:libwebviewchromium_plat_support.so:libz.so
+05-19 10:47:04.579 D/nativeloader( 6988): Load libicu_jni.so using APEX ns com_android_art for caller /apex/com.android.art/javalib/core-oj.jar: ok
+05-19 10:47:04.579 D/app_process( 6988): u_setTimeZoneFilesDirectory("/apex/com.android.tzdata/etc/tz/versioned/8/icu") succeeded. 
+05-19 10:47:04.579 D/app_process( 6988): I18n APEX ICU file found: /apex/com.android.i18n/etc/icu/icudt75l.dat
+05-19 10:47:04.583 D/nativeloader( 6988): Load libjavacore.so using APEX ns com_android_art for caller /apex/com.android.art/javalib/core-oj.jar: ok
+05-19 10:47:04.586 D/nativeloader( 6988): Load libopenjdk.so using APEX ns com_android_art for caller /apex/com.android.art/javalib/core-oj.jar: ok
+05-19 10:47:04.595 W/app_process( 6988): ClassLoaderContext shared library size mismatch. Expected=2, found=0 (PCL[]{PCL[/system/framework/android.test.base.jar*2643221532]#PCL[/system/framework/android.test.mock.jar*102799828]} | PCL[])
+05-19 10:47:04.598 W/app_process( 6988): ClassLoaderContext classpath size mismatch. expected=0, found=1 (PCL[]{PCL[/system/framework/android.test.runner.jar*760235463]#PCL[/system/framework/android.test.base.jar*2643221532]} | PCL[/system/framework/android.test.runner.jar*760235463])
+05-19 10:47:04.656 D/nativeloader( 6988): Load libframework-connectivity-tiramisu-jni.so using APEX ns com_android_tethering for caller /apex/com.android.tethering/javalib/framework-connectivity-t.jar: ok
+05-19 10:47:04.656 D/AndroidRuntime( 6988): Calling main entry com.android.commands.uiautomator.Launcher
+05-19 10:47:04.656 I/binder  (    0): 6988:6988 ioctl 40046210 7ff528d564 returned -22
+05-19 10:47:04.670 D/UiAutomationConnection( 6988): Created on user UserHandle{0}
+05-19 10:47:04.670 I/UiAutomation( 6988): Initialized for user 0 on display 0
+05-19 10:47:04.670 W/UiAutomation( 6988): Created with deprecatead constructor, assumes DEFAULT_DISPLAY
+05-19 10:47:04.673 D/AccessibilityManagerService( 1505): changeCurrentUserForTestAutomationIfNeededLocked(0): ignoring because device doesn't support visible background users
+05-19 10:47:04.673 I/UiAutomationManager( 1505): Registering UiTestAutomationService (id=com.android.server.accessibility/UiAutomation, flags=0x0) when called by user 0
+05-19 10:47:04.676 W/MagnificationConnectionManager( 1505): requestConnection duplicated request: connect=false, mConnectionState=DISCONNECTED
+05-19 10:47:04.681 V/UiAutomation( 6988): Init UiAutomation@c3eadc3[id=25, displayId=0, flags=0]
+05-19 10:47:04.693 W/MagnificationConnectionManager( 1505): requestConnection duplicated request: connect=false, mConnectionState=DISCONNECTED
+05-19 10:47:04.699 D/BatterySaverPolicy( 1505): accessibility changed to true, updating policy.
+05-19 10:47:04.705 D/AccessibilitySourceService( 2313): enabled a11y services count 0
+05-19 10:47:04.706 D/AccessibilitySourceService( 2313): a11y source sending 0 issue to sc
+05-19 10:47:04.710 D/SafetySourceDataValidat( 1505): No cert check requested for package com.android.permissioncontroller
+05-19 10:47:05.098 I/cnss_wlan_pci 0000(    0): 01:00.0: enabling device (0000 -> 0002)
+05-19 10:47:05.727 W/uiautomator( 6988): type=1400 audit(0.0:115): avc:  denied  { read } for  name="u:object_r:qemu_sf_lcd_density_prop:s0" dev="tmpfs" ino=17287 scontext=u:r:shell:s0 tcontext=u:object_r:qemu_sf_lcd_density_prop:s0 tclass=file permissive=0
+05-19 10:47:05.734 W/libc    ( 6988): Access denied finding property "qemu.sf.lcd_density"
+05-19 10:47:05.735 W/libc    ( 6988): Access denied finding property "qemu.sf.lcd_density"
+05-19 10:47:05.727 W/uiautomator( 6988): type=1400 audit(0.0:116): avc:  denied  { read } for  name="u:object_r:qemu_sf_lcd_density_prop:s0" dev="tmpfs" ino=17287 scontext=u:r:shell:s0 tcontext=u:object_r:qemu_sf_lcd_density_prop:s0 tclass=file permissive=0
+05-19 10:47:05.772 I/AccessibilityNodeInfoDumper( 6988): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@14b35; boundsInParent: Rect(0, 0 - 1080, 1538); boundsInScreen: Rect(1108, 74 - 1080, 1612); boundsInWindow: Rect(1108, 74 - 1080, 1612); packageName: com.android.launcher3; className: android.view.ViewGroup; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; granularScrollingSupported: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]; isTextSelectable: false
+05-19 10:47:05.806 I/AccessibilityNodeInfoDumper( 6988): Skipping invisible child: android.view.accessibility.AccessibilityNodeInfo@c050; boundsInParent: Rect(0, 0 - 0, 0); boundsInScreen: Rect(540, 1794 - 540, 1794); boundsInWindow: Rect(540, 1794 - 540, 1794); packageName: com.android.launcher3; className: android.view.View; text: null; error: null; maxTextLength: -1; stateDescription: null; contentDescription: null; tooltipText: null; containerTitle: null; viewIdResName: null; uniqueId: null; checkable: false; checked: false; focusable: false; focused: false; selected: false; clickable: false; longClickable: false; contextClickable: false; enabled: true; password: false; scrollable: false; granularScrollingSupported: false; importantForAccessibility: false; visible: false; actions: [AccessibilityAction: ACTION_SELECT - null, AccessibilityAction: ACTION_CLEAR_SELECTION - null, AccessibilityAction: ACTION_ACCESSIBILITY_FOCUS - null, AccessibilityAction: ACTION_SHOW_ON_SCREEN - null]; isTextSelectable: false
+05-19 10:47:05.809 W/AccessibilityNodeInfoDumper( 6988): Fetch time: 64ms
+05-19 10:47:05.820 W/MagnificationConnectionManager( 1505): requestConnection duplicated request: connect=false, mConnectionState=DISCONNECTED
+05-19 10:47:05.820 D/AccessibilityManagerService( 1505): restoreCurrentUserForTestAutomationIfNeededLocked(): ignoring because device doesn't support visible background users
+05-19 10:47:05.836 D/AndroidRuntime( 6988): Shutting down VM
+05-19 10:47:05.833 I/binder  (    0): 6988:6988 ioctl 40046210 7ff528d4f4 returned -22
+05-19 10:47:05.850 D/BatterySaverPolicy( 1505): accessibility changed to false, updating policy.
+05-19 10:47:06.198 I/ACRA    ( 6968): Sending report /data/user/0/org.schabi.newpipe.debug.featuresmartfeedscheduling/app_ACRA-approved/2026-05-19T10:47:01.389+10:00.stacktrace
+05-19 10:47:06.400 I/ActivityTaskManager( 1505): hasSystemAlertWindowPermission(10219, 6968, org.schabi.newpipe.debug.featuresmartfeedscheduling) MODE_BACKGROUND_ACTIVITY_START_SYSTEM_DEFINED
+05-19 10:47:06.402 E/ActivityTaskManager( 1505): Background activity launch blocked! goo.gle/android-bal [callingPackage: org.schabi.newpipe.debug.featuresmartfeedscheduling; callingPackageTargetSdk: 35; callingUid: 10219; callingPid: 6968; appSwitchState: 2; callingUidHasVisibleActivity: false; callingUidHasVisibleNotPinnedActivity: false; callingUidHasNonAppVisibleWindow: false; callingUidProcState: TRANSIENT_BACKGROUND; isCallingUidPersistentSystemProcess: false; allowBalExemptionForSystemProcess: false; intent: Intent { flg=0x10000000 cmp=org.schabi.newpipe.debug.featuresmartfeedscheduling/org.schabi.newpipe.error.ErrorActivity (has extras) }; callerApp: ProcessRecord{b9f2645 6968:org.schabi.newpipe.debug.featuresmartfeedscheduling:acra/u0a219}; inVisibleTask: false; balAllowedByPiCreator: BSP.ALLOW_BAL; balAllowedByPiCreatorWithHardening: BSP.ALLOW_BAL; resultIfPiCreatorAllowsBal: BAL_BLOCK; callerStartMode: MODE_BACKGROUND_ACTIVITY_START_SYSTEM_DEFINED; hasRealCaller: true; isCallForResult: false; isPendingIntent: false; autoOptInReason: notPendingIntent; realCallingPackage: org.schabi.newpipe.debug.featuresmartfeedscheduling; realCallingPackageTargetSdk: 35; realCallingUid: 10219; realCallingPid: 6968; realCallingUidHasVisibleActivity: false; realCallingUidHasVisibleNotPinnedActivity: false; realCallingUidHasNonAppVisibleWindow: false; realCallingUidProcState: TRANSIENT_BACKGROUND; isRealCallingUidPersistentSystemProcess: false; originatingPendingIntent: null; realCallerApp: ProcessRecord{b9f2645 6968:org.schabi.newpipe.debug.featuresmartfeedscheduling:acra/u0a219}; realInVisibleTask: false; balAllowedByPiSender: BSP.ALLOW_BAL; resultIfPiSenderAllowsBal: BAL_BLOCK; realCallerStartMode: MODE_BACKGROUND_ACTIVITY_START_SYSTEM_DEFINED; balRequireOptInByPendingIntentCreator: true; balDontBringExistingBackgroundTaskStackToFg: true]
+05-19 10:47:06.416 V/GrammaticalInflectionUtils( 1505): AttributionSource: AttributionSource { uid = 10219, packageName = null, attributionTag = null, token = android.os.Binder@25814ca, deviceId = 0, next = null } does not have READ_SYSTEM_GRAMMATICAL_GENDER permission.
+05-19 10:47:06.424 W/OptProp ( 1505): Cannot read opt property android.window.PROPERTY_COMPAT_ALLOW_RESIZEABLE_ACTIVITY_OVERRIDES
+05-19 10:47:06.427 W/OptProp ( 1505): Cannot read opt property android.window.PROPERTY_COMPAT_ALLOW_MIN_ASPECT_RATIO_OVERRIDE
+05-19 10:47:06.430 D/CompatChangeReporter( 1505): Compat change id reported: 306666082; UID 10219; state: ENABLED
+05-19 10:47:06.434 E/ActivityTaskManager( 1505): Abort background activity starts from 10219
+05-19 10:47:06.434 E/WifiStaIfaceAidlImpl( 1505): getCachedScanData failed with service-specific exception: android.os.ServiceSpecificException:  (code 4)
+05-19 10:47:06.435 I/ActivityTaskManager( 1505): START u0 {flg=0x10000000 cmp=org.schabi.newpipe.debug.featuresmartfeedscheduling/org.schabi.newpipe.error.ErrorActivity (has extras)} with LAUNCH_MULTIPLE from uid 10219 (BAL_BLOCK) result code=102
+05-19 10:47:06.503 I/netd    ( 1027): tetherGetStats() -> {[]} <2.75ms>
+05-19 10:47:06.682 D/BufferPoolAccessor2.0( 1277): evictor expired: 1, evicted: 0
+05-19 10:47:06.990 W/screencap( 7007): Thread Pool max thread count is 0. Cannot cache binder as linkToDeath cannot be implemented. serviceName: SurfaceFlingerAIDL
+05-19 10:47:06.991 W/BpBinder( 7007): Linking to death on android.gui.ISurfaceComposer but there are no threads (yet?) listening to incoming transactions. See ProcessState::startThreadPool and ProcessState::setThreadPoolMaxThreadCount. Generally you should setup the binder threadpool before other initialization steps.
+05-19 10:47:06.991 W/ProcessState( 7007): Extra binder thread started, but 0 threads requested. Do not use *startThreadPool when zero threads are requested.
+05-19 10:47:06.988 I/binder  (    0): 7007:7007 ioctl 40046210 7fee79b7c4 returned -22
+05-19 10:47:06.998 I/servicemanager(    0): Caller(pid=7007,uid=2000,sid=u:r:shell:s0) Could not find android.hardware.graphics.allocator.IAllocator/default in the VINTF manifest. No alternative instances declared in VINTF.
+05-19 10:47:07.001 I/hwservicemanager(  654): getTransport: Cannot find entry android.hardware.graphics.mapper@4.0::IMapper/default in either framework or device VINTF manifest.
+05-19 10:47:07.001 I/Gralloc4( 7007): mapper 4.x is not supported
+05-19 10:47:07.002 I/hwservicemanager(  654): getTransport: Cannot find entry android.hardware.graphics.mapper@3.0::IMapper/default in either framework or device VINTF manifest.
+05-19 10:47:07.002 W/Gralloc3( 7007): mapper 3.x is not supported
+05-19 10:47:06.999 I/binder  (    0): 7007:7009 ioctl 40046210 734daa9914 returned -22
+05-19 10:47:07.035 W/MediaProvider( 2768): isAppCloneUserPair failed. Users: 0 and 0
+05-19 10:47:07.035 W/MediaProvider( 2768): isAppCloneUserPair for user 0: false
+05-19 10:47:07.725 I/ActivityManager( 1505): Broadcasting: Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }
+05-19 10:47:07.726 I/ActivityManager( 1505): Enqueued broadcast Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x400000 }: 0
+05-19 10:47:07.722 I/binder  (    0): 7011:7011 ioctl 40046210 7fe94761e4 returned -22
+05-19 10:47:07.732 W/JobInfo ( 1505): Job 'com.android.providers.media.module/com.android.providers.media.MediaService#-300' has a deadline with no functional constraints. The deadline won't improve job execution latency. Consider removing the deadline.
+05-19 10:47:07.750 I/ActivityManager( 1505): Broadcast completed: result=0
+05-19 10:47:07.758 I/MediaProvider( 2768): Begin Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x1400010 cmp=com.android.providers.media.module/com.android.providers.media.MediaService }
+05-19 10:47:07.804 I/MediaProvider( 2768): End Intent { act=android.intent.action.MEDIA_SCANNER_SCAN_FILE dat=file:///... flg=0x1400010 cmp=com.android.providers.media.module/com.android.providers.media.MediaService }
+05-19 10:47:07.825 D/WM-SystemJobScheduler( 2768): Scheduling work ID f4b403d2-5983-4a5f-8db6-0ad3dd737132Job ID 23
+05-19 10:47:07.828 D/WM-GreedyScheduler( 2768): Ignoring {WorkSpec: 620bc9bf-7c63-436c-89f5-8faf56f6ea91}. Requires device idle.
+05-19 10:47:07.828 D/WM-GreedyScheduler( 2768): Ignoring {WorkSpec: e9217222-72ba-49b5-8caa-e1a58d9c0fb0}. Requires device idle.
+05-19 10:47:08.198 I/cnss_wlan_pci 0000(    0): 01:00.0: enabling device (0000 -> 0002)
+05-19 10:47:09.316 D/WM-DelayedWorkTracker( 2768): Scheduling work f4b403d2-5983-4a5f-8db6-0ad3dd737132
+05-19 10:47:09.317 D/WM-GreedyScheduler( 2768): Starting tracking for f4b403d2-5983-4a5f-8db6-0ad3dd737132
+05-19 10:47:09.333 D/WM-ConstraintTracker( 2768): BatteryNotLowTracker: initial state = true
+05-19 10:47:09.334 D/WM-BrdcstRcvrCnstrntTrc( 2768): BatteryNotLowTracker: registering receiver
+05-19 10:47:09.344 D/WM-GreedyScheduler( 2768): Constraints met: Scheduling work ID WorkGenerationalId(workSpecId=f4b403d2-5983-4a5f-8db6-0ad3dd737132, generation=0)
+05-19 10:47:09.356 D/WM-Processor( 2768): Processor: processing WorkGenerationalId(workSpecId=f4b403d2-5983-4a5f-8db6-0ad3dd737132, generation=0)
+05-19 10:47:09.367 D/WM-WorkerWrapper( 2768): Starting work for com.android.providers.media.photopicker.sync.ProactiveSyncWorker
+05-19 10:47:09.372 D/WM-SystemJobService( 2768): onStartJob for WorkGenerationalId(workSpecId=f4b403d2-5983-4a5f-8db6-0ad3dd737132, generation=0)
+05-19 10:47:09.372 I/PSyncWorker( 2768): Starting proactive picker sync from sync source: 1
+05-19 10:47:09.373 I/PickerSyncTracker( 2768): Created new sync future java.util.concurrent.CompletableFuture@3516180[Not completed, 1 dependents]. Future map: {f4b403d2-5983-4a5f-8db6-0ad3dd737132=java.util.concurrent.CompletableFuture@3516180[Not completed, 1 dependents]}
+05-19 10:47:09.374 D/PickerSyncController( 2768): syncAllMediaFromProvider() LOCAL, auth=com.android.providers.media.photopicker, retry=true
+05-19 10:47:09.374 D/PickerSyncController( 2768): getSyncRequestParams() LOCAL, auth=com.android.providers.media.photopicker
+05-19 10:47:09.377 D/WM-Processor( 2768): Work WorkGenerationalId(workSpecId=f4b403d2-5983-4a5f-8db6-0ad3dd737132, generation=0) is already enqueued for processing
+05-19 10:47:09.384 D/PickerSyncController( 2768):    Latest ID/Gen=1506:540b5e29-f59e-429d-b923-30b34eae7b30:external_primary/275
+05-19 10:47:09.385 D/PickerSyncController( 2768):    Cached ID/Gen=1506:540b5e29-f59e-429d-b923-30b34eae7b30:external_primary/267
+05-19 10:47:09.385 D/PickerSyncController( 2768):    RESULT=SyncRequestParams{type=MEDIA_INCREMENTAL, gen=267, latest=Bundle[{last_media_sync_generation=275, media_collection_id=1506:540b5e29-f59e-429d-b923-30b34eae7b30:external_primary}], pageSize=1000}
+05-19 10:47:09.386 I/PickerSyncController( 2768): Executing SyncAdd. isLocal: true. authority: com.android.providers.media.photopicker
+05-19 10:47:09.386 D/PickerSyncLockManager( 2768): Trying to acquire lock com.android.providers.media.photopicker.sync.CloseableReentrantLock@d521ba1[Unlocked]. Lock Name = CLOUD_PROVIDER_LOCK. Threads that may be waiting to acquire this lock = [] with timeout.
+05-19 10:47:09.387 D/CloseableReentrantLock( 2768): Successfully acquired lock com.android.providers.media.photopicker.sync.CloseableReentrantLock@d521ba1[Locked by thread pool-4-thread-4]. Lock Name = CLOUD_PROVIDER_LOCK. Threads that may be waiting to acquire this lock = []
+05-19 10:47:09.387 D/CloseableReentrantLock( 2768): Successfully released lock com.android.providers.media.photopicker.sync.CloseableReentrantLock@d521ba1[Unlocked]. Lock Name = CLOUD_PROVIDER_LOCK. Threads that may be waiting to acquire this lock = []
+05-19 10:47:09.388 D/ExternalDbFacade( 2768): Token received for queryMedia = null
+05-19 10:47:09.393 D/PickerSyncLockManager( 2768): Trying to acquire lock com.android.providers.media.photopicker.sync.CloseableReentrantLock@d521ba1[Unlocked]. Lock Name = CLOUD_PROVIDER_LOCK. Threads that may be waiting to acquire this lock = [] with timeout.
+05-19 10:47:09.393 D/CloseableReentrantLock( 2768): Successfully acquired lock com.android.providers.media.photopicker.sync.CloseableReentrantLock@d521ba1[Locked by thread pool-4-thread-4]. Lock Name = CLOUD_PROVIDER_LOCK. Threads that may be waiting to acquire this lock = []
+05-19 10:47:09.393 D/PickerSyncController( 2768): Saving next page token: 1779151627000|1000000044 for key: local_provider:media_add:resume
+05-19 10:47:09.393 D/CloseableReentrantLock( 2768): Successfully released lock com.android.providers.media.photopicker.sync.CloseableReentrantLock@d521ba1[Unlocked]. Lock Name = CLOUD_PROVIDER_LOCK. Threads that may be waiting to acquire this lock = []
+05-19 10:47:09.396 D/PickerNotificationSender( 2768): Sending a notification for media update
+05-19 10:47:09.399 D/PickerNotificationSender( 2768): Sending a notification for merged album media update Videos
+05-19 10:47:09.399 D/PickerNotificationSender( 2768): Sending a notification for album media update Videos
+05-19 10:47:09.402 D/PickerNotificationSender( 2768): Sending a notification for merged album media update Favorites
+05-19 10:47:09.402 D/PickerNotificationSender( 2768): Sending a notification for album media update Favorites
+05-19 10:47:09.405 D/ExternalDbFacade( 2768): Token received for queryMedia = 1779151627000|1000000044
+05-19 10:47:09.413 D/PickerSyncLockManager( 2768): Trying to acquire lock com.android.providers.media.photopicker.sync.CloseableReentrantLock@d521ba1[Unlocked]. Lock Name = CLOUD_PROVIDER_LOCK. Threads that may be waiting to acquire this lock = [] with timeout.
+05-19 10:47:09.413 D/CloseableReentrantLock( 2768): Successfully acquired lock com.android.providers.media.photopicker.sync.CloseableReentrantLock@d521ba1[Locked by thread pool-4-thread-4]. Lock Name = CLOUD_PROVIDER_LOCK. Threads that may be waiting to acquire this lock = []
+05-19 10:47:09.414 D/PickerSyncController( 2768): Clearing next page token for key: local_provider:media_add:resume
+05-19 10:47:09.414 D/CloseableReentrantLock( 2768): Successfully released lock com.android.providers.media.photopicker.sync.CloseableReentrantLock@d521ba1[Unlocked]. Lock Name = CLOUD_PROVIDER_LOCK. Threads that may be waiting to acquire this lock = []
+05-19 10:47:09.414 D/PickerNotificationSender( 2768): Sending a notification for media update
+05-19 10:47:09.417 D/PickerNotificationSender( 2768): Sending a notification for merged album media update Videos
+05-19 10:47:09.418 D/PickerNotificationSender( 2768): Sending a notification for album media update Videos
+05-19 10:47:09.421 D/PickerNotificationSender( 2768): Sending a notification for merged album media update Favorites
+05-19 10:47:09.421 D/PickerNotificationSender( 2768): Sending a notification for album media update Favorites
+05-19 10:47:09.424 I/PickerSyncController( 2768): Paged sync successful. QueryArgs: Bundle[{android.provider.extra.PAGE_TOKEN=1779151627000|1000000044, android.provider.extra.SYNC_GENERATION=267, android.provider.extra.PAGE_SIZE=1000}] Total Rows: 1
+05-19 10:47:09.425 I/PickerSyncController( 2768): Executing SyncRemove. isLocal: true. authority: com.android.providers.media.photopicker
+05-19 10:47:09.426 D/PickerSyncLockManager( 2768): Trying to acquire lock com.android.providers.media.photopicker.sync.CloseableReentrantLock@d521ba1[Unlocked]. Lock Name = CLOUD_PROVIDER_LOCK. Threads that may be waiting to acquire this lock = [] with timeout.
+05-19 10:47:09.426 D/CloseableReentrantLock( 2768): Successfully acquired lock com.android.providers.media.photopicker.sync.CloseableReentrantLock@d521ba1[Locked by thread pool-4-thread-4]. Lock Name = CLOUD_PROVIDER_LOCK. Threads that may be waiting to acquire this lock = []
+05-19 10:47:09.426 D/CloseableReentrantLock( 2768): Successfully released lock com.android.providers.media.photopicker.sync.CloseableReentrantLock@d521ba1[Unlocked]. Lock Name = CLOUD_PROVIDER_LOCK. Threads that may be waiting to acquire this lock = []
+05-19 10:47:09.433 D/PickerSyncLockManager( 2768): Trying to acquire lock com.android.providers.media.photopicker.sync.CloseableReentrantLock@d521ba1[Unlocked]. Lock Name = CLOUD_PROVIDER_LOCK. Threads that may be waiting to acquire this lock = [] with timeout.
+05-19 10:47:09.433 D/CloseableReentrantLock( 2768): Successfully acquired lock com.android.providers.media.photopicker.sync.CloseableReentrantLock@d521ba1[Locked by thread pool-4-thread-4]. Lock Name = CLOUD_PROVIDER_LOCK. Threads that may be waiting to acquire this lock = []
+05-19 10:47:09.433 D/PickerSyncController( 2768): Clearing next page token for key: local_provider:media_remove:resume
+05-19 10:47:09.434 D/CloseableReentrantLock( 2768): Successfully released lock com.android.providers.media.photopicker.sync.CloseableReentrantLock@d521ba1[Unlocked]. Lock Name = CLOUD_PROVIDER_LOCK. Threads that may be waiting to acquire this lock = []
+05-19 10:47:09.434 D/PickerNotificationSender( 2768): Sending a notification for media update
+05-19 10:47:09.437 D/PickerNotificationSender( 2768): Sending a notification for merged album media update Videos
+05-19 10:47:09.437 D/PickerNotificationSender( 2768): Sending a notification for album media update Videos
+05-19 10:47:09.440 D/PickerNotificationSender( 2768): Sending a notification for merged album media update Favorites
+05-19 10:47:09.440 D/PickerNotificationSender( 2768): Sending a notification for album media update Favorites
+05-19 10:47:09.444 I/PickerSyncController( 2768): Paged sync successful. QueryArgs: Bundle[{android.provider.extra.PAGE_TOKEN=1779151627000|1000000044, android.provider.extra.SYNC_GENERATION=267, android.provider.extra.PAGE_SIZE=1000}] Total Rows: 0
+05-19 10:47:09.445 I/PickerSyncTracker( 2768): Marked sync future complete for work id: f4b403d2-5983-4a5f-8db6-0ad3dd737132. Future map: {}
+05-19 10:47:09.445 I/PSyncWorker( 2768): Completed picker proactive sync complete from local provider.
+05-19 10:47:09.451 I/WM-WorkerWrapper( 2768): Worker result SUCCESS for Work [ id=f4b403d2-5983-4a5f-8db6-0ad3dd737132, tags={ com.android.providers.media.photopicker.sync.ProactiveSyncWorker } ]
+05-19 10:47:09.460 D/WM-Processor( 2768): Processor f4b403d2-5983-4a5f-8db6-0ad3dd737132 executed; reschedule = false
+05-19 10:47:09.461 D/WM-GreedyScheduler( 2768): Stopping tracking for WorkGenerationalId(workSpecId=f4b403d2-5983-4a5f-8db6-0ad3dd737132, generation=0)
+05-19 10:47:09.463 D/WM-SystemJobService( 2768): f4b403d2-5983-4a5f-8db6-0ad3dd737132 executed on JobScheduler
+05-19 10:47:09.470 E/WifiStaIfaceAidlImpl( 1505): getCachedScanData failed with service-specific exception: android.os.ServiceSpecificException:  (code 4)
+05-19 10:47:09.475 D/WM-GreedyScheduler( 2768): Cancelling work ID f4b403d2-5983-4a5f-8db6-0ad3dd737132
+05-19 10:47:09.484 D/WM-GreedyScheduler( 2768): Ignoring {WorkSpec: 620bc9bf-7c63-436c-89f5-8faf56f6ea91}. Requires device idle.
+05-19 10:47:09.484 D/WM-GreedyScheduler( 2768): Ignoring {WorkSpec: e9217222-72ba-49b5-8caa-e1a58d9c0fb0}. Requires device idle.
+05-19 10:47:09.485 W/JobScheduler( 1505): Job didn't exist in JobStore: 153c557 {androidx.work.systemjobscheduler} #u0a217/23 @androidx.work.systemjobscheduler@com.android.providers.media.module/androidx.work.impl.background.systemjob.SystemJobService
+05-19 10:47:09.487 D/WM-BrdcstRcvrCnstrntTrc( 2768): BatteryNotLowTracker: unregistering receiver
+05-19 10:47:09.489 D/WM-SystemJobService( 2768): onStopJob for WorkGenerationalId(workSpecId=f4b403d2-5983-4a5f-8db6-0ad3dd737132, generation=0)
+05-19 10:47:11.443 E/BLASTSyncEngine( 1505): WM sent Transaction (#26, Transition-OPEN, tx=6463925782178) to organizer, but never received commit callback. Application ANR likely to follow.
+05-19 10:47:11.473 D/InetDiagMessage( 1505): Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET, states=14
+05-19 10:47:11.476 D/InetDiagMessage( 1505): Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET6, states=14
+05-19 10:47:11.477 D/InetDiagMessage( 1505): Destroyed live tcp sockets for uids={10219} in 13ms
+05-19 10:47:11.481 D/InetDiagMessage( 1505): Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET, states=14
+05-19 10:47:11.483 D/InetDiagMessage( 1505): Destroyed 0 sockets, proto=IPPROTO_TCP, family=AF_INET6, states=14
+05-19 10:47:11.484 D/InetDiagMessage( 1505): Destroyed live tcp sockets for uids={20219} in 6ms
+05-19 10:47:12.508 E/WifiStaIfaceAidlImpl( 1505): getCachedScanData failed with service-specific exception: android.os.ServiceSpecificException:  (code 4)
+05-19 10:47:13.163 D/BatteryUsageBroadcastReceiver( 2232): onReceive:android.intent.action.BATTERY_LEVEL_CHANGED
+05-19 10:47:13.166 D/BatteryUsageBroadcastReceiver( 2232): fetch data because of event: ACTION_BATTERY_LEVEL_CHANGED
+05-19 10:47:13.538 E/[BATT] chg_full_check_worker(    0): vol:4308, curr=-301, is_full_count=0, is_full=0 at 1454360431318 (2026-05-19 00:47:13.538788475 UTC)
+05-19 10:47:13.748 I/logd    (    0): logdr: UID=2000 GID=2000 PID=7015 n tail=0 logMask=99 pid=0 start=0ns deadline=0ns
+05-19 10:47:15.303 D/[BATT] batt_worker(    0): total_time since last batt update = 42520 ms.
+05-19 10:47:15.307 I/[BATT] calculate_batt_cycle_info(    0): g_batt_first_use_time = 2026-05-19 00:23:00, g_overheat_55_sec = 0, g_total_level_raw = 44
+05-19 10:47:15.307 E/        (    0): [BATT] write battery data: level:63, temp:257, time:1779151635 at 1456128711890 (2026-05-19 00:47:15.307127485 UTC)
+05-19 10:47:15.307 E/        (    0): [BATT] ibat_max=3200000,ibat_new=1600000,prev_vol_limit=1,prev_ibat_health=1,chg_limit_reason=0,prev_screen_warm=0,prev_screen_hot=0,is_over_ibat=0,htc_batt_info.state=0x0 at 1456128810692 (2026-05-19 00:47:15.307226495 UTC)
+05-19 10:47:15.307 E/        (    0): [BATT] ibat_total=1600000[1600000,0],ibat_total_new=1600000,is_parallel=0 at 1456128862619 (2026-05-19 00:47:15.307285557 UTC)
+05-19 10:47:15.312 I/        (    0): [BATT][SMBCHG] 0x1010=10,0x1210=00,0x1242=00,0x1310=04,0x1340=02,0x1610=01,cc=839290uAh,warm_temp=470,cool_temp=100,pmic=rev1.1,batfet_wa=1,wake_reason=0
+05-19 10:47:15.312 I/        (    0): ,smb_curr=13mA
+05-19 10:47:15.312 I/SMBCHG  (    0): get_parallel_psy: parallel charger not found
+05-19 10:47:15.312 I/[BATT][SMBCHG] CHG_STS[0B(    0): 0F]=[02,6e,8f,05,00],CHG_CFG[F0:F4]=[0f,04,0f,00,2e],CHG_CFG[F5:F9]=[00,00,01,02,01],CHG_CFG[FA:FF]=[1c,47,4a,38,00,08],BAT_CFG[F0:F5]=[0f,04,06,c5,00,03],BAT_CFG[F6:FB]=[03,3b,32,04,d8,41]
+05-19 10:47:15.312 I/[BATT][SMBCHG] USB_STS[07(    0): 0B]=[10,02,22,08,08],USB_STS[0C:0F]=[00,08,0f,ff],USB_CFG[F0:F5]=[0f,02,07,04,11,ab],MISC_CFG[F0:F4]=[0f,00,12,06,25],MISC_CFG[F5:F9]=[38,18,98,00,00],MISC_CFG[FA:FF]=[00,03,40,05,e0,02],
+05-19 10:47:15.315 E/        (    0): [BATT] ID=1,level=63,level_raw=63,vol=4308mV,temp=257,current=-301664uA,chg_name=USB,chg_src=1,chg_en=1,health=1,overload=0,duration=0min,vbus=5050mV,max_iusb=500mA,chg_limit_reason=0,chg_stop_reason=0,consistent=-1,flag=0x00000000,AICL=1700mA,htc_ext=0x00,usb_temp=243,usb_overheat=0,level_accu=44 at 1456136810432 (2026-05-19 00:47:15.315105297 UTC)
+05-19 10:47:15.368 I/android.hardware.health@2.1-service( 1065): SRAM data: 2812000
+05-19 10:47:15.369 W/healthd (    0): battery l=62 v=4308 t=25.7 h=2 st=2 c=-301664 fc=2812000 chg=u
+05-19 10:47:15.380 I/android.hardware.health@2.1-service( 1065): SRAM data: 2812000
+05-19 10:47:15.394 I/android.hardware.health@2.1-service( 1065): SRAM data: 2812000
+05-19 10:47:15.394 W/healthd (    0): battery l=63 v=4308 t=25.7 h=2 st=2 c=-301664 fc=2812000 chg=u
+05-19 10:47:15.403 I/android.hardware.health@2.1-service( 1065): SRAM data: 2812000
+05-19 10:47:15.408 D/PowerUI ( 2014): can't show warning due to - plugged: true status unknown: false
+05-19 10:47:15.546 E/WifiStaIfaceAidlImpl( 1505): getCachedScanData failed with service-specific exception: android.os.ServiceSpecificException:  (code 4)
+05-19 10:47:16.888 I/cnss_wlan_pci 0000(    0): 01:00.0: enabling device (0000 -> 0002)
+05-19 10:47:17.079 I/FG      (    0): fg_soc_irq_handler: triggered 0x20
+05-19 10:47:17.126 I/android.hardware.health@2.1-service( 1065): SRAM data: 2812000
+05-19 10:47:17.114 I/SMBCHG  (    0): smbchg_cc_esr_wa_check: ESR count is not zero, skipping
+05-19 10:47:17.114 I/SMBCHG  (    0): smbchg_stay_awake: staying awake: 0x02 (bit 2)
+05-19 10:47:17.114 I/SMBCHG  (    0): smbchg_vfloat_adjust_check: Starting vfloat adjustments
+05-19 10:47:17.115 I/SMBCHG  (    0): smbchg_relax: relaxing: 0x00 (bit 2)
+05-19 10:47:17.126 W/healthd (    0): battery l=63 v=4332 t=25.7 h=2 st=2 c=-319059 fc=2812000 chg=u
+05-19 10:47:17.134 I/android.hardware.health@2.1-service( 1065): SRAM data: 2812000
+05-19 10:47:17.176 D/PowerUI ( 2014): can't show warning due to - plugged: true status unknown: false
+05-19 10:47:18.581 E/WifiStaIfaceAidlImpl( 1505): getCachedScanData failed with service-specific exception: android.os.ServiceSpecificException:  (code 4)
+05-19 10:47:19.568 I/cnss_wlan_pci 0000(    0): 01:00.0: enabling device (0000 -> 0002)
+05-19 10:47:21.617 E/WifiStaIfaceAidlImpl( 1505): getCachedScanData failed with service-specific exception: android.os.ServiceSpecificException:  (code 4)
+05-19 10:47:24.660 E/WifiStaIfaceAidlImpl( 1505): getCachedScanData failed with service-specific exception: android.os.ServiceSpecificException:  (code 4)
+05-19 10:47:25.962 I/logd    (    0): logdr: UID=2000 GID=2000 PID=7020 n tail=0 logMask=99 pid=0 start=0ns deadline=0ns

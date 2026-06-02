@@ -2,6 +2,7 @@ package org.schabi.newpipe.download;
 
 import static org.schabi.newpipe.extractor.stream.DeliveryMethod.PROGRESSIVE_HTTP;
 import static org.schabi.newpipe.util.ListHelper.getStreamsOfSpecifiedDelivery;
+import static org.schabi.newpipe.util.ListHelper.getDownloadableStreams;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -171,16 +172,17 @@ public class DownloadDialog extends DialogFragment
         this.selectedAudioTrackIndex =
                 ListHelper.getDefaultAudioTrackGroup(context, groupedAudioStreams);
 
-        // TODO: Adapt this code when the downloader support other types of stream deliveries
+        // Use same stream filter as playback (minus HLS, which downloader can't handle)
         final List<VideoStream> videoStreams = ListHelper.getSortedStreamVideosList(
                 context,
-                getStreamsOfSpecifiedDelivery(info.getVideoStreams(), PROGRESSIVE_HTTP),
-                getStreamsOfSpecifiedDelivery(info.getVideoOnlyStreams(), PROGRESSIVE_HTTP),
+                getDownloadableStreams(info.getVideoStreams(), info.getServiceId()),
+                getDownloadableStreams(info.getVideoOnlyStreams(), info.getServiceId()),
                 false,
                 // If there are multiple languages available, prefer streams without audio
                 // to allow language selection
                 wrappedAudioTracks.size() > 1
         );
+
 
         this.wrappedVideoStreams = new StreamInfoWrapper<>(videoStreams, context);
         this.wrappedSubtitleStreams = new StreamInfoWrapper<>(

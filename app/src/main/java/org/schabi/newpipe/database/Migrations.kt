@@ -33,6 +33,7 @@ object Migrations {
     const val DB_VER_11 = 11
     const val DB_VER_12 = 12
     const val DB_VER_13 = 13
+    const val DB_VER_14 = 14
 
     private val TAG = Migrations::class.java.getName()
     private val isDebug = MainActivity.DEBUG
@@ -425,4 +426,23 @@ object Migrations {
      * builds. Schema 13.json is identical to 12.json (data-only migration).
      */
     val MIGRATION_12_13 = Migration(DB_VER_12, DB_VER_13) { _ -> }
+
+    val MIGRATION_13_14 = Migration(DB_VER_13, DB_VER_14) { db ->
+        db.execSQL(
+            "ALTER TABLE subscription_update_info " +
+                "ADD COLUMN backoff_multiplier REAL NOT NULL DEFAULT 1.0"
+        )
+        db.execSQL(
+            "ALTER TABLE subscription_update_info " +
+                "ADD COLUMN detected_pattern INTEGER NOT NULL DEFAULT 0"
+        )
+        db.execSQL(
+            "ALTER TABLE subscription_update_info " +
+                "ADD COLUMN detected_weekday INTEGER"
+        )
+        db.execSQL(
+            "ALTER TABLE subscription_update_info " +
+                "ADD COLUMN confidence REAL NOT NULL DEFAULT 0.0"
+        )
+    }
 }

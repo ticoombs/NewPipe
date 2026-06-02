@@ -238,12 +238,44 @@ abstract class FeedDAO {
 
     @Query(
         """
-        UPDATE subscription_update_info 
-        SET fetch_interval = :interval, next_update = :nextUpdate
-        WHERE subscription_id = :subscriptionId
-    """
+        SELECT s.upload_date FROM streams s
+        INNER JOIN feed f ON s.uid = f.stream_id
+        WHERE f.subscription_id = :subscriptionId
+          AND s.upload_date IS NOT NULL
+          AND s.stream_type != 'LIVE_STREAM'
+          AND s.stream_type != 'AUDIO_LIVE_STREAM'
+          AND s.upload_date <= :nowUtc
+        ORDER BY s.upload_date DESC
+        LIMIT :limit
+        """
     )
-    abstract fun setFetchIntervalForSubscription(subscriptionId: Long, interval: Int, nextUpdate: OffsetDateTime)
+    abstract fun getRecentUploadDates(
+        subscriptionId: Long,
+        limit: Int,
+        nowUtc: OffsetDateTime
+    ): List<OffsetDateTime>
+
+    @Query(
+        """
+        UPDATE subscription_update_info
+        SET fetch_interval = :intervalDays,
+            next_update = :nextUpdate,
+            backoff_multiplier = :backoffMultiplier,
+            detected_pattern = :detectedPattern,
+            detected_weekday = :detectedWeekday,
+            confidence = :confidence
+        WHERE subscription_id = :subscriptionId
+        """
+    )
+    abstract fun setSchedulerStateForSubscription(
+        subscriptionId: Long,
+        intervalDays: Int,
+        nextUpdate: OffsetDateTime,
+        backoffMultiplier: Float,
+        detectedPattern: Int,
+        detectedWeekday: Int?,
+        confidence: Float
+    )
 
     @Query("SELECT * FROM subscription_update_info WHERE subscription_id = :subscriptionId")
     abstract fun getUpdateInfo(subscriptionId: Long): SubscriptionUpdateInfoEntity?

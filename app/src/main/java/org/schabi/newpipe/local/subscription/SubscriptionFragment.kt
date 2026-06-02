@@ -34,9 +34,11 @@ import org.schabi.newpipe.extractor.ServiceList
 import org.schabi.newpipe.extractor.channel.ChannelInfoItem
 import org.schabi.newpipe.fragments.BaseStateFragment
 import org.schabi.newpipe.ktx.animate
+import org.schabi.newpipe.local.feed.FeedDatabaseManager
 import org.schabi.newpipe.local.subscription.SubscriptionViewModel.SubscriptionState
 import org.schabi.newpipe.local.subscription.dialog.FeedGroupDialog
 import org.schabi.newpipe.local.subscription.dialog.FeedGroupReorderDialog
+import org.schabi.newpipe.local.subscription.dialog.NextCheckInfoDialog
 import org.schabi.newpipe.local.subscription.item.ChannelItem
 import org.schabi.newpipe.local.subscription.item.FeedGroupAddNewGridItem
 import org.schabi.newpipe.local.subscription.item.FeedGroupAddNewItem
@@ -286,7 +288,8 @@ class SubscriptionFragment : BaseStateFragment<SubscriptionState>() {
         val commands = arrayOf(
             getString(R.string.share),
             getString(R.string.open_in_browser),
-            getString(R.string.unsubscribe)
+            getString(R.string.unsubscribe),
+            getString(R.string.next_check_info_title)
         )
 
         val actions = DialogInterface.OnClickListener { _, i ->
@@ -301,6 +304,8 @@ class SubscriptionFragment : BaseStateFragment<SubscriptionState>() {
                 1 -> ShareUtils.openUrlInBrowser(requireContext(), selectedItem.url)
 
                 2 -> deleteChannel(selectedItem)
+
+                3 -> openNextCheckInfoDialog(selectedItem)
             }
         }
 
@@ -313,6 +318,16 @@ class SubscriptionFragment : BaseStateFragment<SubscriptionState>() {
             .setCustomTitle(dialogTitleBinding.root)
             .setItems(commands, actions)
             .show()
+    }
+
+    private fun openNextCheckInfoDialog(selectedItem: ChannelInfoItem) {
+        val subscriptionId = FeedDatabaseManager(requireContext()).database()
+            .subscriptionDAO()
+            .getSubscription(selectedItem.serviceId, selectedItem.url)
+            .blockingGet()
+            ?.uid ?: return
+        NextCheckInfoDialog.newInstance(subscriptionId)
+            .show(parentFragmentManager, "next_check_info")
     }
 
     private fun deleteChannel(selectedItem: ChannelInfoItem) {

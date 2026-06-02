@@ -250,6 +250,7 @@
     <string name="show_error_snackbar_key">show_error_snackbar_key</string>
     <string name="create_error_notification_key">create_error_notification_key</string>
     <string name="settings_layout_redesign_key">settings_layout_redesign_key</string>
+    <string name="hide_parsing_error_popups_key">hide_parsing_error_popups_key</string>
 
     <!-- THEMES -->
     <string name="theme_key">theme</string>
@@ -400,6 +401,8 @@
 
     <!-- Smart Feed Scheduling -->
     <string name="feed_smart_update_scheduling_key">feed_smart_update_scheduling</string>
+    <string name="smart_scheduling_enabled_key" translatable="false">pref_smart_scheduling_enabled</string>
+    <string name="smart_scheduling_enabled_default" translatable="false">true</string>
 
     <!-- Feed Auto Update -->
     <string name="feed_auto_update_enabled_key">feed_auto_update_enabled</string>

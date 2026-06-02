@@ -63,7 +63,8 @@ public class DownloadRunnableFallback extends Thread {
             int mId = 1;
             mConn = mMission.openConnection(false, rangeStart, -1);
 
-            if (mRetryCount == 0 && rangeStart == -1) {
+            if (mRetryCount == 0 && rangeStart == -1
+                    && !DownloadMission.isIosStreamUrl(mMission.urls[mMission.current])) {
                 // workaround: bypass android connection pool
                 mConn.setRequestProperty("Range", "bytes=0-");
             }
