@@ -245,8 +245,6 @@
     <string name="override_current_data">此操作会覆盖当前设置。</string>
     <string name="show_info">显示信息</string>
     <string name="tab_bookmarks">收藏</string>
-    <string name="title_last_played">最近观看</string>
-    <string name="title_most_played">最多观看</string>
     <string name="always_ask_open_action">每次询问</string>
     <string name="create_playlist">新建播放列表</string>
     <string name="rename_playlist">重命名</string>
@@ -850,4 +848,7 @@
     <string name="import_subscriptions_summary">从之前的 .json 导出文件导入订阅</string>
     <string name="export_subscriptions_summary">导出订阅到 .json 文件</string>
     <string name="import_from_previous_export">从之前的导出文件导入</string>
+    <string name="api23_requirement_dialog_title">NewPipe 正放弃对 Android 5 的支持</string>
+    <string name="api23_requirement_dialog_message">NewPipe 依赖几个已经不支持 Android 5 和 5.1 的库文件。下个 NewPipe 版本因此会只在 Android 6 或更高版本上工作。阅读博客文章了解更多信息。</string>
+    <string name="api23_requirement_dialog_blogpost">博客文章</string>
 </resources>

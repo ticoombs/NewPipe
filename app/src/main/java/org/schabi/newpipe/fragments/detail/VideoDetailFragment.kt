@@ -136,7 +136,6 @@ class VideoDetailFragment :
     @State
     var title: String = ""
 
-    @JvmField
     @State
     var url: String? = null
     private var currentInfo: StreamInfo? = null
@@ -147,6 +146,8 @@ class VideoDetailFragment :
     @JvmField
     @State
     var autoPlayEnabled: Boolean = true
+
+    var forceFullscreen: Boolean = false
 
     @JvmField
     @State
@@ -1063,7 +1064,11 @@ class VideoDetailFragment :
      * = false`, hence preventing it from going directly fullscreen.
      */
     fun openVideoPlayerAutoFullscreen() {
-        openVideoPlayer(PlayerHelper.isStartMainPlayerFullscreenEnabled(requireContext()))
+        openVideoPlayer(
+            forceFullscreen ||
+                PlayerHelper.isStartMainPlayerFullscreenEnabled(requireContext())
+        )
+        forceFullscreen = false
     }
 
     private fun openNormalBackgroundPlayer(append: Boolean) {
@@ -1074,7 +1079,7 @@ class VideoDetailFragment :
 
         val queue = setupPlayQueueForIntent(append)
         if (append) {
-            NavigationHelper.enqueueOnPlayer(activity, queue, PlayerType.AUDIO)
+            NavigationHelper.enqueueOnPlayer(activity, queue, PlayerType.BACKGROUND)
         } else {
             replaceQueueIfUserConfirms {
                 NavigationHelper.playOnBackgroundPlayer(activity, queue, true)

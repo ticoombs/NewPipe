@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import java.time.OffsetDateTime
+import kotlinx.coroutines.runBlocking
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.After
 import org.junit.Before
@@ -188,7 +189,9 @@ class FeedDAODiscoveryDateTest {
 
         // Cutoff is after all three uploads – the query keeps the max() per
         // subscription regardless of cutoff, so only "newest" survives.
-        feedDAO.unlinkStreamsOlderThan(OffsetDateTime.parse("2024-01-01T00:00:00Z"))
+        runBlocking {
+            feedDAO.unlinkStreamsOlderThan(OffsetDateTime.parse("2024-01-01T00:00:00Z"))
+        }
 
         val rows = feedDAO.getStreamsForSubscription(1, 10, false).blockingFirst()
         assertThat(rows.map { it.uid }).`as`("Latest video preserved")
